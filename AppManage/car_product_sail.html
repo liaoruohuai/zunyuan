@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>车享配</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="artDialog/css/ui-dialog.css">
+    <link rel="stylesheet" href="css/index.css" />
+    <style>
+
+    </style>
+</head>
+<body>
+<header class="header">
+    <h3 class="head_left"><a href="#" class="go_back"></a>商品售卖</h3>
+</header>
+<div class="con_color">
+    <div class="logo product_page_logo"><img src="img/c-logo@3x.png" alt=""></div>
+    <div class="person_information pro_page_personInf">
+        <div class="left_icon"><img src="img/c-guy@3x.png" alt=""></div>
+        <div class="right_text">
+            <ul>
+                <li>销售员：<span class="name"></span></li>
+                <li>销售网点：<span class="address"></span></li>
+            </ul>
+        </div>
+    </div>
+    <!--售卖成功-->
+    <div class="sail_succ_content" style="display: none;">
+        <p class="sail_success">商品售卖成功，商品码为：</p>
+        <p class="product_number">278485728</p>
+        <p class="sail_text">请客户凭此号码到店享受服务</p>
+    </div>
+    <!--商品售卖-->
+    <ul class="product_list_select">
+        <li><a href="car_product_list.html">商品 <span class="pro_right_infor" id="product_name"><i class="product_right_arrow"></i></span></a></li>
+        <li><a href="javaScript:void(0);">商品价格 <span class="pro_right_infor" id="product_price"></span></a></li>
+        <li><a href="javaScript:void(0);" class="special_a"><span class="client_infor">客户姓名&nbsp;</span>
+            <input class="user_name_input verify_form client_name" type="text" placeholder="请填写客户姓名">
+        </a></li>
+        <li><a href="javaScript:void(0);" class="special_a"> <span class="client_infor">客户手机号</span><input class="user_name_input verify_form phone" type="text" placeholder="请填写客户手机号"></a></li>
+    </ul>
+    <div class="form form_bottom">
+        <div class="each_content">
+            <button class="user_name product sail" id="sail">售卖</button>
+        </div>
+    </div>
+</div>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="artDialog/dist/dialog-min.js"></script>
+<script src="js/index.js"></script>
+<script src="js/ajaxJson.js"></script>
+<script>
+    $(function(){
+        submit();
+        goBack();
+        productSet();
+        getUserInformation();
+    });
+
+    function getUserInformation(){
+        getJSON(url+"/login/find_saler",
+                function(data){
+                    var code=data.code;
+                    if(code!="success"){
+                        return false;
+                    }
+                    var salers=data.data.salers;
+                    var salerName=salers.salerName;
+                    var netName=salers.netName;
+                    $('.name').text(salerName);
+                    $('.address').text(netName);
+                },
+                function(){
+
+                })
+    }
+    function submit(){
+        $('#sail').on('click',function(){
+            var verifyValue=verifyForm();
+            if(!verifyValue){
+                return false;
+            }
+            var product=sessionStorage.getItem('product');
+            var prudctId=JSON.parse(product).prudctId;
+            var pruductPrice=JSON.parse(product).pruductPrice;
+            var phone=$('.phone').val();
+            var clientName=$('.client_name').val();
+            var text=$(this).html();
+            if(text=='返回'){
+                history.go(-1);
+                return false;
+            }
+            getJSON(url+"/order/sell?productId="+prudctId+"&pruductPrice="+pruductPrice+"&customerName="+clientName+"&customerPhone="+phone,
+                    function(data){
+                        console.log(data);
+                        var code=data.code;
+                        var sellCode=data.data.sellCode;
+                        var status=data.data.status;
+                        var message=data.data.message;
+                        if(code!='success'){
+                            return false;
+                        }
+                        if(status=='fail'){
+                            dialogFn(message);
+                            return false;
+                        }
+
+                        $('.sail_succ_content').css('display','block');
+                        $('.product_list_select').css('display','none');
+                        $('.product_number').text(sellCode);
+                        $('#sail').html('返回');
+
+                    },
+                    function(){
+
+                    })
+
+        })
+    }
+
+    function verifyForm(){
+        var regs=[
+            /^[\u4e00-\u9fa5]{2,}$/,//验证中文姓名
+            /^[a-zA-Z \s]{2,20}$/,//验证中文姓名
+            /^1\d{10}$/
+        ];
+        var errorMsgs=[
+            '请输入您的姓名(全中文或全英文，不少于两位)',
+            '请输入正确的11位数手机号码',
+        ];
+        var isValid = true;
+        $('.verify_form').each(function(i){
+            var val = $(this).val();
+            if(i=='0'){
+                if(!((regs[0].test(val))||(regs[1].test(val)))){
+                    dialogFn( errorMsgs[i] );
+                    isValid = false;
+                    return false;
+                }
+            }else if(i=='1'){
+                if( !regs[2].test(val) ){
+                    dialogFn( errorMsgs[i] );
+                    isValid = false;
+                    return false;
+                }
+            }
+//
+        });
+        return isValid;
+    }
+    function productSet(){
+        var product=sessionStorage.getItem('product');
+        if(!product){
+            return false;
+        }
+        var productName=JSON.parse(product).productName;
+        var prudctId=JSON.parse(product).prudctId;
+        var pruductPrice=JSON.parse(product).pruductPrice;
+        if(productName){
+            $('#product_name').html(productName+'&nbsp;<i class="product_right_arrow"></i>');
+        }
+        if(pruductPrice){
+            $('#product_price').html('￥'+pruductPrice);
+        }
+    };
+</script>
+</body>
+</html>

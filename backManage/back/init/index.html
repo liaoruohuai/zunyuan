@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>车享配OA管理系统</title>
+    <!-- Bootstrap -->
+    <link href="../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="../../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <link href="../../vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet">
+    <!-- jVectorMap -->
+    <link href="../../css/maps/jquery-jvectormap-2.0.3.css" rel="stylesheet"/>
+
+    <!-- Custom Theme Style -->
+    <link href="../../css/custom.css" rel="stylesheet">
+    <!-- requirejs -->
+    <script src="../../vendors/requirejs/require.min.js" data-main="../../js/main" async defer></script>
+  </head>
+
+  <body class="nav-md">
+    <div class="container body main-container">
+      <div class="main_container h-100p">
+        <div class="col-md-3 left_col h-100p ov-auto">
+          <div class="left_col scroll-view">
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="../../images/img.jpg" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>欢迎登录车享配信息化管理系统</span>
+                <!-- <h2>John Doe</h2> -->
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+            <br/>
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <!-- <h3>General</h3> -->
+                <ul class="nav side-menu">
+
+                  <li>
+                    <a>
+                      <i class="fa fa-table"></i> 机构信息
+                      <span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="#/agency_information/agency_information/index.html" data-hash="href">机构信息</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a>
+                      <i class="fa fa-table"></i> 销售网点
+                      <span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="#/sell_point/sell_point/index.html" data-hash="href">销售网点</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a>
+                      <i class="fa fa-table"></i> 销售人员信息
+                      <span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="#/sell_person_infor/sell_person_infor/index.html" data-hash="href">销售人员信息</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a>
+                      <i class="fa fa-table"></i> 商品信息
+                      <span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="#/product_information/product_information/index.html" data-hash="href">商品信息</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a>
+                      <i class="fa fa-table"></i> 订单信息
+                      <span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="#/order_goods_information/order_goods_information/index.html" data-hash="href">订单信息</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav clearfix">
+          <div class="nav_menu m-0">
+            <nav class="" role="navigation">
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="../../images/img.jpg" alt="">
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right" style="min-width:100px!important;">
+                    <li id="un-login" data-path="/login/logout" >
+                       <a href="javaScript:void(0);" ><i class="fa fa-sign-out"></i>退出</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col mode-right-content" role="main">          
+            <div class="real-content" id="wj-main-content">
+              <div class="rect-table">
+                <div class="welcome-content table-cell v-middle text-center">
+                  <div class="welcome-box text-left inline-blick">
+                    <h2 class="user-name">admin</h2>
+                    <div>欢迎进入车享配信息化管理系统</div>
+                    <div>您现在可以进行相关操作了</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- /page content -->
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Copyright 车享配信息化管理 © 2016
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+    <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+
+    <script>
+    $(function(){
+      $('#un-login').on('click',function(){
+        var url=decodeURIComponent(window.name);
+        postJSON(url+'/login/logout','',
+                function(data){
+                  location.href='../../login.html';
+                },
+                function(){
+
+                });
+      })
+    })
+    function postJSON(url,data,e,f){
+      $.ajax({
+        url: url,
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data, status, xhr) {
+          e(data);
+        },
+        error: function (xhr, errorType, error) {
+          f();
+        }
+      });
+    }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<script src='../../js/redirect.js'></script>
+<!-- page content -->
+<div class="content-price-manage" role="main">
+
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel top-change">
+                <div class="x_title clearfix">
+                    <h2 class="width-auto">销售网点<small>修改</small></h2>
+                    <div class="col-md-5 col-sm-5 col-xs-12 pull-right">
+                        <div class="pull-right">
+                            <a href="javascript:;" data-history="back" class="btn btn-default" type="button"><i class="fa fa-undo" aria-hidden="true"></i>返回列表</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="x_content">
+                    <br/>
+                    <form id="submit-form" data-parsley-validate class="form-horizontal form-label-left">
+                        <input id="id" type="text" name="id" style="display: none;" >
+                        <div class="form-group">
+                            <label for="agency_number" class="control-label col-md-3 col-sm-3 col-xs-12">网点名称</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="agency_number" class="form-control col-md-7 col-xs-12 user-read" required type="text" name="netName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="agency_name" class="control-label col-md-3 col-sm-3 col-xs-12">网点号</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="agency_name" class="form-control col-md-7 col-xs-12 user-read" required type="text"  name="netNumber">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="fore_agency" class="control-label col-md-3 col-sm-3 col-xs-12">网点地址</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="fore_agency" class="form-control col-md-7 col-xs-12 user-read" required type="text" name="netAddress" value>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="sell_point" class="control-label col-md-3 col-sm-3 col-xs-12">网点所属机构</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="sell_point" class="form-control col-md-7 col-xs-12 user-read" required type="text" name="orgNumber" value>
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
+                                <button type="submit" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>保存</button>
+                                <!-- <a href="javascript:;" data-history="back"  type="button" class="btn btn-primary">取消</a> -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

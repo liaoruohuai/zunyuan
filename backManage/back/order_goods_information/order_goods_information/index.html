@@ -1,0 +1,55 @@
+<script src='../../js/redirect.js'></script>
+<!-- page content -->
+<div class="row right-content">
+    <div class="col-xs-12">
+
+        <div class="x_panel">
+            <form class="form-horizontal" action="" target="_self" id="search-form">
+                <div class="x_title clearfix">
+                    <h2 class="width-auto">订单信息<small class="page_number" ></small></h2>
+                    <div class="col-md-offset-1">
+                        <div class="pull-right">
+                            <button type="submit" id="export" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>导出</button>
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn btn-success bg-theme border-theme" type="submit"><i class="fa fa-search" aria-hidden="true"></i>搜索</button>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2 pull-right">
+                            <input type="text" class="form-control dictionary-status" name="orderId" placeholder="按订单号搜索">
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2 pull-right">
+                            <input type="text" class="form-control dictionary-status" name="orderType" placeholder="按订单类型搜索">
+                        </div>
+                        <div class=" col-md-2 col-sm-2 col-xs-2 pull-right">
+                            <input type="text" class="form-control dictionary-status" name="saleCode" placeholder="按销售码搜索">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="x_content">
+                <div class="table-responsive">
+                    <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                        <tr class="headings ">
+                            <th class="column-title" style="width: 100px;">序号</th>
+                            <th class="column-title">订单号</th>
+                            <th class="column-title" style="width: 100px;">订单类型</th>
+                            <th class="column-title">交易时间</th>
+                            <th class="column-title" style="width: 100px;">交易状态</th>
+                            <th class="column-title">销售码</th>
+                            <th class="column-title">原订单号</th>
+                            <th class="column-title" style="width: 100px;">网店号</th>
+                            <th class="column-title" style="width: 100px;">所属机构号</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagePageCode"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->

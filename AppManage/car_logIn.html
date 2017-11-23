@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>车享配</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="artDialog/css/ui-dialog.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo"><img src="img/c-logo@3x.png" alt=""></div>
+    <div class="form">
+        <div class="each_content">
+            <input type="text" placeholder="销售员姓名" class="user_name user_name verify_form">
+            <i class="user_name_icon"></i>
+        </div>
+        <div class="each_content">
+            <input type="text" placeholder="销售员手机" class="user_name phone_number verify_form">
+            <i class="user_phone_icon"></i>
+        </div>
+        <div class="each_content" id="web_point">
+            <input type="text" placeholder="销售网点"  class="user_name web_point verify_form">
+            <i class="user_pot_icon"></i>
+            <div class="list_item">
+                <ul>
+                </ul>
+            </div>
+        </div>
+        <div class="each_content">
+            <button class="user_name" style="padding-right: 20px;" id="submit">登陆</button>
+        </div>
+    </div>
+</div>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="js/ajaxJson.js"></script>
+<script src="artDialog/dist/dialog-min.js"></script>
+<script src="js/index.js"></script>
+<script>
+    $(function(){
+        sessionStorage.setItem('webValue','');
+        webList();
+
+    });
+    function webList(){
+        getJSON(url+"/salesNetwork/load",
+                function(data){
+                    var code=data.code;
+                    if(!code){
+                        return false;
+                    }
+                    var html='';
+                    var saleNet=data.data.saleNet;
+                    for(var i=0;i<saleNet.length;i++){
+                        var id=saleNet[i].id;
+                        var netName=saleNet[i].netName;
+                        var netNumber=saleNet[i].netNumber;
+                        html+=' <li data-netnumber="'+netNumber+'"><a href="javaScript:void(0);">'+netName+'</a></li>'
+                    }
+                    $('.list_item ul').html(html);
+                    webPoint();
+                    submit();
+                },
+                function(){
+
+                })
+    }
+    function submit(){
+        $('#submit').on('click',function(){
+            var verifyValue=verifyForm();
+            if(verifyValue){
+                var webValue=sessionStorage.getItem('webValue');
+                var phoneNumber=$('.phone_number').val();
+                var userName=$('.user_name').val();
+                getJSON(url+"/login/front?salerPhone="+phoneNumber+"&salerName="+userName+"&netNumber="+webValue,
+                        function(data){
+                            var pageAddress='car_afterLogIn.html';
+                             linkPage(pageAddress);
+                        },
+                        function(){
+
+                        });
+            }
+        })
+    }
+    function webPoint(){
+        $('#web_point').on('click',function(){
+            var tipDisplay=$('.list_item').css('display');
+            if(tipDisplay=='none'){
+                $('.list_item').css('display','block');
+            }else{
+                $('.list_item').css('display','none');
+            }
+        });
+        $('.list_item a').on('click',function(e){
+            e.stopPropagation();
+            var self=this;
+            var val=$(this).text();
+            $('.web_point').val(val);
+            $('.list_item').css('display','none');
+            var webValue=$(this).parent().data('netnumber');
+            sessionStorage.setItem('webValue',webValue);
+        })
+    }
+   function verifyForm(){
+        var regs=[
+            /^[\u4e00-\u9fa5]{2,}$/,//验证中文姓名
+            /^[a-zA-Z \s]{2,20}$/,//验证英文姓名
+            /^1\d{10}$///验证手机号码
+        ];
+        var errorMsgs=[
+            '请输入您的姓名(全中文或全英文，不少于两位)',
+            '请输入正确的11位数手机号码',
+            '请选择网点'
+        ];
+        var isValid = true;
+        $('.verify_form').each(function(i){
+            var val = $(this).val();
+            if(i=='0'){
+                if(!((regs[0].test(val))||(regs[1].test(val)))){
+                    dialogFn( errorMsgs[i] );
+                    isValid = false;
+                    return false;
+                }
+            }else if(i=='1'){
+                if( !regs[2].test(val) ){
+                    dialogFn( errorMsgs[i] );
+                    isValid = false;
+                    return false;
+                }
+            }else {
+                if (!val) {
+                    dialogFn(errorMsgs[i]);
+                    isValid = false;
+                    return false;
+                }
+            }
+        });
+        return isValid;
+    }
+</script>
+</body>
+</html>

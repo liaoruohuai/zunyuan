@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>商品列表</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <style>
+    </style>
+</head>
+<body>
+<header class="header">
+    <h3 class="head_left"><a href="javaScript:void(0);" class="go_back"></a>商品列表</h3>
+</header>
+<div class="con_color" style="padding-top: 60px;">
+    <ul class="product_list_select">
+
+    </ul>
+</div>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="js/index.js"></script>
+<script src="js/ajaxJson.js"></script>
+<script>
+    $(function(){
+        goBack();
+        listInformation();
+    });
+    function listInformation(){
+        getJSON(url+"/product/load",
+                function(data){
+                    var code=data.code;
+                    if(code!='success'){
+                        return false;
+                    }
+                    var products=data.data.products;
+                    var html='';
+                    for(var i=0;i<products.length;i++){
+                        var productName=products[i].productName;
+                        var prudctId=products[i].prudctId;
+                        var pruductPrice=products[i].pruductPrice;
+                        html+='<li data-prudctid="'+prudctId+'" data-pruductprice="'+pruductPrice+'"><a href="javaScript:void(0);">'+productName+'<i class=""></i></a></li>'
+                    }
+                    $('.product_list_select').html(html);
+                    listSelected();
+                },
+                function(){
+
+                })
+    }
+    function listSelected(){
+        $('.product_list_select li a').off('click').on('click',function(){
+            $(this).parents('ul').find('i').removeClass('select');
+            $(this).find('i').addClass('select');
+            var text=$(this).text();
+            var prudctId=$(this).parent().data('prudctid');
+            var pruductPrice=$(this).parent().data('pruductprice');
+            var product={
+                'productName':text,
+                'prudctId':prudctId,
+                'pruductPrice':pruductPrice
+            };
+            sessionStorage.setItem('product',JSON.stringify(product));
+           setTimeout(function(){
+               history.go(-1);
+           },200);
+        });
+    };
+</script>
+</body>
+</html>

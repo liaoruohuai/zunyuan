@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>退货申请</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="artDialog/css/ui-dialog.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<header class="header">
+    <h3 class="head_left"><a href="javaScript:void(0);" class="go_back"></a>退货申请</h3>
+</header>
+<div class="con_color">
+    <div class="logo product_page_logo"><img src="img/c-logo@3x.png" alt=""></div>
+    <div class="person_information pro_page_personInf">
+        <div class="left_icon"><img src="img/c-guy@3x.png" alt="">
+        </div>
+        <div class="right_text">
+            <ul>
+                <li>销售员：<span class="name"></span></li>
+                <li>销售网点：<span class="address"></span></li>
+            </ul>
+        </div>
+    </div>
+<!--退货成功-->
+    <div class="return_apply_icon" style="display: none;">
+        <img src="img/c-OKay@2x.png" alt="">
+        <p class="return_text">退货申请成功处理</p>
+    </div>
+    <!--商品编码-->
+    <ul class="product_list_select">
+        <li><a href="javaScript:void(0);" class="special_a"> <span class="client_infor">商品编码</span><input class="verify_form user_name_input" type="text" placeholder="请填写商品编码"></a></li>
+    </ul>
+    <!--按钮-->
+    <div class="form form_bottom">
+        <div class="each_content">
+            <button class="user_name product sail" id="sail" >退货申请</button>
+        </div>
+    </div>
+</div>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="artDialog/dist/dialog-min.js"></script>
+<script src="js/index.js"></script>
+<script src="js/ajaxJson.js"></script>
+<script>
+    $(function(){
+        submit();
+        goBack();
+        getUserInformation();
+    });
+    function getUserInformation(){
+        getJSON(url+"/login/find_saler",
+                function(data){
+                    var code=data.code;
+                    if(code!="success"){
+                        return false;
+                    }
+                    var salers=data.data.salers;
+                    var salerName=salers.salerName;
+                    var netName=salers.netName;
+                    $('.name').text(salerName);
+                    $('.address').text(netName);
+                },
+                function(){
+
+                })
+    }
+    function submit(){
+        $('#sail').on('click',function(){
+            var verifyValue=verifyForm()
+            if(!verifyValue){
+                return false;
+            }
+            var saleCode=$('.user_name_input').val();
+            var text=$(this).html();
+            if(text=='返回'){
+                history.go(-1);
+                return false;
+            }
+            getJSON(url+"/order/return?saleCode="+saleCode,
+                    function(data){
+                        var status=data.data.status;
+                        if(status!='success'){
+                            dialogFn('退货失败');
+                            return false;
+                        }
+                        $('.return_apply_icon').css('display','block');
+                        $('.product_list_select').css('display','none');
+                        $('#sail').html('返回');
+                    },
+                    function(){
+
+                    })
+        })
+    }
+    function verifyForm(){
+        var isValid = true;
+        $('.verify_form').each(function(i){
+            var val = $(this).val();
+            if(!val){
+                dialogFn('请输入商品编码');
+                isValid = false;
+                return false;
+            }
+        });
+        return isValid;
+    }
+</script>
+</body>
+</html>

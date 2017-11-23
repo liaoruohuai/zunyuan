@@ -1,0 +1,12 @@
+rootProject.name = 'zunyuan'
+include 'api-core'
+include 'util'
+include 'm-login'
+include 'm-sales-network'
+include 'm-product'
+include 'm-sell'
+include 'm-order'
+include 'm-salers'
+include 'm-downLoad'
+include 'm-org'
+
