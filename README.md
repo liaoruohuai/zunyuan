@@ -9,15 +9,15 @@ APP和管理端H5实现，静态页面跳转
 服务端基于gradle的项目
 
 
-#二、项目目录结构：
+# 二、项目目录结构：
 
-#1、AppManage: 
+# 1、AppManage: 
   用户端页面，入口: car_logIn.html
 
-#2、backManage:
+# 2、backManage:
   管理端页面，入口: login.html
   
-#3、服务端：
+# 3、服务端：
   api-core：服务端项目入口，其他子模块都以jar包方式集成进此项目的war包
   m-download：预定义出来做下载相关实现，暂未启用
   m-login：管理登录验证的模块，功能太简单，需重构
@@ -28,7 +28,7 @@ APP和管理端H5实现，静态页面跳转
   util：工具类和一些基础类，之前实现了一个短信发送模块
   
   
-#三、构建：
+# 三、构建：
 
 命令行进入api-core目录，执行"gradle build"命令即可,编译成功会在build/libs目录下出现api-core-1.0-SNAPSHOT.war，改名成zunyuan.war,丢到tomcat8/webapps即可
 
