@@ -91,7 +91,7 @@ public class LoginService {
         return map;
     }
 
-    private Specification<Saler> getWhereClause(String salerName, String salerPhone,String netNumber) {
+    private Specification<Saler> getWhereClause(final String salerName, final String salerPhone,final String netNumber) {
         return new Specification<Saler>() {
             @Override
             public Predicate toPredicate(Root<Saler> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
