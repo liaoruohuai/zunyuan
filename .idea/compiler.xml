@@ -22,7 +22,4 @@
       <module name="zunyuan_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_STRING" value="-Dfile.encoding=UTF-8" />
-  </component>
 </project>

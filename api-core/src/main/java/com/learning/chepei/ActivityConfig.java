@@ -17,7 +17,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
-import javax.xml.ws.Endpoint;
 import java.util.Properties;
 
 /**

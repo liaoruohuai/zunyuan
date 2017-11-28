@@ -1,5 +1,6 @@
 package com.learning.util.comm;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.*;
@@ -20,9 +20,9 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 
 import com.learning.util.date.DateUtil;
+import org.apache.tomcat.util.codec.binary.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.security.MessageDigest;
 
 
 public class HttpKit {
@@ -240,21 +240,21 @@ public class HttpKit {
         String timestamp = DateUtil.toString(new Date(),"yyyyMMddHHmmss");
         String smspwd = "wb94mh36";
         String smsun = "020790";
+        String message = "短信车而是101002";
 
         info.put("un",smsun);
+        String fnlpw = EncryptionKit.md5EncryptBase64(smspwd,smsun,timestamp,message);
 
 
-        String md5pw = EncryptionKit.md5Encrypt(smspwd);
-
-        info.put("pw",URLEncoder.encode(md5pw,"utf8") );
-
+        info.put("pw",fnlpw );
+    //    info.put("pw","wb94mh36");
         info.put("da","15901780783");
         info.put("dc","8");
         info.put("tf","3");
-        info.put("sm",URLEncoder.encode("测试短信呢弄","utf8"));
+        info.put("sm",message);
 
         info.put("ts",timestamp);
-        info.put("sa","8888");
+        info.put("sa","790");
         info.put("rf","2");
 
 

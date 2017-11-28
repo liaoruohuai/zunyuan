@@ -254,7 +254,7 @@ public class OrderWebServiceImpl implements OrderWebService {
             String content = "尊敬的客户" + custName + "，购买的" + product.getProductName() + "，券码" + saleCode + "。";
             logger.info("----------短信内容:" + content + ";----------");
 
-            String smsResult = SmsUtil.send(mobile, "10051", saleCode, product.getProductName());
+            String smsResult = SmsUtil.send(mobile, "10051");
 
             logger.info("----------手机号码: " + mobile + "; 短信结果：" + smsResult + "----------");
 

@@ -15,6 +15,19 @@ public class EncryptionKit {
         return encrypt("MD5", srcStr);
     }
 
+    public static String md5EncryptBase64(String pwd,String smsun,String timestamp,String message) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(smsun.getBytes(CHARSET));
+            md.update(pwd.getBytes(CHARSET));
+            md.update(timestamp.getBytes(CHARSET));
+            md.update(message.getBytes(CHARSET));
+            return org.apache.tomcat.util.codec.binary.Base64.encodeBase64String(md.digest());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static String sha1Encrypt(String srcStr) {
         return encrypt("SHA-1", srcStr);
     }
