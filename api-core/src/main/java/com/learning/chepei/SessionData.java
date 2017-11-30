@@ -45,7 +45,7 @@ public class SessionData {
     }
 
     public static void loginBack(HttpServletResponse response, String userCode) {
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+        //response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         Cookie user = new Cookie("bid", userCode);
         user.setPath("/");
         System.out.println(System.currentTimeMillis() + ":login:" + userCode);
@@ -53,7 +53,7 @@ public class SessionData {
     }
 
     public static String verifyBack(HttpServletRequest request, HttpServletResponse response) throws HzbuviException {
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+     //   response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         Cookie[] cookies = request.getCookies();
         String userCode = "";
         if (null != cookies) {

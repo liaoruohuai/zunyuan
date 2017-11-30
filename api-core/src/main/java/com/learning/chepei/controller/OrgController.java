@@ -27,6 +27,7 @@ public class OrgController {
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public String create(OrgEntity orgEntity, HttpServletResponse response){
         response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+        //System.out.println(orgEntity.getOrgName());
         return  ValueUtil.toJson("org",orgService.insert(orgEntity));
     }
     @RequestMapping(value = "/delete",method = RequestMethod.POST)

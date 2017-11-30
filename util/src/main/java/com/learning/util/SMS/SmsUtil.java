@@ -1,11 +1,13 @@
 package com.learning.util.SMS;
 
+import com.learning.chepei.DataConfig;
 import com.learning.util.comm.EncryptionKit;
 import com.learning.util.comm.HttpKit;
 import com.learning.util.comm.Propkit;
 import com.learning.util.date.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.UnsupportedEncodingException;
@@ -42,11 +44,10 @@ public class SmsUtil {
     public static String send(String phone,  String message) throws UnsupportedEncodingException {
         Map<String, String> info = new HashMap<>();
         String timestamp = DateUtil.toString(new Date(),"yyyyMMddHHmmss");
-        Propkit prop = new Propkit();
-        prop.loadPropertyFile("db.properties");
-        String smsname = prop.getProperty("sms.smsname");
-        String smspwd  = prop.getProperty("sms.smspwd");
-        String smsurl  = prop.getProperty("sms.smsurl");
+
+        String smsname = DataConfig.SMS_NAME;
+        String smspwd  = DataConfig.SMS_PWD;
+        String smsurl  = DataConfig.SMS_URL;
         String fnlpw = EncryptionKit.md5EncryptBase64(smspwd,smsname,timestamp,message);
 
         info.put("pw",fnlpw);
@@ -59,7 +60,7 @@ public class SmsUtil {
         info.put("sa","790");
         info.put("rf","2");
 
-        System.out.println("start..........");
+        System.out.println("start...send..sms....."+phone);
         String result = HttpKit.get(smsurl, info);
         System.out.println(result);
 

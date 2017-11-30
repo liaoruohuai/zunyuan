@@ -579,6 +579,44 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   });
               }
           },
+          //销售人员新增
+           '/sell_person_infor/sell_person_infor/new_sell_person.html': {
+            //每个页面对应的数据获取地址
+             dataPath: '/salesNetwork/show',
+             //页面加载之后需要做的事
+              handle: function (tplPath) {
+                  initPage({
+                      tplPath: tplPath,
+                      showData: this.showData,
+                      dataPath: getDataPath(this.dataPath),
+                      bindEvent: this.bindEvent,
+                      submitParam: {
+                          otherValidate: function(){
+                              return true;
+                          },
+                          submitUrl:dataUrl+'/saler/add',
+                          getFormData: function() {
+                              return this.form.serialize();
+                          }
+                      }
+                  });
+              },
+              showData: function(data) {
+                 var code=data.code;
+                  if(code!='success'){
+                      return false;
+                  }
+                  var content=data.data.organizationUser.content;
+                  var html;
+                  for(var i=0;i<content.length;i++){
+                    html+=" <option value="+content[i].netNumber+">"+content[i].netName+"</option>"
+                  }
+                  $('.option.sales_opts').html(html);
+              },
+              bindEvent: function() {
+                  //这里填写每个页面需要绑定的一些事件
+              }
+          },
           //商品信息
           '/product_information/product_information/index.html':{
               dataPath: '/product/show',
@@ -739,7 +777,7 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
               },
               showData: function(data) {
                   //这里填写每个页面如何处理拿到的数据
-                    console.log(data);
+                  console.log(data);
                   var code=data.code;
                   if(code!='success'){
                       return false;

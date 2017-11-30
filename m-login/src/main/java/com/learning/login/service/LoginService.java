@@ -131,6 +131,21 @@ public class LoginService {
         map.put("netName",network.getNetName());
         return map;
     }
+    public String insert(Saler saler) {
+        if (null == salerRepository.findBySalerPhone(saler.getSalerPhone())) {
+            saler.setSalerName(saler.getSalerName());
+            saler.setSalerPhone(saler.getSalerPhone());
+            saler.setIsInitPwd("0");
+            saler.setNetNumber(saler.getNetNumber());
+            saler.setSalePwd(saler.getSalerPhone().substring(5));
+            saler.setSalerId(saler.getSalerId());
+
+            salerRepository.save(saler);
+            return "success";
+        }
+        return "failure";
+    }
+
 
 
 }

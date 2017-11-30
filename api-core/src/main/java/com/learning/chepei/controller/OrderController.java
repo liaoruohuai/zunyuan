@@ -50,7 +50,6 @@ public class OrderController {
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
     public String show(@RequestParam Map<String,String> parm,HttpServletResponse response){
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         Map<String,Object>  result = orderService.show(parm);
         PageModel pageModel = new PageModel((Page) result.get("page"));
         pageModel.setCondition(result.get("condition"));
