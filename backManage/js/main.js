@@ -451,7 +451,7 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
           //销售网点新增
           '/sell_point/sell_point/new_sell_point.html': {
               //每个页面对应的数据获取地址
-              dataPath: '',
+              dataPath: '/org/show',
               //页面加载之后需要做的事
               handle: function (tplPath) {
                   initPage({
@@ -471,6 +471,17 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   });
               },
               showData: function(data) {
+               var code=data.code;
+                  if(code!='success'){
+                      return false;
+                  }
+                        var content=data.data.org.content;
+                        var html ='<select id="orgNumber" property="orgs" class="form-control col-md-7 col-xs-12 user-read" name="orgNumber">';
+                        for(var i=0;i<content.length;i++){
+                          html+=" <option value="+content[i].orgNumber+">"+content[i].orgName+"</option>"
+                        }
+                        html+="</select>";
+                        $('#orgs_opts').html(html);
               },
               bindEvent: function() {
                   //这里填写每个页面需要绑定的一些事件
