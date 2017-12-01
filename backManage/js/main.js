@@ -552,16 +552,20 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   var totalRows=data.data.sales.totalRows;
                   var html='';
                     for(var i=0;i<content.length;i++){
-                        var netNumber=content[i].netNumber;
                         var salerId=content[i].salerId;
+                        var netNumber=content[i].netNumber;
                         var salerName=content[i].salerName;
                         var salerPhone=content[i].salerPhone;
                         html+='<tr>';
                         html+='<td  class="column-title">'+(i+1)+'</td>';
-                        html+='<td  class="column-title">'+netNumber+'</td>';
                         html+='<td  class="column-title">'+salerId+'</td>';
                         html+='<td  class="column-title">'+salerName+'</td>';
                         html+='<td  class="column-title">'+salerPhone+'</td>';
+                        html+='<td  class="column-title">'+netNumber+'</td>';
+                        html+='<td  class="column-title">';
+                        html+=' <a href= "#/sell_person_infor/sell_person_infor/amend_sell_person.html" class="fa fa-lg fa-pencil-square-o" data-role="edit" data-edit-id="'+content[i].salerId+'" title="编辑"></a>';
+                        html+='<a href= "javascript:void(0);" data-delete-path="/saler/delete" data-delete-id="'+content[i].salerId+'" data-role="delete" data-key="salerId" class="fa fa-lg fa-trash-o" title="删除"></a>';
+                        html+='</td>';
                         html+=  ' </tr>';
                     }
                   $('tbody.text-center').html(html);
@@ -606,17 +610,63 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   if(code!='success'){
                       return false;
                   }
-                  var content=data.data.organizationUser.content;
-                  var html;
-                  for(var i=0;i<content.length;i++){
-                    html+=" <option value="+content[i].netNumber+">"+content[i].netName+"</option>"
-                  }
-                  $('.option.sales_opts').html(html);
+                        var content=data.data.organizationUser.content;
+                        var html ='<select id="net_number" property="orgs" class="form-control col-md-7 col-xs-12 user-read" name="netNumber">';
+                        for(var i=0;i<content.length;i++){
+                          html+=" <option value="+content[i].netNumber+">"+content[i].netName+"</option>"
+                        }
+                        html+="</select>";
+                        $('#sales_opts').html(html);
               },
               bindEvent: function() {
                   //这里填写每个页面需要绑定的一些事件
               }
           },
+          //销售人员修改
+              '/sell_person_infor/sell_person_infor/amend_sell_person.html': {
+                  //每个页面对应的数据获取地址
+                  dataPath: '/saler/index',
+                  //页面加载之后需要做的事
+                  handle: function (tplPath) {
+                      initPage({
+                          tplPath: tplPath,
+                          showData: this.showData,
+                          dataPath: getDataPath(this.dataPath,{id:sessionStorage.getItem('editId')}),
+                          bindEvent: this.bindEvent,
+                          submitParam: {
+                              otherValidate: function(){
+                                  return true;
+                              },
+                              submitUrl: dataUrl + '/saler/update',
+                              getFormData: function() {
+                                  return this.form.serialize();
+                              }
+                          }
+                      });
+                  },
+                  showData: function(data) {
+                      var code=data.code;
+                      if(code!='success'){
+                          return false;
+                      }
+
+                      var salerName=data.data.SalesPerson.salerName;
+                      var salerId=data.data.SalesPerson.salerId;
+                      var salerPhone=data.data.SalesPerson.salerPhone;
+                      var net_number=data.data.SalesPerson.netNumber;
+                      var id=sessionStorage.getItem('editId');
+                      $('#salerId').val(salerId);
+                      $('#salerName').val(netName);
+                      $('#salerPhone').val(salerPhone);
+                      $('#net_number').val(net_number);
+
+                  },
+                  bindEvent: function() {
+                      //这里填写每个页面需要绑定的一些事件
+
+                  }
+              },
+
           //商品信息
           '/product_information/product_information/index.html':{
               dataPath: '/product/show',

@@ -46,4 +46,21 @@ public class SalerController {
             return ValueUtil.toError(e.getCode(),"");
         }
     }
+    @RequestMapping(value = "/index",method = RequestMethod.GET)
+    public String index(String id,HttpServletResponse response){
+        //      response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+        return ValueUtil.toJson("SalesPerson",loginService.index(id));
+    }
+
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    public String destroy( String netNumber,HttpServletResponse response) {
+
+        return ValueUtil.toJson("SalesPerson", loginService.delete(netNumber));
+    }
+
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public String update(Saler saler,HttpServletResponse response) {
+        return ValueUtil.toJson("SalesPerson", loginService.update(saler));
+
+    }
 }

@@ -95,7 +95,7 @@ public class SalesNetController {
      */
     @RequestMapping(value = "/index",method = RequestMethod.GET)
     public String index(Integer id,HttpServletResponse response){
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+  //      response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         return ValueUtil.toJson("SalesNetwork",salesNetService.index(id));
     }
 

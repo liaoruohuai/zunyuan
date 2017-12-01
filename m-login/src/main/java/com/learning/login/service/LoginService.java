@@ -146,6 +146,23 @@ public class LoginService {
         return "failure";
     }
 
+    public Saler index(String salerId){
+        System.out.println("############"+salerId);
+        Saler sales= salerRepository.findBySalerId(salerId);
+        return sales;
+    }
+    public String delete(String salerId){
 
+        salerRepository.delete(salerId);
+        return "success";
+    }
 
+    public String update(Saler saler){
+        Saler newsaler=salerRepository.findBySalerId(saler.getSalerId());
+        newsaler.setSalerName(saler.getSalerName());
+        newsaler.setSalerPhone(saler.getSalerPhone());
+        newsaler.setNetNumber(saler.getNetNumber());
+        salerRepository.save(newsaler);
+        return "success";
+    }
 }

@@ -26,24 +26,24 @@ public class OrgController {
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public String create(OrgEntity orgEntity, HttpServletResponse response){
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+ //       response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         //System.out.println(orgEntity.getOrgName());
         return  ValueUtil.toJson("org",orgService.insert(orgEntity));
     }
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public String destroy(String orgNumber,HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+ //       response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         return ValueUtil.toJson("org", orgService.delete(orgNumber));
     }
     @RequestMapping(value = "/orgUpdate",method = RequestMethod.POST)
     public String update(OrgEntity orgEntity,HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+ //       response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         return ValueUtil.toJson("org", orgService.update(orgEntity));
 
     }
     @RequestMapping(value = "/show", method = RequestMethod.GET)
     public String show(@RequestParam Map<String,String> parm,HttpServletResponse response){
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+ //       response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         Map<String,Object>  result = orgService.show(parm);
         PageModel pageModel = new PageModel((Page) result.get("page"));
         pageModel.setCondition(result.get("condition"));
