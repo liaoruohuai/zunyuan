@@ -2,11 +2,17 @@ package com.learning.chepei.controller;
 
 import com.learning.downLoad.service.DownLoadService;
 import com.learning.util.basic.Constants;
+import com.learning.util.date.DateUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.util.Date;
+import java.util.Map;
 
 
 /**
@@ -52,10 +58,16 @@ public class DownLoadController {
      * @param response
      */
     @RequestMapping("/apply")
-    public void applyDownLoad(HttpServletResponse response){
+    public void applyDownLoad(@RequestParam Map<String, String> param, HttpServletResponse response){
         try {
 //            response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
-            downLoadService.applyDownLoad(response);
+            HSSFWorkbook wkb = downLoadService.applyDownLoad(param);
+            OutputStream output = response.getOutputStream();
+            response.reset();
+            response.setHeader("Content-disposition", "attachment; filename=客户申请"+ DateUtil.toString(new Date(),"yyyymmdd")+".xls");
+            response.setContentType("application/msexcel");
+            wkb.write(output);
+            output.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

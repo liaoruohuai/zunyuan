@@ -918,11 +918,11 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                       html+='<td  class="column-title">'+(i+1)+'</td>';
                       html+=' <td  class="column-title">'+content[i].name+'</td>';
                       html+='<td  class="column-title">'+content[i].mobile+'</td>';
-                      html+='<td  class="column-title">'+content[i].id_num+'</td>';
-                      html+='<td  class="column-title">'+content[i].apply_date+'</td>';
-                      html+='<td  class="column-title">'+content[i].apply_status+'</td>';
-                      html+=' <td  class="column-title">'+content[i].apply_type+'</td>';
-                      html+=' <td  class="column-title">'+content[i].sales_id+'</td>';
+                      html+='<td  class="column-title">'+content[i].idNum+'</td>';
+                      html+='<td  class="column-title">'+content[i].applyDate+'</td>';
+                      html+='<td  class="column-title">'+content[i].applyStatus+'</td>';
+                      html+='<td  class="column-title">'+content[i].applyType+'</td>';
+                      html+='<td  class="column-title">'+content[i].salesId+'</td>';
                       html+=' </tr>';
                   }
                   $('tbody.text-center').html(html);
@@ -930,13 +930,15 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
               },
               bindEvent: function() {
                   //这里填写每个页面需要绑定的一些事件
+
                   var _this = this;
                   var data = JSON.parse(sessionStorage.pagerData);
-                  readyForPager(_this,data.data.order);
-                  $('#search-form').data({ context: _this, key: 'order' });
+                  readyForPager(_this,data.data.apply);
+                  $('#search-form').data({ context: _this, key: 'apply' });
 
                   $('#export').on('click',function(){
-                      window.open(dataUrl +'/downLoad/apply');
+                   //   window.open(dataUrl +'/downLoad/apply');
+                      window.location.href = dataUrl + '/downLoad/apply?' + $("#search-form").serialize();
                   });
               }
           },

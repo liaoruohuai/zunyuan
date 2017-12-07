@@ -6,6 +6,7 @@ import com.learning.order.entity.Apply;
 import com.learning.order.entity.Orders;
 import com.learning.order.repository.ApplyRepository;
 import com.learning.order.repository.OrderRepository;
+import com.learning.order.service.ApplyService;
 import com.learning.util.basic.ObjectUtil;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author:GR
@@ -28,6 +30,8 @@ public class DownLoadService {
     private SalerRepository salerRepository;
     @Autowired
     private ApplyRepository applyRepository;
+    @Autowired
+    private ApplyService applyService;
 
     public void salerDownLoad(HttpServletResponse response){
         try {
@@ -64,22 +68,19 @@ public class DownLoadService {
         }
     }
 
-    public void applyDownLoad(HttpServletResponse response){
+    public HSSFWorkbook applyDownLoad(Map<String, String> param){
         try {
-            List<Apply> applys = applyRepository.findAll();
+            List<Apply> applys = applyRepository.findAll(applyService.getWhereClause(param.get("mobile"),param.get("applyDate"),param.get("applyType"),param.get("salesId")));
             HSSFWorkbook workbook=new HSSFWorkbook();
             HSSFCellStyle cellStyle = getCellStyle(workbook);
             HSSFSheet sheet = workbook.createSheet();
             setApplySheetContent(applys,sheet,cellStyle);
 //            String filePath="C:\\excel\\orders.xlsx";
-            String filePath="m-downLoad\\src\\main\\java\\com\\hzbuvi\\downLoad\\file\\applies.xlsx";
-            FileOutputStream out=new FileOutputStream(filePath);
-            workbook.write(out);
-            out.close();
-            download(filePath,response);
-        } catch (IOException e) {
+            return workbook;
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private HSSFCellStyle getCellStyle(HSSFWorkbook workbook){
@@ -144,7 +145,7 @@ public class DownLoadService {
     }
 
     private HSSFSheet setApplySheetContent(List<Apply> applys,HSSFSheet sheet,HSSFCellStyle cellStyle){
-        List<String> names= Arrays.asList("","姓名","手机","地址");
+        List<String> names= Arrays.asList("姓名","手机","地址");
         setRow(0,names,sheet,cellStyle);
         for(int i=1;i<=applys.size();i++){
             List<String> list=Arrays.asList(applys.get(i-1).getName(),applys.get(i-1).getMobile(),applys.get(i-1).getAddress());

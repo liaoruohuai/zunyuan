@@ -58,13 +58,14 @@ public class ApplyService {
         //new Sort(Direction.DESC, new String[] { "id" }
         Pageable pageable = new PageRequest(Integer.valueOf(page), defaultPageSize, new Sort(Sort.Direction.DESC, new String[]{"applyDate"}));
         Page<Apply> applies = applyRepository.findAll(getWhereClause(mobile, applyDate, salesId,applyType), pageable);
+
         Map<String, Object> map = new HashMap<>();
         map.put("page", applies);
         map.put("condition", map1);
         return map;
     }
 
-    private Specification<Apply> getWhereClause(String mobile, String apply_date, String sales_id,String apply_type) {
+    public Specification<Apply> getWhereClause(String mobile, String apply_date, String sales_id,String apply_type) {
         return new Specification<Apply>() {
             @Override
             public Predicate toPredicate(Root<Apply> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

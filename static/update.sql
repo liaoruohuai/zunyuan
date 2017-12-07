@@ -30,4 +30,6 @@ CREATE TABLE `zunyuandb`.`apply` (
   CHANGE COLUMN `apply_date` `applyDate` VARCHAR(16) NULL DEFAULT NULL COMMENT '申请日期' ,
   CHANGE COLUMN `apply_time` `applyTime` VARCHAR(16) NULL DEFAULT NULL COMMENT '申请时间' ,
   CHANGE COLUMN `apply_status` `applyStatus` VARCHAR(45) NULL DEFAULT NULL COMMENT '申请进度\n' ,
+  CHANGE COLUMN `sales_id` `salesId` VARCHAR(45) NULL DEFAULT NULL COMMENT '销售ID\n' ,
+
   CHANGE COLUMN `last_update_time` `lastUpdateTime` VARCHAR(32) NULL DEFAULT NULL ;
