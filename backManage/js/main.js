@@ -882,6 +882,64 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   });
               }
           },
+        //申请信息
+          '/apply_information/apply_information/index.html':{
+              dataPath: '/apply/show',
+              handle: function (tplPath) {
+                  initPage({
+                      tplPath: tplPath,
+                      showData: this.showData,
+                      dataPath: getDataPath(this.dataPath),
+                      bindEvent: this.bindEvent,
+                      submitParam: {
+                          otherValidate: function(){
+
+                              return true;
+                          },
+                          //submitUrl: '',
+                          getFormData: function() {
+                              return this.form.serialize();
+                          }
+                      }
+                  });
+              },
+              showData: function(data) {
+                  //这里填写每个页面如何处理拿到的数据
+                  console.log(data);
+                  var code=data.code;
+                  if(code!='success'){
+                      return false;
+                  }
+                  var content=data.data.apply.content;
+                  var totalRows=data.data.apply.totalRows;
+                  var html='';
+                  for(var i=0;i<content.length;i++){
+                      html+='<tr>';
+                      html+='<td  class="column-title">'+(i+1)+'</td>';
+                      html+=' <td  class="column-title">'+content[i].name+'</td>';
+                      html+='<td  class="column-title">'+content[i].mobile+'</td>';
+                      html+='<td  class="column-title">'+content[i].id_num+'</td>';
+                      html+='<td  class="column-title">'+content[i].apply_date+'</td>';
+                      html+='<td  class="column-title">'+content[i].apply_status+'</td>';
+                      html+=' <td  class="column-title">'+content[i].apply_type+'</td>';
+                      html+=' <td  class="column-title">'+content[i].sales_id+'</td>';
+                      html+=' </tr>';
+                  }
+                  $('tbody.text-center').html(html);
+                  $('.page_number').html('共'+totalRows+'条');
+              },
+              bindEvent: function() {
+                  //这里填写每个页面需要绑定的一些事件
+                  var _this = this;
+                  var data = JSON.parse(sessionStorage.pagerData);
+                  readyForPager(_this,data.data.order);
+                  $('#search-form').data({ context: _this, key: 'order' });
+
+                  $('#export').on('click',function(){
+                      window.open(dataUrl +'/downLoad/apply');
+                  });
+              }
+          },
 
 
 

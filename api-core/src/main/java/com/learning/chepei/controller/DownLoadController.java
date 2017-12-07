@@ -27,7 +27,7 @@ public class DownLoadController {
     @RequestMapping("/saler")
     public void salerDownLoad(HttpServletResponse response){
         try {
-            response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+  //          response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
             downLoadService.salerDownLoad(response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,8 +41,21 @@ public class DownLoadController {
     @RequestMapping("/order")
     public void orderDownLoad(HttpServletResponse response){
         try {
-            response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+//            response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
             downLoadService.orderDownLoad(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 下载订单信息
+     * @param response
+     */
+    @RequestMapping("/apply")
+    public void applyDownLoad(HttpServletResponse response){
+        try {
+//            response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+            downLoadService.applyDownLoad(response);
         } catch (Exception e) {
             e.printStackTrace();
         }

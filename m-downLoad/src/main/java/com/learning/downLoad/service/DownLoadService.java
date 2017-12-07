@@ -2,7 +2,9 @@ package com.learning.downLoad.service;
 
 import com.learning.login.entity.Saler;
 import com.learning.login.repository.SalerRepository;
+import com.learning.order.entity.Apply;
 import com.learning.order.entity.Orders;
+import com.learning.order.repository.ApplyRepository;
 import com.learning.order.repository.OrderRepository;
 import com.learning.util.basic.ObjectUtil;
 import org.apache.poi.hssf.usermodel.*;
@@ -24,6 +26,8 @@ public class DownLoadService {
     private OrderRepository orderRepository;
     @Autowired
     private SalerRepository salerRepository;
+    @Autowired
+    private ApplyRepository applyRepository;
 
     public void salerDownLoad(HttpServletResponse response){
         try {
@@ -51,6 +55,24 @@ public class DownLoadService {
             setOrderSheetContent(orders,sheet,cellStyle);
 //            String filePath="C:\\excel\\orders.xlsx";
             String filePath="m-downLoad\\src\\main\\java\\com\\hzbuvi\\downLoad\\file\\orders.xlsx";
+            FileOutputStream out=new FileOutputStream(filePath);
+            workbook.write(out);
+            out.close();
+            download(filePath,response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void applyDownLoad(HttpServletResponse response){
+        try {
+            List<Apply> applys = applyRepository.findAll();
+            HSSFWorkbook workbook=new HSSFWorkbook();
+            HSSFCellStyle cellStyle = getCellStyle(workbook);
+            HSSFSheet sheet = workbook.createSheet();
+            setApplySheetContent(applys,sheet,cellStyle);
+//            String filePath="C:\\excel\\orders.xlsx";
+            String filePath="m-downLoad\\src\\main\\java\\com\\hzbuvi\\downLoad\\file\\applies.xlsx";
             FileOutputStream out=new FileOutputStream(filePath);
             workbook.write(out);
             out.close();
@@ -116,6 +138,16 @@ public class DownLoadService {
             List<String> list=Arrays.asList(orders.get(i-1).getOrderId(),orders.get(i-1).getOrderType(),orders.get(i-1).getTradeTime()
                     ,orders.get(i-1).getTradeStatus(),sellCode,orders.get(i-1).getOrigOrderId()
                     ,shopId,orgNumber,orders.get(i-1).getProductId().toString(),orders.get(i-1).getIsDelete());
+            setRow(i,list,sheet,cellStyle);
+        }
+        return sheet;
+    }
+
+    private HSSFSheet setApplySheetContent(List<Apply> applys,HSSFSheet sheet,HSSFCellStyle cellStyle){
+        List<String> names= Arrays.asList("","姓名","手机","地址");
+        setRow(0,names,sheet,cellStyle);
+        for(int i=1;i<=applys.size();i++){
+            List<String> list=Arrays.asList(applys.get(i-1).getName(),applys.get(i-1).getMobile(),applys.get(i-1).getAddress());
             setRow(i,list,sheet,cellStyle);
         }
         return sheet;

@@ -1,6 +1,6 @@
 package com.learning.util.SMS;
 
-import com.learning.chepei.DataConfig;
+//import com.learning.chepei.DataConfig;
 import com.learning.util.comm.EncryptionKit;
 import com.learning.util.comm.HttpKit;
 import com.learning.util.comm.Propkit;
@@ -45,9 +45,9 @@ public class SmsUtil {
         Map<String, String> info = new HashMap<>();
         String timestamp = DateUtil.toString(new Date(),"yyyyMMddHHmmss");
 
-        String smsname = DataConfig.SMS_NAME;
-        String smspwd  = DataConfig.SMS_PWD;
-        String smsurl  = DataConfig.SMS_URL;
+        String smsname =  "020790";// DataConfig.SMS_NAME;
+        String smspwd  = "wb94mh36";//DataConfig.SMS_PWD;
+        String smsurl  = "http://101.227.68.68:7891/mt";//DataConfig.SMS_URL;
         String fnlpw = EncryptionKit.md5EncryptBase64(smspwd,smsname,timestamp,message);
 
         info.put("pw",fnlpw);
