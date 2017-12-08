@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 
 @Configuration
 @Component
-public  class DataConfig {
+public   class DataConfig {
 
 
     @Value("${sms.smsname}")
