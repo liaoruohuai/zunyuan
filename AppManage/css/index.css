@@ -92,6 +92,11 @@ i.user_pot_icon{
     color: #fff;
     margin-top: 10px;
 }
+#register{
+    background-color: #2979FF;
+    color: #fff;
+    margin-top: 10px;
+}
 /*登陆成功*/
 .header{
     width: 100%;
