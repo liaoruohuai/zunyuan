@@ -27,7 +27,7 @@ public class SalesNetController {
     @RequestMapping("/load")
     public String loadSalesNetwork(HttpServletResponse response){
         try {
-            response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
+ //           response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
             return ValueUtil.toJson("saleNet",salesNetService.loadSalesNetwork());
         } catch (HzbuviException e) {
             return ValueUtil.toError(e.getCode(),"");
@@ -41,7 +41,7 @@ public class SalesNetController {
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public String create(SalesNetwork salesNetwork,HttpServletResponse response){
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+     //   response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         return  ValueUtil.toJson("salesNetwork",salesNetService.insert(salesNetwork));
     }
 
@@ -59,7 +59,6 @@ public class SalesNetController {
 
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public String destroy( String netNumber,HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         return ValueUtil.toJson("salesNetwork", salesNetService.delete(netNumber));
 
     }
@@ -83,7 +82,6 @@ public class SalesNetController {
      */
     @RequestMapping(value = "/show", method = RequestMethod.GET)
     public String show(@RequestParam Map<String,String> parm,HttpServletResponse response){
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         Map<String,Object>  result = salesNetService.show(parm);
         PageModel pageModel = new PageModel((Page) result.get("page"));
         pageModel.setCondition(result.get("condition"));
@@ -97,7 +95,7 @@ public class SalesNetController {
      */
     @RequestMapping(value = "/index",method = RequestMethod.GET)
     public String index(Integer id,HttpServletResponse response){
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+  //      response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         return ValueUtil.toJson("SalesNetwork",salesNetService.index(id));
     }
 

@@ -7,7 +7,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel top-change">
                 <div class="x_title clearfix">
-                    <h2 class="width-auto">销售网点<small>新增</small></h2>
+                    <h2 class="width-auto">销售人员<small>修改</small></h2>
                     <div class="col-md-5 col-sm-5 col-xs-12 pull-right">
                         <div class="pull-right">
                             <a href="javascript:;" data-history="back" class="btn btn-default" type="button"><i class="fa fa-undo" aria-hidden="true"></i>返回列表</a>
@@ -17,31 +17,34 @@
                 <div class="x_content">
                     <br/>
                     <form id="submit-form" data-parsley-validate class="form-horizontal form-label-left">
-
+                        <input id="id" type="text" name="id" style="display: none;" >
                         <div class="form-group">
-                            <label for="agency_number" class="control-label col-md-3 col-sm-3 col-xs-12">网点名称</label>
+                            <label for="salerName" class="control-label col-md-3 col-sm-3 col-xs-12">销售人员姓名</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="agency_number" class="form-control col-md-7 col-xs-12 user-read" required type="text" name="netName">
+                                <input id="salerName" class="form-control col-md-7 col-xs-12 user-read" required type="text" name="salerName">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="agency_name" class="control-label col-md-3 col-sm-3 col-xs-12">网点号</label>
+                            <label for="salerId" class="control-label col-md-3 col-sm-3 col-xs-12">员工号</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="agency_name" class="form-control col-md-7 col-xs-12 user-read" required type="text" name="netNumber">
+                                <input id="salerId" class="form-control col-md-7 col-xs-12 user-read" required type="text" name="salerId">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="salerPhone" class="control-label col-md-3 col-sm-3 col-xs-12">销售人员手机号</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="salerPhone" class="form-control col-md-7 col-xs-12 user-read" required type="text" name="salerPhone" value>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="agency_address" class="control-label col-md-3 col-sm-3 col-xs-12">网点地址</label>
+                            <label for="net_number" class="control-label col-md-3 col-sm-3 col-xs-12">销售所属网点</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="agency_address" class="form-control col-md-7 col-xs-12 user-read" required type="text" name="netAddress" value>
+                                <input id="net_number" class="form-control col-md-7 col-xs-12 user-read" required type="text" name="net_number" value>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label  class="control-label col-md-3 col-sm-3 col-xs-12">网点所属机构</label>
-
-                            <div id = "orgs_opts" class="col-md-6 col-sm-6 col-xs-12">
 
                             </div>
+
                         </div>
                         <div class="ln_solid"></div>
                         <div class="form-group">

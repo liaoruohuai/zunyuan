@@ -7,7 +7,7 @@
     <facet type="web" name="Web Gradle : api-core-1.0-SNAPSHOT.war">
       <configuration>
         <webroots>
-          <root url="file://D:\dev_env\zunyuan\api-core\src\main\webapp" relative="/" />
+          <root url="file://D:\workspaces\idea\zunyuan\api-core\src\main\webapp" relative="/" />
         </webroots>
       </configuration>
     </facet>
@@ -19,7 +19,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../api-core/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../api-core/src/main/resources" type="java-resource" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:1.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-jpa:1.4.0.RELEASE" level="project" />

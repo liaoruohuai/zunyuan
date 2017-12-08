@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="api-core_main" target="1.8" />
       <module name="api-core_test" target="1.8" />
-      <module name="chexiangpei_main" target="1.8" />
-      <module name="chexiangpei_test" target="1.8" />
-      <module name="dev_env-util_main" target="1.8" />
-      <module name="dev_env-util_test" target="1.8" />
       <module name="m-downLoad_main" target="1.8" />
       <module name="m-downLoad_test" target="1.8" />
       <module name="m-login_main" target="1.8" />
@@ -20,8 +16,6 @@
       <module name="m-product_test" target="1.8" />
       <module name="m-sales-network_main" target="1.8" />
       <module name="m-sales-network_test" target="1.8" />
-      <module name="util-util_main" target="1.8" />
-      <module name="util-util_test" target="1.8" />
       <module name="util_main" target="1.8" />
       <module name="util_test" target="1.8" />
       <module name="zunyuan_main" target="1.8" />

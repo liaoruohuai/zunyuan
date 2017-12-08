@@ -1,92 +1,75 @@
 package com.learning.util.SMS;
 
+//import com.learning.chepei.DataConfig;
+import com.learning.util.comm.EncryptionKit;
+import com.learning.util.comm.HttpKit;
+import com.learning.util.comm.Propkit;
 import com.learning.util.date.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.Configuration;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.Socket;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by zhonghua on 2017/6/20.
  */
+
+@Configuration
 public class SmsUtil {
 
     private static final Logger logger = LoggerFactory.getLogger("SmsUtil");
 
+
+
     public static void main(String[] args) {
-        String str = send("15021162660", "10051", "DJ14e1a3641c", "测试商品-洗车-20次");// 返回RESP_FLAG =00代表成功
+        String str = null;
+        try {
+            str = SmsUtil.send("15901780783","测试短信沿着码123123");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         System.out.println(str);
     }
 
     /**
      * @param phone 手机号码
-     * @param no    模版号
-     * @param cv    参数 REQUEST_TIME为日期
+     * @param message    内容
      * @return
      */
-    public static String send(String phone, String no, String cv, String productName) {
-        String nowDate = DateUtil.toString(new Date(), "yyyyMMddHHmmss");
-        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><DATA><SMS>" + no
-                + "</SMS><SMS_TYPE>0</SMS_TYPE><MOBILE>" + phone + "</MOBILE><MIS1>" + productName + "</MIS1><CV>" + cv
-                + "</CV><REQUEST_TIME>" + nowDate + "</REQUEST_TIME></DATA>";
+    public static String send(String phone,  String message) throws UnsupportedEncodingException {
+        Map<String, String> info = new HashMap<>();
+        String timestamp = DateUtil.toString(new Date(),"yyyyMMddHHmmss");
 
-        logger.info("短信报文：" + xml.length() + "----------" + xml);
+        String smsname =  "020790";// DataConfig.SMS_NAME;
+        String smspwd  = "wb94mh36";//DataConfig.SMS_PWD;
+        String smsurl  = "http://101.227.68.68:7891/mt";//DataConfig.SMS_URL;
+        String fnlpw = EncryptionKit.md5EncryptBase64(smspwd,smsname,timestamp,message);
 
-        int length = 0;
-        try {
-            length = xml.getBytes("UTF-8").length;
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return socket(codeAddOne(length + "", 4) + xml);
+        info.put("pw",fnlpw);
+        info.put("un",smsname);
+        info.put("da",phone);
+        info.put("dc","8");
+        info.put("tf","3");
+        info.put("sm", message);
+        info.put("ts",timestamp);
+        info.put("sa","790");
+        info.put("rf","2");
+
+        System.out.println("start...send..sms....."+phone);
+        String result = HttpKit.get(smsurl, info);
+        System.out.println(result);
+
+        return result;
+
     }
 
-    @SuppressWarnings("resource")
-    public static String socket(String clearText) {
-        Socket socket = null;
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-//			socket = new Socket("10.250.5.55", 29081);
-            socket = new Socket("10.100.84.98", 9080);
-            socket.setKeepAlive(true);
-            in = socket.getInputStream();
-            out = socket.getOutputStream();
-            byte[] b = new byte[1024];
-            out.write(clearText.getBytes());
-            int count = 0;
-            while (count == 0) {
-                count = in.available();
-            }
-            byte[] b2 = new byte[2];
-            in.read(b2);
-            byte[] b1 = new byte[count];
-            in.read(b1);
-            return new String(b1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                in.close();
-                out.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
 
-    public static String codeAddOne(String code, int len) {
-        Integer intHao = Integer.parseInt(code);
-        String strHao = intHao.toString();
-        while (strHao.length() < len) {
-            strHao = "0" + strHao;
-        }
-        return strHao;
-    }
+
+
+
 }

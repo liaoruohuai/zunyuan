@@ -91,7 +91,7 @@ public class SalesNetService {
         map.put("condition",map1);
         return map;
     }
-    private Specification<SalesNetwork> getWhereClause(String netName, String netNumber, String netAddress) {
+    private Specification<SalesNetwork> getWhereClause(final String netName, final String netNumber, final String netAddress) {
         return new Specification<SalesNetwork>() {
             @Override
             public Predicate toPredicate(Root<SalesNetwork> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

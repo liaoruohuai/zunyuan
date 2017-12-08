@@ -79,7 +79,7 @@ public class LoginController {
     public String logoutFront(HttpServletRequest request,HttpServletResponse response){
         try {
 //            SessionData.destroyFront(request);
-            response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
+ //           response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
             return ValueUtil.toJson("status","success");
         } catch (Exception e) {
             return ValueUtil.toJson("status","fail");
@@ -95,7 +95,7 @@ public class LoginController {
     @RequestMapping("/back")
     public String backLogin(User user, HttpServletResponse response){
         try {
-            response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+     //       response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
             if (ObjectUtil.isEmpty(user.getLoginName()) ||ObjectUtil.isEmpty(user.getPassword())){
                 return ValueUtil.toJson("status","error","message","用户名或密码不能为空！");
             }
@@ -123,7 +123,7 @@ public class LoginController {
     @RequestMapping(value = "/logout",method = RequestMethod.POST)
     public String logout(HttpServletRequest request,HttpServletResponse response){
 //        SessionData.destroy(request);
-        response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
+  //      response.setHeader("Access-Control-Allow-Origin", Constants.backendManageUrl);
         return ValueUtil.toJson("status","success");
     }
 

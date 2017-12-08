@@ -451,7 +451,7 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
           //销售网点新增
           '/sell_point/sell_point/new_sell_point.html': {
               //每个页面对应的数据获取地址
-              dataPath: '',
+              dataPath: '/org/show',
               //页面加载之后需要做的事
               handle: function (tplPath) {
                   initPage({
@@ -471,6 +471,17 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   });
               },
               showData: function(data) {
+               var code=data.code;
+                  if(code!='success'){
+                      return false;
+                  }
+                        var content=data.data.org.content;
+                        var html ='<select id="orgNumber" property="orgs" class="form-control col-md-7 col-xs-12 user-read" name="orgNumber">';
+                        for(var i=0;i<content.length;i++){
+                          html+=" <option value="+content[i].orgNumber+">"+content[i].orgName+"</option>"
+                        }
+                        html+="</select>";
+                        $('#orgs_opts').html(html);
               },
               bindEvent: function() {
                   //这里填写每个页面需要绑定的一些事件
@@ -552,16 +563,20 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   var totalRows=data.data.sales.totalRows;
                   var html='';
                     for(var i=0;i<content.length;i++){
-                        var netNumber=content[i].netNumber;
                         var salerId=content[i].salerId;
+                        var netNumber=content[i].netNumber;
                         var salerName=content[i].salerName;
                         var salerPhone=content[i].salerPhone;
                         html+='<tr>';
                         html+='<td  class="column-title">'+(i+1)+'</td>';
-                        html+='<td  class="column-title">'+netNumber+'</td>';
                         html+='<td  class="column-title">'+salerId+'</td>';
                         html+='<td  class="column-title">'+salerName+'</td>';
                         html+='<td  class="column-title">'+salerPhone+'</td>';
+                        html+='<td  class="column-title">'+netNumber+'</td>';
+                        html+='<td  class="column-title">';
+                        html+=' <a href= "#/sell_person_infor/sell_person_infor/amend_sell_person.html" class="fa fa-lg fa-pencil-square-o" data-role="edit" data-edit-id="'+content[i].salerId+'" title="编辑"></a>';
+                        html+='<a href= "javascript:void(0);" data-delete-path="/saler/delete" data-delete-id="'+content[i].salerId+'" data-role="delete" data-key="salerId" class="fa fa-lg fa-trash-o" title="删除"></a>';
+                        html+='</td>';
                         html+=  ' </tr>';
                     }
                   $('tbody.text-center').html(html);
@@ -579,6 +594,90 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   });
               }
           },
+          //销售人员新增
+           '/sell_person_infor/sell_person_infor/new_sell_person.html': {
+            //每个页面对应的数据获取地址
+             dataPath: '/salesNetwork/show',
+             //页面加载之后需要做的事
+              handle: function (tplPath) {
+                  initPage({
+                      tplPath: tplPath,
+                      showData: this.showData,
+                      dataPath: getDataPath(this.dataPath),
+                      bindEvent: this.bindEvent,
+                      submitParam: {
+                          otherValidate: function(){
+                              return true;
+                          },
+                          submitUrl:dataUrl+'/saler/add',
+                          getFormData: function() {
+                              return this.form.serialize();
+                          }
+                      }
+                  });
+              },
+              showData: function(data) {
+                 var code=data.code;
+                  if(code!='success'){
+                      return false;
+                  }
+                        var content=data.data.organizationUser.content;
+                        var html ='<select id="net_number" property="orgs" class="form-control col-md-7 col-xs-12 user-read" name="netNumber">';
+                        for(var i=0;i<content.length;i++){
+                          html+=" <option value="+content[i].netNumber+">"+content[i].netName+"</option>"
+                        }
+                        html+="</select>";
+                        $('#sales_opts').html(html);
+              },
+              bindEvent: function() {
+                  //这里填写每个页面需要绑定的一些事件
+              }
+          },
+          //销售人员修改
+              '/sell_person_infor/sell_person_infor/amend_sell_person.html': {
+                  //每个页面对应的数据获取地址
+                  dataPath: '/saler/index',
+                  //页面加载之后需要做的事
+                  handle: function (tplPath) {
+                      initPage({
+                          tplPath: tplPath,
+                          showData: this.showData,
+                          dataPath: getDataPath(this.dataPath,{id:sessionStorage.getItem('editId')}),
+                          bindEvent: this.bindEvent,
+                          submitParam: {
+                              otherValidate: function(){
+                                  return true;
+                              },
+                              submitUrl: dataUrl + '/saler/update',
+                              getFormData: function() {
+                                  return this.form.serialize();
+                              }
+                          }
+                      });
+                  },
+                  showData: function(data) {
+                      var code=data.code;
+                      if(code!='success'){
+                          return false;
+                      }
+
+                      var salerName=data.data.SalesPerson.salerName;
+                      var salerId=data.data.SalesPerson.salerId;
+                      var salerPhone=data.data.SalesPerson.salerPhone;
+                      var net_number=data.data.SalesPerson.netNumber;
+                      var id=sessionStorage.getItem('editId');
+                      $('#salerId').val(salerId);
+                      $('#salerName').val(netName);
+                      $('#salerPhone').val(salerPhone);
+                      $('#net_number').val(net_number);
+
+                  },
+                  bindEvent: function() {
+                      //这里填写每个页面需要绑定的一些事件
+
+                  }
+              },
+
           //商品信息
           '/product_information/product_information/index.html':{
               dataPath: '/product/show',
@@ -739,7 +838,7 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
               },
               showData: function(data) {
                   //这里填写每个页面如何处理拿到的数据
-                    console.log(data);
+                  console.log(data);
                   var code=data.code;
                   if(code!='success'){
                       return false;
@@ -780,6 +879,66 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
 
                   $('#export').on('click',function(){
                       window.open(dataUrl +'/downLoad/order');
+                  });
+              }
+          },
+        //申请信息
+          '/apply_information/apply_information/index.html':{
+              dataPath: '/apply/show',
+              handle: function (tplPath) {
+                  initPage({
+                      tplPath: tplPath,
+                      showData: this.showData,
+                      dataPath: getDataPath(this.dataPath),
+                      bindEvent: this.bindEvent,
+                      submitParam: {
+                          otherValidate: function(){
+
+                              return true;
+                          },
+                          //submitUrl: '',
+                          getFormData: function() {
+                              return this.form.serialize();
+                          }
+                      }
+                  });
+              },
+              showData: function(data) {
+                  //这里填写每个页面如何处理拿到的数据
+                  console.log(data);
+                  var code=data.code;
+                  if(code!='success'){
+                      return false;
+                  }
+                  var content=data.data.apply.content;
+                  var totalRows=data.data.apply.totalRows;
+                  var html='';
+                  for(var i=0;i<content.length;i++){
+                      html+='<tr>';
+                      html+='<td  class="column-title">'+(i+1)+'</td>';
+                      html+=' <td  class="column-title">'+content[i].name+'</td>';
+                      html+='<td  class="column-title">'+content[i].mobile+'</td>';
+                      html+='<td  class="column-title">'+content[i].idNum+'</td>';
+                      html+='<td  class="column-title">'+content[i].applyDate+'</td>';
+                      html+='<td  class="column-title">'+content[i].applyStatus+'</td>';
+                      html+='<td  class="column-title">'+content[i].applyType+'</td>';
+                      html+='<td  class="column-title">'+content[i].salesId+'</td>';
+                      html+=' </tr>';
+                  }
+                  $('tbody.text-center').html(html);
+                  $('.page_number').html('共'+totalRows+'条');
+              },
+              bindEvent: function() {
+                  //这里填写每个页面需要绑定的一些事件
+
+                  var _this = this;
+                  var data = JSON.parse(sessionStorage.pagerData);
+                  readyForPager(_this,data.data.apply);
+                  $('#search-form').data({ context: _this, key: 'apply' });
+
+                  $('#export').on('click',function(){
+                   //   window.open(dataUrl +'/downLoad/apply');
+                      window.location.href = dataUrl + '/downLoad/apply?' + $("#search-form").serialize();
                   });
               }
           },

@@ -12,7 +12,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../m-product/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../m-product/src/test/resources" type="java-test-resource" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="m-product_main" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-test:4.3.2.RELEASE" level="project" />

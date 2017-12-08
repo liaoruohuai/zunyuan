@@ -21,4 +21,7 @@ public interface SalerRepository extends JpaRepository<Saler,String> {
 
     Page<Saler> findAll(Specification<Saler> whereClause, Pageable pageable);
 
+    Saler  findBySalerId(String salerId);
+
+
 }

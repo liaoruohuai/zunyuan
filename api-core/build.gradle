@@ -1,6 +1,10 @@
 group 'com.learning.chexiang'
 version '1.0-SNAPSHOT'
 
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
 buildscript {
     repositories {
         mavenCentral()

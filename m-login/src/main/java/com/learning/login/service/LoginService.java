@@ -91,7 +91,7 @@ public class LoginService {
         return map;
     }
 
-    private Specification<Saler> getWhereClause(String salerName, String salerPhone,String netNumber) {
+    private Specification<Saler> getWhereClause(final String salerName, final String salerPhone,final String netNumber) {
         return new Specification<Saler>() {
             @Override
             public Predicate toPredicate(Root<Saler> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -131,6 +131,38 @@ public class LoginService {
         map.put("netName",network.getNetName());
         return map;
     }
+    public String insert(Saler saler) {
+        if (null == salerRepository.findBySalerPhone(saler.getSalerPhone())) {
+            saler.setSalerName(saler.getSalerName());
+            saler.setSalerPhone(saler.getSalerPhone());
+            saler.setIsInitPwd("0");
+            saler.setNetNumber(saler.getNetNumber());
+            saler.setSalePwd(saler.getSalerPhone().substring(5));
+            saler.setSalerId(saler.getSalerId());
 
+            salerRepository.save(saler);
+            return "success";
+        }
+        return "failure";
+    }
 
+    public Saler index(String salerId){
+        System.out.println("############"+salerId);
+        Saler sales= salerRepository.findBySalerId(salerId);
+        return sales;
+    }
+    public String delete(String salerId){
+
+        salerRepository.delete(salerId);
+        return "success";
+    }
+
+    public String update(Saler saler){
+        Saler newsaler=salerRepository.findBySalerId(saler.getSalerId());
+        newsaler.setSalerName(saler.getSalerName());
+        newsaler.setSalerPhone(saler.getSalerPhone());
+        newsaler.setNetNumber(saler.getNetNumber());
+        salerRepository.save(newsaler);
+        return "success";
+    }
 }

@@ -2,6 +2,7 @@ package com.learning.chepei;
 
 import com.learning.util.basic.Constants;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,7 +18,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
-import javax.xml.ws.Endpoint;
 import java.util.Properties;
 
 /**
@@ -113,6 +113,13 @@ public class ActivityConfig {
         factory.setMaxRequestSize("5120MB");
         return factory.createMultipartConfig();
     }
-
+/*
+    @Bean
+    public FilterRegistrationBean indexFilterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean(new CorsFilter());
+        registration.addUrlPatterns("/*");
+        return registration;
+    }
+*/
 
 }
