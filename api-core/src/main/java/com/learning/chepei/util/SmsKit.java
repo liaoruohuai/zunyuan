@@ -1,12 +1,15 @@
 package com.learning.chepei.util;
 
 import com.learning.chepei.DataConfig;
+import com.learning.login.entity.SmsLog;
+import com.learning.login.service.SmsLogService;
 import com.learning.util.comm.EncryptionKit;
 import com.learning.util.comm.HttpKit;
 import com.learning.util.comm.Propkit;
 import com.learning.util.date.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,7 +26,6 @@ import java.util.Map;
 public class SmsKit {
 
     private static final Logger logger = LoggerFactory.getLogger("SmsKit");
-
 
 
     /**

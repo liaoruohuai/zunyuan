@@ -33,3 +33,18 @@ CREATE TABLE `zunyuandb`.`apply` (
   CHANGE COLUMN `sales_id` `salesId` VARCHAR(45) NULL DEFAULT NULL COMMENT '销售ID\n' ,
 
   CHANGE COLUMN `last_update_time` `lastUpdateTime` VARCHAR(32) NULL DEFAULT NULL ;
+
+
+
+ALTER TABLE `zunyuandb`.`apply`
+ADD COLUMN `nation` VARCHAR(16) NULL COMMENT '国籍' AFTER `salesId`,
+ADD COLUMN `birth` VARCHAR(64) NULL COMMENT '出生日期' AFTER `nation`;
+
+CREATE TABLE `zunyuandb`.`smsLog` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `phoneNum` VARCHAR(16) NULL,
+  `smsContent` VARCHAR(128) NULL,
+  `smsDate` VARCHAR(16) NULL,
+   `smsResult` VARCHAR(64) NULL,
+  PRIMARY KEY (`id`))
+COMMENT = '短信日志';
