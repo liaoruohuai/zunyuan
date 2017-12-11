@@ -920,8 +920,18 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                       html+='<td  class="column-title">'+content[i].mobile+'</td>';
                       html+='<td  class="column-title">'+content[i].idNum+'</td>';
                       html+='<td  class="column-title">'+content[i].applyDate+'</td>';
-                      html+='<td  class="column-title">'+content[i].applyStatus+'</td>';
-                      html+='<td  class="column-title">'+content[i].applyType+'</td>';
+                      if(content[i].applyStatus == '0'){
+                          html+=' <td  class="column-title">申请已受理</td>';
+                      }else if(content[i].applyStatus == '1'){
+                          html+=' <td  class="column-title">申请已成功</td>';
+                      }else{
+                          html+=' <td  class="column-title">申请失败</td>';
+                      }
+                      if(content[i].applyType == '0'){
+                          html+=' <td  class="column-title">自助申请</td>';
+                      }else{
+                          html+=' <td  class="column-title">销售推荐</td>';
+                      }
                       html+='<td  class="column-title">'+content[i].salesId+'</td>';
                       html+=' </tr>';
                   }

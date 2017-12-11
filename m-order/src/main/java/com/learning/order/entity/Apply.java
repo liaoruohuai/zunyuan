@@ -29,6 +29,9 @@ public class Apply  implements Serializable {
         private String salesId;
         private String applyStatus;
         private String lastUpdateTime;
+        private String gender;
+        private String nation;
+        private String birth;
 
     public String getApplyId() {
         return applyId;
@@ -156,6 +159,30 @@ public class Apply  implements Serializable {
 
     public void setLastUpdateTime(String lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getNation() {
+        return nation;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
     }
 
     @Override

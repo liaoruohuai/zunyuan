@@ -145,10 +145,13 @@ public class DownLoadService {
     }
 
     private HSSFSheet setApplySheetContent(List<Apply> applys,HSSFSheet sheet,HSSFCellStyle cellStyle){
-        List<String> names= Arrays.asList("姓名","手机","地址");
+        List<String> names= Arrays.asList("姓名","性别","电话","地址","证件类型","证件号","生日","车牌号","车架号","驾驶证号","" +
+                "邮箱地址","持卡人分类","客户职业类别","渠道","备注信息","证件有效期开始时间","证件有效期结束时间","国籍","城市","邮编","民族","客户合同失效时间",
+                "客户合同快递费","产品号","第一次充值金额","卡面","包装","受理区域");
         setRow(0,names,sheet,cellStyle);
         for(int i=1;i<=applys.size();i++){
-            List<String> list=Arrays.asList(applys.get(i-1).getName(),applys.get(i-1).getMobile(),applys.get(i-1).getAddress());
+            List<String> list=Arrays.asList(applys.get(i-1).getName(),applys.get(i-1).getGender(),applys.get(i-1).getMobile(),applys.get(i-1).getAddress(),"1",applys.get(i-1).getIdNum(),
+                    applys.get(i-1).getBirth(),"","","","","10003","6","1","","",applys.get(i-1).getIdDate(),"CHN",applys.get(i-1).getCity(),"","","20991201","0","1011","","","","");
             setRow(i,list,sheet,cellStyle);
         }
         return sheet;
