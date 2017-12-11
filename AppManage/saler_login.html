@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>尊远</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="artDialog/css/ui-dialog.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo"><img src="img/zunyuan_logo.jpg" alt=""></div>
+    <div class="form" id="login">
+        <section>
+            <form action="" target="_self" id="saler-login-form" method="post">
+                <div class="each_content">
+                    <input type="text" placeholder="员工手机号" class="user_name phone_number verify_form" name="salerPhone" required>
+                    <i class="user_phone_icon"></i>
+                </div>
+                <div class="each_content">
+                    <input type="password" placeholder="员工密码" class="user_name user_passwd verify_form" name="salePwd" required>
+                    <i class="user_password_icon"></i>
+                </div>
+                <div class="each_content">
+                    <button class="user_name" style="padding-right: 20px;" id="submit">登陆</button>
+                    <!--<button class="user_name" style="padding-right: 20px;" id="register">注册</button>-->
+                </div>
+                <a class="reset_pass" href="saler_resetPwd.html">重置密码</a>
+            </form>
+        </section>
+    </div>
+</div>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="js/ajaxJson.js"></script>
+<script src="artDialog/dist/dialog-min.js"></script>
+<script src="js/index.js"></script>
+<script src="js/md5.js"></script>
+<script>
+   $(function(){
+       submit();
+    });
+    function submit(){
+        $('#submit').on('click',function(){
+            var verifyValue=verifyForm();
+            if(verifyValue){
+                var tmp_passwd=hex_md5($('.user_passwd').val());
+                $('.user_passwd').val(tmp_passwd);
+
+                dialogFn($('#saler-login-form').serialize());
+                postJSON(
+                    url+"/login/front",
+                    $('#saler-login-form').serialize(),
+                    function(data){
+                        if (data.data.status == 'success') {
+                            var pageAddress='car_afterLogIn.html';
+                            linkPage(pageAddress);
+                        } else {
+                            dialogFn("用户名或密码错误");
+                            alert(data.data.status);
+                        }
+                     },
+                    function(){
+                        dialogFn("网络错误，请稍后再试");
+                    }
+                )
+            }
+            $('.user_passwd').val("");
+            return false;
+        })
+    }
+
+   function verifyForm(){
+        var regs=[
+            /^1\d{10}$///验证手机号码
+        ];
+        var errorMsgs=[
+            '请输入正确的11位数手机号码'
+        ];
+        var isValid = true;
+        $('.verify_form').each(function(i){
+            var val = $(this).val();
+            if(i=='0'){
+                if(!(regs[0].test(val))){
+                    dialogFn( errorMsgs[i] );
+                    isValid = false;
+                    return false;
+                }
+            }
+        });
+        return isValid;
+    }
+</script>
+</body>
+</html>

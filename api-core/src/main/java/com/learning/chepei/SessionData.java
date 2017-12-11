@@ -1,11 +1,14 @@
 package com.learning.chepei;
 
-import com.learning.util.basic.Constants;
+import com.learning.util.basic.ObjectUtil;
 import com.learning.util.exception.HzbuviException;
+import com.learning.util.encryption.MD5;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by WANG, RUIQING on 10/18/16
@@ -15,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SessionData {
 
     public static String verify(HttpServletRequest request, HttpServletResponse response) throws HzbuviException {
-        response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
+        //response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
         Cookie[] cookies = request.getCookies();
         String userCode = "";
         if (null != cookies) {
@@ -36,12 +39,55 @@ public class SessionData {
         }
     }
 
+    public static String verifyValidNum(HttpServletRequest request, String newValidNum) throws HzbuviException {
+        //response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
+        Cookie[] cookies = request.getCookies();
+        String validNumer = "";
+        if (null != cookies) {
+            for (int i = 0; i < cookies.length; i++) {
+                switch (cookies[i].getName()) {
+                    case "validNum":
+                        validNumer = cookies[i].getValue();
+                        System.out.println(System.currentTimeMillis() + ":validNum:" + validNumer);
+                        break;
+                }
+            }
+            if (ObjectUtil.isEmpty(validNumer))
+            {
+                return "NoValidNum";
+            }else {
+                if (validNumer.equals(newValidNum)) {
+                    return "ValidSucc";
+                }else{
+                    return "ValidFail";
+                }
+
+            }
+        } else {
+            System.out.println(System.currentTimeMillis() + ":validNum expired:");
+            HzbuviException exception = new HzbuviException("validNumExpired");
+            exception.setMsg("验证码已过期");
+            throw exception;
+        }
+    }
+
     public static void login(HttpServletResponse response, String userCode) {
-        response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
+        //response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
         Cookie user = new Cookie("uid", userCode);
         user.setPath("/");
         System.out.println(System.currentTimeMillis() + ":login:" + userCode);
         response.addCookie(user);
+    }
+
+    public static void validNum(HttpServletResponse response, String validNum) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        //response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
+        //加密后的字符串
+        String validMD5= MD5.getMD5(validNum);
+        Cookie validNumber = new Cookie("validNum", validMD5);
+        validNumber.setPath("/");
+        validNumber.setMaxAge(60);
+        System.out.println(System.currentTimeMillis() + ":validNum:" + validNum);
+        response.addCookie(validNumber);
     }
 
     public static void loginBack(HttpServletResponse response, String userCode) {

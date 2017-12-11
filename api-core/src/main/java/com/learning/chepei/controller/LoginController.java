@@ -2,9 +2,11 @@ package com.learning.chepei.controller;
 
 import com.learning.chepei.PageModel;
 import com.learning.chepei.SessionData;
+import com.learning.chepei.util.SmsKit;
 import com.learning.login.entity.Saler;
 import com.learning.login.entity.User;
 import com.learning.login.service.LoginService;
+import com.learning.login.service.SmsLogService;
 import com.learning.util.basic.Constants;
 import com.learning.util.basic.ObjectUtil;
 import com.learning.util.basic.ValueUtil;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 /**
@@ -32,6 +36,9 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private SmsLogService smsLogService;
+
     /**
      * 前台登录接口
      * @param saler
@@ -42,12 +49,18 @@ public class LoginController {
     public String frontLogin(Saler saler, HttpServletResponse response){
         try {
             Integer id=Integer.parseInt(loginService.frontLogin(saler));
-            SessionData.login(response,String.valueOf(id));
+
+            if (id!=-1) {
+                SessionData.login(response, String.valueOf(id));
          /*   String fSession = Rdata.timeRandomCode(10);
             SessionData.put(fSession,id);
             response.setHeader("F-Session",fSession);
             response.setHeader("Access-Control-Expose-Headers","F-Session");*/
-            return ValueUtil.toJson("status","success");
+                return ValueUtil.toJson("status", "success");
+            }else
+            {
+                return ValueUtil.toJson("status", "wrongpwd");
+            }
         } catch (HzbuviException e) {
             return ValueUtil.toError(e.getCode(),"");
         }
@@ -143,5 +156,63 @@ public class LoginController {
         } catch (HzbuviException e) {
             return ValueUtil.toError(e.getCode(),"");
         }
+    }
+
+    /**
+     * 验证码发送接口
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/smsValid")
+    public String smsLog(Saler saler,HttpServletResponse response){
+        try {
+            String validNum = smsLogService.genValidNum();
+            String phoneNum = saler.getSalerPhone();
+            String smsContent = "本次验证码: " + validNum + " 有效时间60秒,请注意保密";
+            String result = SmsKit.send(phoneNum, smsContent);
+            smsLogService.saveSmsLog(phoneNum, smsContent, result);
+            SessionData.validNum(response, validNum);
+            return ValueUtil.toJson("status", "success");
+        }
+        catch (HzbuviException e) {
+            return ValueUtil.toError(e.toString(),e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            return ValueUtil.toError(e.toString(),e.getMessage());
+        } catch (UnsupportedEncodingException e) {
+            return ValueUtil.toError(e.toString(),e.getMessage());
+        }
+        /*
+        catch (UnsupportedEncodingException e) {
+            return ValueUtil.toError(e.toString(),e.getMessage());
+        }*/
+    }
+
+    /**
+     * 员工密码重置接口
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/salerReset")
+    public String Reset_saler(Saler saler,HttpServletRequest request){
+        try {
+            String oldValidNum=SessionData.verifyValidNum(request,saler.getSalerName());
+            if (oldValidNum.equals("ValidSucc")){
+                String result=loginService.salerResetPwd(saler);
+                if (result.equals("ResetSucc")){
+                    return ValueUtil.toJson("status", "success");
+                }else{
+                    return ValueUtil.toJson("status", "setPwdfail");
+                }
+            }else
+            {
+                return ValueUtil.toJson("status", "validDiff");
+            }
+        }
+        catch (Exception e){return ValueUtil.toError(e.toString(),e.getMessage());}
+        /*
+        catch (HzbuviException e) {
+            return ValueUtil.toError(e.toString(),e.getMessage());
+        }*/
+
     }
 }
