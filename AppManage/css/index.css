@@ -42,6 +42,26 @@ body{
     font-size:17px;
     border-radius: 50px;
 }
+.each_content .user_valid{
+    width: 60%;
+    box-sizing: border-box;
+    background-color: #F5F5F5;
+    padding: 13px 58px 15px 20px;
+    color: #A1A1A1;
+    font-size:17px;
+    border-radius: 50px;
+    display: inline;
+    float: left;
+}
+.each_content .button_valid{
+    width: 40%;
+    box-sizing: border-box;
+    background-color: #2979FF;
+    padding: 13px 13px 15px 20px;
+    color: #fff;
+    font-size:17px;
+    border-radius: 50px;
+}
 i.user_name_icon{
     display: inline-block;
     width: 46px;
@@ -87,6 +107,21 @@ i.user_pot_icon{
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
 }
+i.user_password_icon{
+    display: inline-block;
+    width: 30px;
+    height: 48px;
+    background: url('../img/c-Passwd@32.png') no-repeat center;
+    background-size: 19px;
+    position: absolute;
+    right: 23px;
+    top:50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
 #submit{
     background-color: #2979FF;
     color: #fff;
@@ -97,6 +132,12 @@ i.user_pot_icon{
     color: #fff;
     margin-top: 10px;
 }
+#resetPwd{
+    background-color: #2979FF;
+    color: #fff;
+    margin-top: 10px;
+}
+
 /*登陆成功*/
 .header{
     width: 100%;

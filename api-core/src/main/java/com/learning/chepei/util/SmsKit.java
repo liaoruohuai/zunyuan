@@ -27,7 +27,8 @@ public class SmsKit {
 
     private static final Logger logger = LoggerFactory.getLogger("SmsKit");
 
-
+    @Autowired
+    private SmsLogService smsLogService;
     /**
      * @param phone 手机号码
      * @param message    内容
@@ -51,7 +52,7 @@ public class SmsKit {
         info.put("ts",timestamp);
         info.put("sa","790");
         info.put("rf","2");
-
+        System.out.println("*************");
         System.out.println("start...send..sms....."+phone);
         String result = HttpKit.get(smsurl, info);
         System.out.println(result);

@@ -9,6 +9,8 @@ import com.learning.salesNetwork.repository.SalesNetRepository;
 import com.learning.util.basic.ObjectUtil;
 import com.learning.util.basic.ValueUtil;
 import com.learning.util.exception.HzbuviException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,23 +44,39 @@ public class LoginService {
 
     private static int defaultPageSize = 10;
 
+    private static final Logger logger = LoggerFactory.getLogger("OrderWebServiceImpl");
+
     public String frontLogin(Saler saler) throws HzbuviException{
-        String salerName=saler.getSalerName();
+        //String salerName=saler.getSalerName();
         String salerPhone=saler.getSalerPhone();
-        ValueUtil.verify(salerName,"salerName null");
-        ValueUtil.verify(salerPhone,"salerPhone null");
+        String salerPwd=saler.getSalePwd();
+        System.out.println("This line is for test:" + salerPwd + " " + salerPhone);
+        //ValueUtil.verify(salerName,"salerName null");
+        //ValueUtil.verify(salerPhone,"salerPhone null");
         Saler resultSaler = salerRepository.findBySalerPhone(salerPhone);
-        if (ObjectUtil.isEmpty(resultSaler)){
-            saler.setSalerId(getMaxId(salerRepository.findMaxSalerId()));
-            salerRepository.save(saler);
-            return saler.getSalerId();
-        }
-        if (!salerName.equals(resultSaler.getSalerName())){
-            resultSaler.setSalerName(saler.getSalerName());
-            salerRepository.save(resultSaler);
+
+        if (resultSaler.getSalePwd().equals(saler.getSalePwd()))
+        {
             return resultSaler.getSalerId();
+        }else{
+            return "-1";
         }
-        return resultSaler.getSalerId();
+    }
+
+    public String salerResetPwd(Saler saler) throws HzbuviException{
+        String salerPhone=saler.getSalerPhone();
+        String salerPwd=saler.getSalePwd();
+        System.out.println("This line is for test:" + salerPwd + " " + salerPhone);
+        Saler resultSaler = salerRepository.findBySalerPhone(salerPhone);
+
+        if (ObjectUtil.isEmpty(resultSaler.getSalerId()))
+        {
+            return "SalerNotFound";
+        }else{
+            resultSaler.setSalePwd(salerPwd);
+            salerRepository.save(resultSaler);
+            return "ResetSucc";
+        }
     }
 
     private String getMaxId(String id){
@@ -162,6 +180,18 @@ public class LoginService {
         newsaler.setSalerName(saler.getSalerName());
         newsaler.setSalerPhone(saler.getSalerPhone());
         newsaler.setNetNumber(saler.getNetNumber());
+        newsaler.setSalePwd(saler.getSalePwd());
+        newsaler.setIsInitPwd(saler.getIsInitPwd());
+        salerRepository.save(newsaler);
+        return "success";
+    }
+    public String updateByPhone(Saler saler){
+        Saler newsaler=salerRepository.findBySalerId(saler.getSalerPhone());
+        newsaler.setSalerName(saler.getSalerName());
+        newsaler.setSalerPhone(saler.getSalerPhone());
+        newsaler.setNetNumber(saler.getNetNumber());
+        newsaler.setSalePwd(saler.getSalePwd());
+        newsaler.setIsInitPwd(saler.getIsInitPwd());
         salerRepository.save(newsaler);
         return "success";
     }
