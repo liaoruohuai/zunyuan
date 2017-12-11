@@ -8,6 +8,7 @@ import com.learning.salesNetwork.entity.SalesNetwork;
 import com.learning.salesNetwork.repository.SalesNetRepository;
 import com.learning.util.basic.ObjectUtil;
 import com.learning.util.basic.ValueUtil;
+import com.learning.util.encryption.MD5;
 import com.learning.util.exception.HzbuviException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -155,7 +158,13 @@ public class LoginService {
             saler.setSalerPhone(saler.getSalerPhone());
             saler.setIsInitPwd("0");
             saler.setNetNumber(saler.getNetNumber());
-            saler.setSalePwd(saler.getSalerPhone().substring(5));
+            try {
+                saler.setSalePwd(MD5.getMD5(saler.getSalerPhone().substring(5)));
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             saler.setSalerId(saler.getSalerId());
 
             salerRepository.save(saler);
