@@ -1000,7 +1000,12 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   $('.page_number').html('共'+totalRows+'条');
               },
               bindEvent: function() {
+                  //这里填写每个页面需要绑定的一些事件
 
+                  var _this = this;
+                  var data = JSON.parse(sessionStorage.pagerData);
+                  readyForPager(_this,data.data.member);
+                  $('#search-form').data({ context: _this, key: 'member' });
               }
           },
 
