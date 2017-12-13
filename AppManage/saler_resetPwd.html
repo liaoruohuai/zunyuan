@@ -62,11 +62,11 @@
        $('#getVaildNum').on('click',function() {
            var verifyValue=verifyForm();
            if(verifyValue){
-
+               var strbody= "phoneNum=" + $('.phone_number').val();
                alert($('#saler-resetPwd-form').serialize());
                postJSON(
                    url+"/login/smsValid",
-                   $('#saler-resetPwd-form').serialize(),
+                   strbody,
                    function(data){
                        if (data.data.status == 'success') {
                            dialogFn("验证码已发送至您的手机");

@@ -48,3 +48,24 @@ CREATE TABLE `zunyuandb`.`smsLog` (
    `smsResult` VARCHAR(64) NULL,
   PRIMARY KEY (`id`))
 COMMENT = '短信日志';
+
+
+CREATE TABLE `member` (
+  `memberId` varchar(10) NOT NULL COMMENT '会员id',
+  `memberName` varchar(60) DEFAULT NULL COMMENT '会员姓名',
+  `memberPhone` varchar(11) DEFAULT NULL COMMENT '会员手机号码',
+  `memberPwd` varchar(64) DEFAULT NULL COMMENT '会员密码',
+  `memberCertType` varchar(8) DEFAULT '0' COMMENT '会员证件类型',
+  `memberCertNo` varchar(32) DEFAULT NULL COMMENT '会员证件号码',
+  `memberLevel` varchar(32) DEFAULT NULL COMMENT '会员证件号码',
+  `memberPoint` varchar(32) DEFAULT NULL COMMENT '会员积分',
+  `isInitPwd` varchar(8) DEFAULT '0' COMMENT '初始密码标识',
+  `lastLoginTime` varchar(32) DEFAULT NULL COMMENT '最后登录时间',
+  PRIMARY KEY (`memberId`),
+  UNIQUE KEY `memberPhone` (`memberPhone`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员信息表';
+
+ALTER TABLE `zunyuandb`.`member`
+CHANGE COLUMN `memberId` `memberId` INT(11) NOT NULL AUTO_INCREMENT COMMENT '会员id' ;
+
+
