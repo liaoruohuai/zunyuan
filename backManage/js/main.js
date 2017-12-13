@@ -953,7 +953,61 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
               }
           },
 
+        //会员信息
+          '/member_information/member_information/index.html':{
+              dataPath: '/member/show',
+              handle: function (tplPath) {
+                  initPage({
+                      tplPath: tplPath,
+                      showData: this.showData,
+                      dataPath: getDataPath(this.dataPath),
+                      bindEvent: this.bindEvent,
+                      submitParam: {
+                          otherValidate: function(){
 
+                              return true;
+                          },
+                          //submitUrl: '',
+                          getFormData: function() {
+                              return this.form.serialize();
+                          }
+                      }
+                  });
+              },
+              showData: function(data) {
+                  //这里填写每个页面如何处理拿到的数据
+                  console.log(data);
+                  var code=data.code;
+                  if(code!='success'){
+                      return false;
+                  }
+                  var content=data.data.member.content;
+                  var totalRows=data.data.member.totalRows;
+                  var html='';
+                  for(var i=0;i<content.length;i++){
+                      html+='<tr>';
+                      html+='<td  class="column-title">'+(i+1)+'</td>';
+                      html+=' <td  class="column-title">'+content[i].memberId+'</td>';
+                      html+='<td  class="column-title">'+content[i].memberName+'</td>';
+                      html+='<td  class="column-title">'+content[i].memberPhone+'</td>';
+                      html+='<td  class="column-title">'+content[i].memberCertNo+'</td>';
+                      html+='<td  class="column-title">'+content[i].memberLevel+'</td>';
+                      html+='<td  class="column-title">'+content[i].memberPoint+'</td>';
+                      html+='<td  class="column-title">'+content[i].lastLoginTime+'</td>';
+                      html+=' </tr>';
+                  }
+                  $('tbody.text-center').html(html);
+                  $('.page_number').html('共'+totalRows+'条');
+              },
+              bindEvent: function() {
+                  //这里填写每个页面需要绑定的一些事件
+
+                  var _this = this;
+                  var data = JSON.parse(sessionStorage.pagerData);
+                  readyForPager(_this,data.data.member);
+                  $('#search-form').data({ context: _this, key: 'member' });
+              }
+          },
 
 
       };
