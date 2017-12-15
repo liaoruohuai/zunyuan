@@ -27,7 +27,8 @@
                 </div>
                 <div class="each_content">
                     <input type="text" placeholder="请输入验证码" class="user_valid verify_form" name="memberName">
-                    <button class="button_valid" id="getVaildNum">获取验证码</button>
+                    <input type="button" class="button_valid" id="getVaildNum" value="获取验证码"/>
+                    <!--<button class="button_valid" id="getVaildNum">获取验证码</button>-->
                 </div>
                 <div class="each_content">
                     <div >
@@ -59,13 +60,36 @@
        register();
     });
 
+   var wait=60;
+   function time(o) {
+       if (wait == 0) {
+           //$('#getVaildNum').removeAttribute("disabled");
+           o.removeAttribute("disabled");
+           //$('#getVaildNum').val("获取验证码")
+           o.value = "获取验证码";
+           o.style.backgroundColor = "#2979FF";
+           wait = 60;
+       } else {
+           o.setAttribute("disabled", true);
+           o.value = wait+"秒后重发";
+           o.style.backgroundColor = "#484848";
+           wait--;
+           setTimeout(function() {
+                   time(o)
+               },
+               1000)
+       }
+   }
+
    function getValidNum() {
        $('#getVaildNum').on('click',function() {
                var verifyValue=verifyForm();
                if(verifyValue){
-                   alert($('#member-register-form').serialize());
+                   var obj = document.getElementById("getVaildNum");
+                   time(obj);
+                   //alert($('#member-register-form').serialize());
                    var strbody= "phoneNum=" + $('.phone_number').val();
-                   alert(strbody)
+                   //alert(strbody)
                    postJSON(
                        url+"/login/smsValid",
                        strbody,

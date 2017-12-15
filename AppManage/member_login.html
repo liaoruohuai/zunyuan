@@ -63,7 +63,7 @@
                 var tmp_passwd=hex_md5($('.user_passwd').val());
                 $('.user_passwd').val(tmp_passwd);
 
-                dialogFn($('#member-login-form').serialize());
+                //dialogFn($('#member-login-form').serialize());
                 postJSON(
                     url+"/login/memberLogin",
                     $('#member-login-form').serialize(),
@@ -71,6 +71,9 @@
                         if (data.data.status == 'success') {
                             var pageAddress='member_afterlogin.html';
                             linkPage(pageAddress);
+                        } else if (data.data.status == 'MemberNotFound'){
+                            dialogFn("该手机号未注册会员");
+                            alert(data.data.status);
                         } else {
                             dialogFn("用户名或密码错误");
                         }

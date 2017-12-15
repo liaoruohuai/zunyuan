@@ -27,7 +27,8 @@
                 </div>
                 <div class="each_content">
                     <input type="text" placeholder="请输入验证码" class="user_valid verify_form" name="memberName" required>
-                    <button class="button_valid" style="padding-right: 20px;" id="getVaildNum">获取验证码</button>
+                    <input type="button" class="button_valid" id="getVaildNum" value="获取验证码"/>
+                   <!-- <button class="button_valid" style="padding-right: 20px;" id="getVaildNum">获取验证码</button>-->
                 </div>
                 <div class="each_content">
                     <div >
@@ -59,12 +60,35 @@
        getValidNum();
     });
 
+   var wait=60;
+   function time(o) {
+       if (wait == 0) {
+           //$('#getVaildNum').removeAttribute("disabled");
+           o.removeAttribute("disabled");
+           //$('#getVaildNum').val("获取验证码")
+           o.value = "获取验证码";
+           o.style.backgroundColor = "#2979FF";
+           wait = 60;
+       } else {
+           o.setAttribute("disabled", true);
+           o.value = wait+"秒后重发";
+           o.style.backgroundColor = "#484848";
+           wait--;
+           setTimeout(function() {
+                   time(o)
+               },
+               1000)
+       }
+   }
+
    function getValidNum() {
        $('#getVaildNum').on('click',function() {
                var verifyValue=verifyForm();
                if(verifyValue){
+                   var obj = document.getElementById("getVaildNum");
+                   time(obj);
                    var strbody= "phoneNum=" + $('.phone_number').val();
-                   alert($('#member-resetPwd-form').serialize());
+                   //alert($('#member-resetPwd-form').serialize());
                    postJSON(
                        url+"/login/smsValid",
                        strbody,
@@ -109,7 +133,7 @@
                    var tmp_newpwd=hex_md5(newPwd);
                    $('.user_new_passwd').val(tmp_newpwd);
                    $('.user_valid').val(hex_md5($('.user_valid').val()));
-                   dialogFn($('#member-resetPwd-form').serialize());
+                   //dialogFn($('#member-resetPwd-form').serialize());
                    postJSON(
                        url+"/login/memberReset",
                        $('#member-resetPwd-form').serialize(),

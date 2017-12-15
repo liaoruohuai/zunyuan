@@ -69,3 +69,5 @@ ALTER TABLE `zunyuandb`.`member`
 CHANGE COLUMN `memberId` `memberId` INT(11) NOT NULL AUTO_INCREMENT COMMENT '会员id' ;
 
 
+ALTER TABLE `zunyuandb`.`apply`
+ADD COLUMN `applyCard` VARCHAR(19) NULL COMMENT '申请卡号' AFTER `applyType`;

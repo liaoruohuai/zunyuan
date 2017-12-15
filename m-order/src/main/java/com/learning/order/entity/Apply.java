@@ -16,6 +16,7 @@ public class Apply  implements Serializable {
         private String applyId;
         private String name;
         private String applyType;
+        private String applyCard;
         private String idNum;
         private String mobile;
         private String idDate;
@@ -28,6 +29,7 @@ public class Apply  implements Serializable {
         private String applyTime;
         private String salesId;
         private String applyStatus;
+        private String applyResp;
         private String lastUpdateTime;
         private String gender;
         private String nation;
@@ -55,6 +57,14 @@ public class Apply  implements Serializable {
 
     public void setApplyType(String applyType) {
         this.applyType = applyType;
+    }
+
+    public String getApplyCard() {
+        return applyCard;
+    }
+
+    public void setApplyCard(String applyCard) {
+        this.applyCard = applyCard;
     }
 
     public String getIdNum() {
@@ -151,6 +161,14 @@ public class Apply  implements Serializable {
 
     public void setApplyStatus(String applyStatus) {
         this.applyStatus = applyStatus;
+    }
+
+    public String getApplyResp() {
+        return applyResp;
+    }
+
+    public void setApplyResp(String applyResp) {
+        this.applyResp = applyResp;
     }
 
     public String getLastUpdateTime() {

@@ -24,6 +24,7 @@
         <div class="right_text">
             <ul>
                 <li>会员：<span  class="name"></span></li>
+                <li>手机：<span  class="phone"></span></li>
             </ul>
         </div>
     </div>
@@ -51,7 +52,7 @@
                 function(data){
                     var status=data.data.status;
                     if(status=='success'){
-                       location.href='saler_login.html';
+                       location.href='member_login.html';
                     }
                 },
                 function(){
@@ -67,10 +68,10 @@
                         return false;
                     }
                     var members=data.data.member;
-                    var salerName=salers.salerName;
-                    var netName=salers.netName;
-                    $('.name').text(salerName);
-                    $('.address').text(netName);
+                    var memberName=members.memberName;
+                    var memberPhone=members.memberPhone;
+                    $('.name').text(memberName);
+                    $('.phone').text(memberPhone);
                 },
                 function(){
 
@@ -82,7 +83,7 @@
             linkPage(pageAddress);
         })
         $('#return').on('click',function(){
-            var pageAddress='return_goods.html';
+            var pageAddress='#';
             linkPage(pageAddress);
         })
     }

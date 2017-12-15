@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>尊远</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="artDialog/css/ui-dialog.css">
+    <link rel="stylesheet" href="css/index.css" />
+    <style>
+
+    </style>
+</head>
+<body>
+<header class="header">
+    <h3 class="head_left"><a href="#" class="go_back"></a>员工售卡</h3>
+</header>
+<div class="con_color">
+    <div class="person_information pro_page_personInf">
+        <div class="left_icon"><img src="img/c-guy@3x.png" alt=""></div>
+        <div class="right_text">
+            <ul>
+                <li>销售员：<span class="name"></span></li>
+                <li>销售网点：<span class="address"></span></li>
+            </ul>
+        </div>
+    </div>
+    <!--售卖成功-->
+    <div class="sail_succ_content" style="display: none;">
+        <p class="sail_success">商品售卖成功，商品码为：</p>
+        <p class="product_number">278485728</p>
+        <p class="sail_text">请客户凭此号码到店享受服务</p>
+    </div>
+    <!--商品售卖-->
+    <ul class="product_list_select">
+        <div class="sellform">
+            <section>
+                <form action="" target="_self" id="sell-card-form" method="post">
+                    <li><a class="special_a"><span class="client_infor">卡号</span>
+                        <input class="user_name_input verify_form client_info" name="applyCard" type="text" placeholder="请输入卡号" minlength="16" maxlength="19">
+                    </a></li>
+                    <li><a class="special_a"><span class="client_infor">姓名</span>
+                        <input class="user_name_input verify_form client_info" name="name" type="text" placeholder="请填写客户姓名">
+                    </a></li>
+                    <li><a class="special_a"><span class="client_infor">证件号</span>
+                        <input class="user_name_input verify_form client_info" name="idNum" type="text" placeholder="请输入证件号" minlength="18" maxlength="18">
+                    </a></li>
+                    <li><a class="special_a"><span class="client_infor">证件有效期至</span>
+                        <input class="user_name_input verify_form client_info" name="idDate" type="text" placeholder="" maxlength="8">
+                    </a></li>
+                    <li><a class="special_a"> <span class="client_infor">客户手机号</span>
+                        <input class="user_name_input verify_form phone client_info" name="mobile" type="text" placeholder="请填写客户手机号" min="11" maxlength="11">
+                    </a></li>
+                </form>
+            </section>
+        </div>
+    </ul>
+    <div class="form form_bottom">
+        <div class="each_content">
+            <button class="user_name product sail" id="sellCard">售卡</button>
+        </div>
+    </div>
+</div>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="artDialog/dist/dialog-min.js"></script>
+<script src="js/index.js"></script>
+<script src="js/ajaxJson.js"></script>
+<script>
+    var salers;
+    $(function(){
+        submit();
+        goBack();
+        getUserInformation();
+    });
+
+    function getUserInformation(){
+        getJSON(url+"/login/find_saler",
+                function(data){
+                    var code=data.code;
+                    if(code!="success"){
+                        return false;
+                    }
+                    salers=data.data.salers;
+                    var salerName=salers.salerName;
+                    var netName=salers.netName;
+                    $('.name').text(salerName);
+                    $('.address').text(netName);
+                    $('.salesId').text(salers.salerId);
+                },
+                function(){
+
+                })
+    }
+    function submit(){
+        $('#sellCard').on('click',function(){
+            var verifyValue=verifyForm();
+            if(!verifyValue){
+                return false;
+            }
+
+            //alert($('#sell-card-form').serialize() + "&salesId=" + salers.salerId);
+            postJSON(
+                url+"/apply/SalerSellCard",
+                $('#sell-card-form').serialize() + "&salesId=" + salers.salerId,
+                function(data){
+                    if (data.data.status == 'success') {
+                        dialogFn("售卡成功");
+                        return true;
+                        /*var pageAddress='saler_afterlogin.html';
+                        linkPage(pageAddress);*/
+                    } else {
+                        dialogFn("售卡失败: " + data.data.status);
+                        return false;
+                    }
+                },
+                function(){
+                    dialogFn("网络错误，请稍后再试");
+                }
+            );
+
+            /*getJSON(url+"/order/sell?productId="+prudctId+"&pruductPrice="+pruductPrice+"&customerName="+clientName+"&customerPhone="+phone,
+                    function(data){
+                        console.log(data);
+                        var code=data.code;
+                        var sellCode=data.data.sellCode;
+                        var status=data.data.status;
+                        var message=data.data.message;
+                        if(code!='success'){
+                            return false;
+                        }
+                        if(status=='fail'){
+                            dialogFn(message);
+                            return false;
+                        }
+
+                        $('.sail_succ_content').css('display','block');
+                        $('.product_list_select').css('display','none');
+                        $('.product_number').text(sellCode);
+                        $('#sail').html('返回');
+
+                    },
+                    function(){
+                    })*/
+        })
+    }
+
+    function verifyForm(){
+        var regs=[
+            /^[\u4e00-\u9fa5]{2,}$/,//验证中文姓名
+            /^[a-zA-Z \s]{2,20}$/,//验证中文姓名
+            /^1\d{10}$/,//验证手机号
+            /^\d{19}$/, //验证19位卡号
+            /^([\d]{4}(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-8])))))|((((([02468][048])|([13579][26]))00)|([0-9]{2}(([02468][048])|([13579][26]))))(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-9])))))$/,
+            /^\d{16}$/,//验证16位卡号
+        ];
+        var errorMsgs=[
+            '请输入您的姓名(全中文或全英文，不少于两位)',
+            '请输入正确的11位数手机号码',
+            '请输入正确的16或19位卡号',
+            '请输入正确的8位身份证有效截至日期'
+        ];
+        var isValid = true;
+        $('.verify_form').each(function(i){
+            var val = $(this).val();
+            if(i=='0'){
+                if(!(regs[3].test(val))&&!regs[5].test(val)) {
+                    dialogFn(errorMsgs[2]);
+                    isValid = false;
+                    return false;
+                }
+            }else if(i=='1'){
+                if(!((regs[0].test(val))||(regs[1].test(val)))){
+                    dialogFn( errorMsgs[0] );
+                    isValid = false;
+                    return false;
+                }
+            }else if(i=='3'){
+                if( !regs[4].test(val)){
+                    dialogFn( errorMsgs[3] );
+                    isValid = false;
+                    return false;
+                }
+            }
+            else if(i=='4'){
+                if( !regs[2].test(val) ){
+                    dialogFn( errorMsgs[1] );
+                    isValid = false;
+                    return false;
+                }
+            }
+        });
+        return isValid;
+    }
+</script>
+</body>
+</html>

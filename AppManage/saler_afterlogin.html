@@ -24,7 +24,6 @@
         <div class="right_text">
             <ul>
                 <li>销售员：<span  class="name"></span></li>
-                <li>销售员手机：<span class="phone"></span></li>
                 <li>销售网点：<span class="address"></span></li>
             </ul>
         </div>
@@ -39,6 +38,7 @@
     </div>
 </div>
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="artDialog/dist/dialog-min.js"></script>
 <script src="js/index.js"></script>
 <script src="js/ajaxJson.js"></script>
 <script>
@@ -82,11 +82,11 @@
     }
     function submit(){
         $('#sail').on('click',function(){
-            var pageAddress='car_product_sail.html';
+            var pageAddress='saler_sellCard.html';
             linkPage(pageAddress);
         })
         $('#return').on('click',function(){
-            var pageAddress='return_goods.html';
+            var pageAddress='#';
             linkPage(pageAddress);
         })
     }

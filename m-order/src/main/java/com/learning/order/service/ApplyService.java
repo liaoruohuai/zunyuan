@@ -3,7 +3,16 @@ package com.learning.order.service;
 import com.learning.order.entity.Apply;
 import com.learning.order.entity.Orders;
 import com.learning.order.repository.ApplyRepository;
+import com.learning.util.basic.Constants;
+import com.learning.util.basic.ObjectUtil;
+import com.learning.util.basic.TxnSequence;
 import com.learning.util.basic.ValueUtil;
+import com.learning.util.comm.RanKit;
+import com.learning.util.date.DateUtil;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +25,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +39,52 @@ public class ApplyService {
     private ApplyRepository applyRepository;
 
     private static int defaultPageSize = 15;
+
+
+    /**
+     * 员工售卡预设Apply信息
+     *
+     * @param apply
+     * @return
+     */
+    public Apply salerInitAppy(Apply apply){
+        apply.setApplyId(DateUtil.toString(new Date(),"yyyyMMddHHmmss") + TxnSequence.getSellCardID());
+        apply.setApplyType("1");
+        apply.setApplyDate(DateUtil.toString(new Date(),"yyyyMMdd"));
+        apply.setApplyTime(DateUtil.toString(new Date(),"HHmmss"));
+        apply.setBirth(apply.getIdNum().substring(6,14));
+        apply.setGender(
+                ((Integer.parseInt(apply.getIdNum().substring(16,17)))%2 == 0)?"2":"1"//性别取身份证号第17位，奇数为男，偶数为女
+        );
+        applyRepository.save(apply);
+        return apply;
+    }
+
+    /**
+     * 更新申请记录
+     *
+     * @param apply
+     * * @param apply
+     * @return
+     */
+    public String updateApplyBySaler(Apply apply){
+
+        Apply resultApply = applyRepository.findByApplyId(apply.getApplyId());
+
+        if (ObjectUtil.isEmpty(resultApply)){
+            return "ApplyNotFound";
+        }else{
+            resultApply.setApplyResp(apply.getApplyResp());
+            if (apply.getApplyResp().equals("0000")){
+                resultApply.setApplyStatus("1");
+            }else {
+                resultApply.setApplyStatus("0");
+            }
+            resultApply.setLastUpdateTime(DateUtil.toString(new Date(),"yyyyMMddHHmmss"));
+            applyRepository.save(resultApply);
+            return "updateSucc";
+        }
+    }
 
     /**
      * 查询申请记录

@@ -30,7 +30,7 @@
                     <i class="user_password_icon"></i>
                 </div>
                 <div class="each_content">
-                    <button class="user_name" style="padding-right: 20px;" id="submit">登陆</button>
+                    <button class="user_name" style="padding-right: 20px;" id="submit">登录</button>
                     <!--<button class="user_name" style="padding-right: 20px;" id="register">注册</button>-->
                 </div>
                 <a class="reset_pass" href="saler_resetPwd.html">重置密码</a>
@@ -54,14 +54,17 @@
                 var tmp_passwd=hex_md5($('.user_passwd').val());
                 $('.user_passwd').val(tmp_passwd);
 
-                dialogFn($('#saler-login-form').serialize());
+                //dialogFn($('#saler-login-form').serialize());
                 postJSON(
                     url+"/login/salerLogin",
                     $('#saler-login-form').serialize(),
                     function(data){
                         if (data.data.status == 'success') {
-                            var pageAddress='car_afterLogIn.html';
+                            var pageAddress='saler_afterlogin.html';
                             linkPage(pageAddress);
+                        } else if (data.data.status == 'SalerNotFound'){
+                            dialogFn("找不到该手机号对应员工");
+                            alert(data.data.status);
                         } else {
                             dialogFn("用户名或密码错误");
                             alert(data.data.status);

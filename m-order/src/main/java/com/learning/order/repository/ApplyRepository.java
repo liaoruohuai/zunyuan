@@ -18,4 +18,6 @@ public interface  ApplyRepository extends JpaRepository<Apply,String> {
 
     List<Apply> findAll(Specification<Apply> whereClause);
 
+    Apply findByApplyId(String applyId);
+
 }
