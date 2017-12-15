@@ -932,7 +932,7 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                       }else{
                           html+=' <td  class="column-title">销售推荐</td>';
                       }
-                      html+='<td  class="column-title">'+content[i].salesId+'</td>';
+                      html+='<td  class="column-title">'+content[i].saler.salerName+'</td>';
                       html+=' </tr>';
                   }
                   $('tbody.text-center').html(html);
