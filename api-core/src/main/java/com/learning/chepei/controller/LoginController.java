@@ -3,7 +3,9 @@ package com.learning.chepei.controller;
 import com.learning.chepei.PageModel;
 import com.learning.chepei.SessionData;
 import com.learning.chepei.util.SmsKit;
+import com.learning.login.entity.Member;
 import com.learning.login.entity.Saler;
+import com.learning.login.entity.SmsLog;
 import com.learning.login.entity.User;
 import com.learning.login.service.LoginService;
 import com.learning.login.service.SmsLogService;
@@ -40,15 +42,15 @@ public class LoginController {
     private SmsLogService smsLogService;
 
     /**
-     * 前台登录接口
+     * 员工前台登录接口
      * @param saler
      * @param response
      * @return
      */
-    @RequestMapping("/front")
-    public String frontLogin(Saler saler, HttpServletResponse response){
+    @RequestMapping("/salerLogin")
+    public String salerLogin(Saler saler, HttpServletResponse response){
         try {
-            Integer id=Integer.parseInt(loginService.frontLogin(saler));
+            Integer id=Integer.parseInt(loginService.salerLogin(saler));
 
             if (id!=-1) {
                 SessionData.login(response, String.valueOf(id));
@@ -67,7 +69,34 @@ public class LoginController {
     }
 
     /**
-     * 根据用户id查找用户(APP)
+     * 会员前台登录接口
+     * @param member
+     * @param response
+     * @return
+     */
+    @RequestMapping("/memberLogin")
+    public String memberLogin(Member member, HttpServletResponse response){
+        try {
+            Integer id=Integer.parseInt(loginService.memberLogin(member));
+
+            if (id!=-1) {
+                SessionData.login(response, String.valueOf(id));
+         /*   String fSession = Rdata.timeRandomCode(10);
+            SessionData.put(fSession,id);
+            response.setHeader("F-Session",fSession);
+            response.setHeader("Access-Control-Expose-Headers","F-Session");*/
+                return ValueUtil.toJson("status", "success");
+            }else
+            {
+                return ValueUtil.toJson("status", "wrongpwd");
+            }
+        } catch (HzbuviException e) {
+            return ValueUtil.toError(e.getCode(),"");
+        }
+    }
+
+    /**
+     * 根据员工id查找员工(APP)
      * @param request
      * @return
      */
@@ -81,6 +110,20 @@ public class LoginController {
         }
     }
 
+    /**
+     * 根据会员id查找会员(APP)
+     * @param request
+     * @return
+     */
+    @RequestMapping("/find_member")
+    public String findMember(HttpServletRequest request, HttpServletResponse response){
+        try {
+            String memberId = SessionData.verify(request,response);
+            return ValueUtil.toJson("members",loginService.findMember(memberId));
+        } catch (HzbuviException e) {
+            return ValueUtil.toError(e.getCode(),"");
+        }
+    }
 
 
     /**
@@ -164,13 +207,13 @@ public class LoginController {
      * @return
      */
     @RequestMapping(value = "/smsValid")
-    public String smsLog(Saler saler,HttpServletResponse response){
+    public String smsValid(SmsLog smslog, HttpServletResponse response){
         try {
             String validNum = smsLogService.genValidNum();
-            String phoneNum = saler.getSalerPhone();
+            String phoneNum = smslog.getPhoneNum();
             String smsContent = "本次验证码: " + validNum + " 有效时间60秒,请注意保密";
-            String result = SmsKit.send(phoneNum, smsContent);
-            smsLogService.saveSmsLog(phoneNum, smsContent, result);
+            //String result = SmsKit.send(phoneNum, smsContent);
+            //smsLogService.saveSmsLog(phoneNum, smsContent, result);
             SessionData.validNum(response, validNum);
             return ValueUtil.toJson("status", "success");
         }
@@ -198,6 +241,70 @@ public class LoginController {
             String oldValidNum=SessionData.verifyValidNum(request,saler.getSalerName());
             if (oldValidNum.equals("ValidSucc")){
                 String result=loginService.salerResetPwd(saler);
+                if (result.equals("ResetSucc")){
+                    return ValueUtil.toJson("status", "success");
+                }else{
+                    return ValueUtil.toJson("status", "setPwdfail");
+                }
+            }else
+            {
+                return ValueUtil.toJson("status", "validDiff");
+            }
+        }
+        catch (Exception e){return ValueUtil.toError(e.toString(),e.getMessage());}
+        /*
+        catch (HzbuviException e) {
+            return ValueUtil.toError(e.toString(),e.getMessage());
+        }*/
+
+    }
+
+    /**
+     * 会员注册接口
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/memberRegister")
+    public String Register_Member(Member member,HttpServletRequest request){
+        try {
+            String oldValidNum=SessionData.verifyValidNum(request,member.getMemberName());
+            if (oldValidNum.equals("ValidSucc")){
+                String result=loginService.memberRegister(member);
+                if (result.equals("MemberRegisterSucc")){
+                    return ValueUtil.toJson("status", "success");
+                }else if (result.equals("RegisterDuplicate")) {
+                    return ValueUtil.toJson("status", "memberRegisterDuplicate");
+                }
+                else{
+                    return ValueUtil.toJson("status", "memberRegisterFail");
+                }
+            }else
+            {
+                return ValueUtil.toJson("status", "validDiff");
+            }
+        }
+        catch (Exception e)
+        {
+            return ValueUtil.toError(e.toString(),e.getMessage());
+        }
+        /*
+        catch (HzbuviException e) {
+            return ValueUtil.toError(e.toString(),e.getMessage());
+        }*/
+
+    }
+
+    /**
+     * 会员密码重置接口
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/memberReset")
+    public String Reset_Member(Member member,HttpServletRequest request){
+        try {
+            String oldValidNum=SessionData.verifyValidNum(request,member.getMemberName());
+            if (oldValidNum.equals("ValidSucc")){
+                String result=loginService.memberResetPwd(member);
                 if (result.equals("ResetSucc")){
                     return ValueUtil.toJson("status", "success");
                 }else{

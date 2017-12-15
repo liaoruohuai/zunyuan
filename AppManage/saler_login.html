@@ -56,7 +56,7 @@
 
                 dialogFn($('#saler-login-form').serialize());
                 postJSON(
-                    url+"/login/front",
+                    url+"/login/salerLogin",
                     $('#saler-login-form').serialize(),
                     function(data){
                         if (data.data.status == 'success') {

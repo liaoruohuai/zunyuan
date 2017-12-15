@@ -1,7 +1,9 @@
 package com.learning.login.service;
 
+import com.learning.login.entity.Member;
 import com.learning.login.entity.Saler;
 import com.learning.login.entity.User;
+import com.learning.login.repository.MemberRepository;
 import com.learning.login.repository.SalerRepository;
 import com.learning.login.repository.UserRepository;
 import com.learning.salesNetwork.entity.SalesNetwork;
@@ -44,12 +46,14 @@ public class LoginService {
     private SalesNetRepository salesNetRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     private static int defaultPageSize = 10;
 
     private static final Logger logger = LoggerFactory.getLogger("OrderWebServiceImpl");
 
-    public String frontLogin(Saler saler) throws HzbuviException{
+    public String salerLogin(Saler saler) throws HzbuviException{
         //String salerName=saler.getSalerName();
         String salerPhone=saler.getSalerPhone();
         String salerPwd=saler.getSalePwd();
@@ -78,6 +82,64 @@ public class LoginService {
         }else{
             resultSaler.setSalePwd(salerPwd);
             salerRepository.save(resultSaler);
+            return "ResetSucc";
+        }
+    }
+
+    public String memberLogin(Member member) throws HzbuviException{
+        String memberPhone=member.getMemberPhone();
+        String memberPwd=member.getMemberPwd();
+        System.out.println("This line is for test:" + memberPhone + " " + memberPwd);
+        ValueUtil.verify(memberPhone,"salerName null");
+        Member resultMember = memberRepository.findByMemberPhone(memberPhone);
+
+        if (resultMember.getMemberPwd().equals(member.getMemberPwd()))
+        {
+            return resultMember.getMemberId().toString();
+        }else{
+            return "-1";
+        }
+    }
+
+    public String memberRegister(Member member) throws HzbuviException{
+        String memberPhone=member.getMemberPhone();
+        String memberPwd=member.getMemberPwd();
+
+        System.out.println("This line is for test:" + memberPhone + " " + memberPwd + " Id:" + member.getMemberId());
+
+        Member resultMember = memberRepository.findByMemberPhone(memberPhone);
+
+        if (ObjectUtil.isEmpty(resultMember))
+        {
+            resultMember = new Member();
+            resultMember.setMemberPhone(memberPhone);
+            resultMember.setMemberPwd(memberPwd);
+            resultMember.setIsInitPwd("1");
+            resultMember.setMemberLevel("1");//暂用会员等级表示会员来源，1-自主注册，2-员工售卡导流
+            System.out.println(resultMember.toString());
+            memberRepository.save(resultMember);
+            return "MemberRegisterSucc";
+        }
+        else if (resultMember.getMemberId()>0){
+            return "RegisterDuplicate";
+        }else
+        {
+            return "MemberRegisterFail";
+        }
+    }
+
+    public String memberResetPwd(Member member) throws HzbuviException{
+        String memberPhone=member.getMemberPhone();
+        String memberPwd=member.getMemberPwd();
+        System.out.println("This line is for test:" + memberPwd + " " + memberPhone);
+        Member resultMember = memberRepository.findByMemberPhone(memberPhone);
+
+        if (ObjectUtil.isEmpty(resultMember.getMemberId()))
+        {
+            return "MemberNotFound";
+        }else{
+            resultMember.setMemberPwd(memberPwd);
+            memberRepository.save(resultMember);
             return "ResetSucc";
         }
     }
@@ -150,6 +212,13 @@ public class LoginService {
         Map<String,Object> map=new HashMap<>();
         map.put("salerName",saler.getSalerName());
         map.put("netName",network.getNetName());
+        return map;
+    }
+    public Map<String,Object> findMember(String memberId) throws HzbuviException{
+        Member member = memberRepository.findOne(memberId);
+        Map<String,Object> map=new HashMap<>();
+        map.put("memberName",member.getMemberName());
+        map.put("memberPhone",member.getMemberPhone());
         return map;
     }
     public String insert(Saler saler) {

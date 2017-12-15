@@ -7,7 +7,7 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
-    <title>车享配</title>
+    <title>尊远</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/index.css" />
     <style>
@@ -16,7 +16,7 @@
 </head>
 <body>
 <header class="header">
-    <h3>车享配 <a href="javaScript:void(0);" class="get_out">退出</a></h3>
+    <h3>尊远 <a href="javaScript:void(0);" class="get_out">退出</a></h3>
 </header>
 <div class="container">
     <div class="person_information">
@@ -24,16 +24,17 @@
         <div class="right_text">
             <ul>
                 <li>销售员：<span  class="name"></span></li>
+                <li>销售员手机：<span class="phone"></span></li>
                 <li>销售网点：<span class="address"></span></li>
             </ul>
         </div>
     </div>
     <div class="form">
         <div class="each_content">
-            <button class="user_name product sail" id="sail">商品售卖</button>
+            <button class="user_name product sail" id="sail">开始售卡</button>
         </div>
         <div class="each_content">
-            <button class="user_name product back" id="return" >退货申请</button>
+            <button class="user_name product back" id="return" >我的售卡记录</button>
         </div>
     </div>
 </div>
@@ -70,8 +71,10 @@
                     var salers=data.data.salers;
                     var salerName=salers.salerName;
                     var netName=salers.netName;
+                    var salerPhone=salers.salerPhone;
                     $('.name').text(salerName);
                     $('.address').text(netName);
+                    $('.phone').text(salerPhone);
                 },
                 function(){
 

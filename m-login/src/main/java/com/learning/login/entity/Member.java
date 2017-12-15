@@ -7,7 +7,8 @@ import javax.persistence.*;
 public class Member {
 
     @Id
-    private String memberId; //'会员id',
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer memberId; //'会员id',
     private String memberName;//会员姓名,
     private String memberPhone ;//会员手机号码,
     private String memberPwd ;//会员密码,
@@ -19,11 +20,11 @@ public class Member {
     private String lastLoginTime;//最后登录时间,
 
 
-    public String getMemberId() {
+    public Integer getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(String memberId) {
+    public void setMemberId(Integer memberId) {
         this.memberId = memberId;
     }
 
