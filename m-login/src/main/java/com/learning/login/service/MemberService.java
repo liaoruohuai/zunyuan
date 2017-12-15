@@ -28,6 +28,11 @@ public class MemberService {
 
     private static int defaultPageSize = 15;
 
+    public String insert(Member member){
+        memberRepository.save(member);
+        return member.getMemberId().toString();
+    }
+
     /**
      * 查询申请记录
      *

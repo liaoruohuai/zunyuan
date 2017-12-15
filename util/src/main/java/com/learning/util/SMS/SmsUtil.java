@@ -29,7 +29,7 @@ public class SmsUtil {
     public static void main(String[] args) {
         String str = null;
         try {
-            str = SmsUtil.send("15901780783","测试短信沿着码123123");
+            str = SmsUtil.send("13611819694","测试短信沿着码123123");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

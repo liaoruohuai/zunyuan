@@ -14,7 +14,7 @@ public class Member {
     private String memberPwd ;//会员密码,
     private String memberCertType;//会员证件类型,
     private String memberCertNo;//会员证件号码,
-    private String memberLevel;//会员证件号码,
+    private String memberLevel;//会员等级,1-自主注册 2-员工售卡导流
     private String memberPoint;//会员积分,
     private String isInitPwd;//是否初始密码修改标志，0-未修改，1-已修改
     private String lastLoginTime;//最后登录时间,

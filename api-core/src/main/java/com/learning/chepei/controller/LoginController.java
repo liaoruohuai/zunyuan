@@ -52,19 +52,22 @@ public class LoginController {
         try {
             Integer id=Integer.parseInt(loginService.salerLogin(saler));
 
-            if (id!=-1) {
+            if (id!=-1&&id!=-2) {
                 SessionData.login(response, String.valueOf(id));
          /*   String fSession = Rdata.timeRandomCode(10);
             SessionData.put(fSession,id);
             response.setHeader("F-Session",fSession);
             response.setHeader("Access-Control-Expose-Headers","F-Session");*/
                 return ValueUtil.toJson("status", "success");
-            }else
+            }else if (id==-2){
+                return ValueUtil.toJson("status", "SalerNotFound");
+            }
+            else
             {
                 return ValueUtil.toJson("status", "wrongpwd");
             }
-        } catch (HzbuviException e) {
-            return ValueUtil.toError(e.getCode(),"");
+        } catch (Exception e) {
+            return ValueUtil.toError(e.getMessage(),"");
         }
     }
 
@@ -79,19 +82,21 @@ public class LoginController {
         try {
             Integer id=Integer.parseInt(loginService.memberLogin(member));
 
-            if (id!=-1) {
+            if (id!=-1&&id!=-2) {
                 SessionData.login(response, String.valueOf(id));
          /*   String fSession = Rdata.timeRandomCode(10);
             SessionData.put(fSession,id);
             response.setHeader("F-Session",fSession);
             response.setHeader("Access-Control-Expose-Headers","F-Session");*/
                 return ValueUtil.toJson("status", "success");
+            }else if (id==-2){
+                return ValueUtil.toJson("status", "MemberNotFound");
             }else
             {
                 return ValueUtil.toJson("status", "wrongpwd");
             }
-        } catch (HzbuviException e) {
-            return ValueUtil.toError(e.getCode(),"");
+        } catch (Exception e) {
+            return ValueUtil.toError(e.getMessage(),"");
         }
     }
 
@@ -212,22 +217,15 @@ public class LoginController {
             String validNum = smsLogService.genValidNum();
             String phoneNum = smslog.getPhoneNum();
             String smsContent = "本次验证码: " + validNum + " 有效时间60秒,请注意保密";
-            //String result = SmsKit.send(phoneNum, smsContent);
-            //smsLogService.saveSmsLog(phoneNum, smsContent, result);
+            String result = SmsKit.send(phoneNum, smsContent);
+            smsLogService.saveSmsLog(phoneNum, smsContent, result);
             SessionData.validNum(response, validNum);
             return ValueUtil.toJson("status", "success");
         }
-        catch (HzbuviException e) {
-            return ValueUtil.toError(e.toString(),e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            return ValueUtil.toError(e.toString(),e.getMessage());
-        } catch (UnsupportedEncodingException e) {
+        catch (Exception e) {
             return ValueUtil.toError(e.toString(),e.getMessage());
         }
-        /*
-        catch (UnsupportedEncodingException e) {
-            return ValueUtil.toError(e.toString(),e.getMessage());
-        }*/
+
     }
 
     /**
@@ -246,17 +244,11 @@ public class LoginController {
                 }else{
                     return ValueUtil.toJson("status", "setPwdfail");
                 }
-            }else
-            {
+            }else {
                 return ValueUtil.toJson("status", "validDiff");
             }
         }
         catch (Exception e){return ValueUtil.toError(e.toString(),e.getMessage());}
-        /*
-        catch (HzbuviException e) {
-            return ValueUtil.toError(e.toString(),e.getMessage());
-        }*/
-
     }
 
     /**
@@ -278,19 +270,13 @@ public class LoginController {
                 else{
                     return ValueUtil.toJson("status", "memberRegisterFail");
                 }
-            }else
-            {
+            }else {
                 return ValueUtil.toJson("status", "validDiff");
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             return ValueUtil.toError(e.toString(),e.getMessage());
         }
-        /*
-        catch (HzbuviException e) {
-            return ValueUtil.toError(e.toString(),e.getMessage());
-        }*/
 
     }
 
@@ -310,16 +296,12 @@ public class LoginController {
                 }else{
                     return ValueUtil.toJson("status", "setPwdfail");
                 }
-            }else
-            {
+            }else {
                 return ValueUtil.toJson("status", "validDiff");
             }
         }
-        catch (Exception e){return ValueUtil.toError(e.toString(),e.getMessage());}
-        /*
-        catch (HzbuviException e) {
+        catch (Exception e) {
             return ValueUtil.toError(e.toString(),e.getMessage());
-        }*/
-
+        }
     }
 }

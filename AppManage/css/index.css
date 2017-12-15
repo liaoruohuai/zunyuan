@@ -26,6 +26,12 @@ body{
     text-align: center;
     margin: 0 auto;
 }
+.sellform{
+    width: 84%;
+    box-sizing: border-box;
+    text-align: center;
+    margin: 0 auto;
+}
 .each_content{
     width: 100%;
     box-sizing: border-box;
@@ -43,10 +49,10 @@ body{
     border-radius: 50px;
 }
 .each_content .user_valid{
-    width: 60%;
+    width: 50%;
     box-sizing: border-box;
     background-color: #F5F5F5;
-    padding: 13px 58px 15px 20px;
+    padding: 13px 13px 15px 20px;
     color: #A1A1A1;
     font-size:17px;
     border-radius: 50px;
@@ -54,7 +60,7 @@ body{
     float: left;
 }
 .each_content .button_valid{
-    width: 40%;
+    width: 50%;
     box-sizing: border-box;
     background-color: #2979FF;
     padding: 13px 13px 15px 20px;
@@ -169,10 +175,10 @@ i.user_password_icon{
     text-decoration: none;
 }
 .person_information{
-    width: 70%;
+    width: 80%;
     text-align: center;
     margin: 0 auto;
-    margin-top: 86px;
+    margin-top: 40px;
     margin-bottom: 60px;
     overflow: hidden;
 
@@ -181,7 +187,8 @@ i.user_password_icon{
     float: left;
     width: 50px;
     box-sizing: border-box;
-    margin-left: 20px;
+    margin-left: 0px;
+    margin-top: 10px;
 }
 .left_icon img{
     max-width: 100%;
@@ -191,13 +198,13 @@ i.user_password_icon{
     text-align: left;
     margin-left: 20px;
     line-height: 1.6;
-    margin-top: 4px;
+    margin-top: 10px;
 }
 .right_text span{
     color: #6AA1FD;
 }
 .product{
-    padding:20px 90px!important;
+    padding:20px 0px!important;
     font-size: 16px;
 }
 .sail{
@@ -231,6 +238,10 @@ h3.head_left{
 }
 .product_list_select{
     width: 100%;
+    text-align: left;
+}
+.sell_card_information{
+    width: 80%;
     text-align: left;
 }
 .product_list_select li{
@@ -292,19 +303,26 @@ i.select{
     box-sizing: border-box;
     font-size: 15px;
     float: left;
-    margin-left: 25px;
+    margin-left: 0px;
     vertical-align: middle;
 }
 .special_a{
+    width:100%;
     padding: 5px 0!important;
 }
 .special_a span{
+    width: 40%;
     float: left;
+}
+.client_info{
+    width:60%;
+    float: right;
 }
 .form_bottom{
     margin-top: 20px;
 }
 .client_infor{
+    float: right;
     line-height: 33px;
 }
 .return_apply_icon{

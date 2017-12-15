@@ -10,6 +10,7 @@ import com.learning.salesNetwork.entity.SalesNetwork;
 import com.learning.salesNetwork.repository.SalesNetRepository;
 import com.learning.util.basic.ObjectUtil;
 import com.learning.util.basic.ValueUtil;
+import com.learning.util.date.DateUtil;
 import com.learning.util.encryption.MD5;
 import com.learning.util.exception.HzbuviException;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +55,7 @@ public class LoginService {
 
     private static final Logger logger = LoggerFactory.getLogger("OrderWebServiceImpl");
 
-    public String salerLogin(Saler saler) throws HzbuviException{
+    public String salerLogin(Saler saler) throws Exception{
         //String salerName=saler.getSalerName();
         String salerPhone=saler.getSalerPhone();
         String salerPwd=saler.getSalePwd();
@@ -62,7 +64,10 @@ public class LoginService {
         //ValueUtil.verify(salerPhone,"salerPhone null");
         Saler resultSaler = salerRepository.findBySalerPhone(salerPhone);
 
-        if (resultSaler.getSalePwd().equals(saler.getSalePwd()))
+        if (ObjectUtil.isEmpty(resultSaler)){
+            return "-2";
+        }
+        else if (resultSaler.getSalePwd().equals(saler.getSalePwd()))
         {
             return resultSaler.getSalerId();
         }else{
@@ -76,7 +81,7 @@ public class LoginService {
         System.out.println("This line is for test:" + salerPwd + " " + salerPhone);
         Saler resultSaler = salerRepository.findBySalerPhone(salerPhone);
 
-        if (ObjectUtil.isEmpty(resultSaler.getSalerId()))
+        if (ObjectUtil.isEmpty(resultSaler))
         {
             return "SalerNotFound";
         }else{
@@ -93,8 +98,13 @@ public class LoginService {
         ValueUtil.verify(memberPhone,"salerName null");
         Member resultMember = memberRepository.findByMemberPhone(memberPhone);
 
-        if (resultMember.getMemberPwd().equals(member.getMemberPwd()))
+        if (ObjectUtil.isEmpty(resultMember)){
+            return "-2";
+        }
+        else if (resultMember.getMemberPwd().equals(member.getMemberPwd()))
         {
+            resultMember.setLastLoginTime(DateUtil.toString(new Date(),"yyyyMMddHHmmss"));
+            memberRepository.save(resultMember);
             return resultMember.getMemberId().toString();
         }else{
             return "-1";
@@ -212,6 +222,7 @@ public class LoginService {
         Map<String,Object> map=new HashMap<>();
         map.put("salerName",saler.getSalerName());
         map.put("netName",network.getNetName());
+        map.put("salerId",saler.getSalerId());
         return map;
     }
     public Map<String,Object> findMember(String memberId) throws HzbuviException{

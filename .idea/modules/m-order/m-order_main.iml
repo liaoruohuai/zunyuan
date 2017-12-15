@@ -22,6 +22,7 @@
     <orderEntry type="library" name="Gradle: commons-httpclient:commons-httpclient:3.0.1" level="project" />
     <orderEntry type="module" module-name="util_main" />
     <orderEntry type="module" module-name="m-product_main" />
+    <orderEntry type="module" module-name="m-login_main" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-core:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter:1.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-aop:1.4.0.RELEASE" level="project" />
@@ -39,6 +40,7 @@
     <orderEntry type="library" name="Gradle: junit:junit:3.8.1" level="project" />
     <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.2" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.7" level="project" />
+    <orderEntry type="module" module-name="m-sales-network_main" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot:1.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:1.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-logging:1.4.0.RELEASE" level="project" />
