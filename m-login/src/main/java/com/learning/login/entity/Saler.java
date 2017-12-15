@@ -1,6 +1,8 @@
 package com.learning.login.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
+
 /**
  * Author:GR
  * Date:2016/11/9
@@ -8,7 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="saler")
-public class Saler{
+public class Saler  implements Serializable {
 
     @Id
     private String salerId;//销售人员id

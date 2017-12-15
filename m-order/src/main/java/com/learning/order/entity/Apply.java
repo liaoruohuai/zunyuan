@@ -1,37 +1,49 @@
 package com.learning.order.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.learning.login.entity.Saler;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Created by Administrator on 2017/12/6.
  */
 @Entity
-@Table(name="apply")
-public class Apply  implements Serializable {
+@Table(name = "apply")
+public class Apply implements Serializable {
 
-        @Id
-        private String applyId;
-        private String name;
-        private String applyType;
-        private String idNum;
-        private String mobile;
-        private String idDate;
-        private String province;
-        private String city;
-        private String country;
-        private String address;
-        private String vocation;
-        private String applyDate;
-        private String applyTime;
-        private String salesId;
-        private String applyStatus;
-        private String lastUpdateTime;
-        private String gender;
-        private String nation;
-        private String birth;
+    @Id
+    private String applyId;
+    private String name;
+    private String applyType;
+    private String idNum;
+    private String mobile;
+    private String idDate;
+    private String province;
+    private String city;
+    private String country;
+    private String address;
+    private String vocation;
+    private String applyDate;
+    private String applyTime;
+    private String salesId;
+    private String applyStatus;
+    private String lastUpdateTime;
+    private String gender;
+    private String nation;
+    private String birth;
+    @OneToOne
+    @JoinColumn(name = "salesId", referencedColumnName = "salerId", insertable = false, updatable = false)
+    private Saler saler;
+
+
+    public Saler getSaler() {
+        return saler;
+    }
+
+    public void setSaler(Saler saler) {
+        this.saler = saler;
+    }
 
     public String getApplyId() {
         return applyId;
@@ -136,6 +148,7 @@ public class Apply  implements Serializable {
     public void setApplyTime(String applyTime) {
         this.applyTime = applyTime;
     }
+
 
     public String getSalesId() {
         return salesId;
