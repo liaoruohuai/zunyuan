@@ -71,3 +71,6 @@ CHANGE COLUMN `memberId` `memberId` INT(11) NOT NULL AUTO_INCREMENT COMMENT '会
 
 ALTER TABLE `zunyuandb`.`apply`
 ADD COLUMN `applyCard` VARCHAR(19) NULL COMMENT '申请卡号' AFTER `applyType`;
+
+
+ALTER TABLE `zunyuandb`.`org`  DROP INDEX `supOrgNumber` ;

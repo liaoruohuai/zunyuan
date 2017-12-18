@@ -18,4 +18,5 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.4.0.RELEASE'
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
     compile project(':util')
+    compile project(':m-org')
 }

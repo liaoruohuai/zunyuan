@@ -1,5 +1,7 @@
 package com.learning.salesNetwork.entity;
 
+import com.learning.org.entity.OrgEntity;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -21,6 +23,20 @@ public class SalesNetwork implements Serializable{
     private String netAddress;//网点地址
     private String orgNumber;//网点所属机构
     private String isDelete;//s删除标志
+
+    @OneToOne
+    @JoinColumn(name = "orgNumber", referencedColumnName = "orgNumber", insertable = false, updatable = false)
+    private OrgEntity orgEntity;
+
+
+
+    public OrgEntity getOrgEntity() {
+        return orgEntity;
+    }
+
+    public void setOrgEntity(OrgEntity orgEntity) {
+        this.orgEntity = orgEntity;
+    }
 
     public String getIsDelete() {
         return isDelete;

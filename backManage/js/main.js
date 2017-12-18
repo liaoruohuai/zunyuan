@@ -304,7 +304,11 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                       html+='<td  class="column-title">'+(i+1)+'</td>';
                       html+='<td  class="column-title">'+content[i].orgNumber+'</td>';
                       html+=' <td  class="column-title">'+content[i].orgName+'</td>';
-                      html+='<td  class="column-title">'+content[i].supOrgNumber+'</td>';
+                      if(content[i].supOrgNumber == '100000'){
+                        html+='<td  class="column-title">尊远本部</td>';
+                      }else{
+                        html+='<td  class="column-title">'+content[i].supOrgNumber+'</td>';
+                      }
                       html+='<td  class="column-title">';
                       html+=' <a href= "#/agency_information/agency_information/amend_agency_information.html" class="fa fa-lg fa-pencil-square-o" data-role="edit" data-edit-id="'+content[i].id+'" title="编辑"></a>';
                       html+='<a href= "javascript:void(0);" data-delete-path="/org/delete" data-delete-id="'+content[i].orgNumber+'" data-role="delete" data-key="orgNumber" class="fa fa-lg fa-trash-o" title="删除"></a>';
@@ -430,7 +434,7 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                       html+='<td  class="column-title">'+content[i].netName+'</td>';
                       html+=' <td  class="column-title">'+content[i].netNumber+'</td>';
                       html+='<td  class="column-title">'+content[i].netAddress+'</td>';
-                      html+='<td  class="column-title">'+content[i].orgNumber+'</td>';
+                      html+='<td  class="column-title">'+content[i].orgEntity.orgName+'</td>';
                       html+='<td  class="column-title">';
                       html+=' <a href= "#/sell_point/sell_point/amend_sell_point.html" class="fa fa-lg fa-pencil-square-o" data-role="edit" data-edit-id="'+content[i].id+'" title="编辑"></a>';
                       html+='<a href= "javascript:void(0);" data-delete-path="/salesNetwork/delete" data-delete-id="'+content[i].netNumber+'" data-role="delete" data-key="id" class="fa fa-lg fa-trash-o" title="删除"></a>';
@@ -564,7 +568,7 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   var html='';
                     for(var i=0;i<content.length;i++){
                         var salerId=content[i].salerId;
-                        var netNumber=content[i].netNumber;
+                        var netName=content[i].salesNetwork.netName;
                         var salerName=content[i].salerName;
                         var salerPhone=content[i].salerPhone;
                         html+='<tr>';
@@ -572,7 +576,7 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                         html+='<td  class="column-title">'+salerId+'</td>';
                         html+='<td  class="column-title">'+salerName+'</td>';
                         html+='<td  class="column-title">'+salerPhone+'</td>';
-                        html+='<td  class="column-title">'+netNumber+'</td>';
+                        html+='<td  class="column-title">'+netName+'</td>';
                         html+='<td  class="column-title">';
                         html+=' <a href= "#/sell_person_infor/sell_person_infor/amend_sell_person.html" class="fa fa-lg fa-pencil-square-o" data-role="edit" data-edit-id="'+content[i].salerId+'" title="编辑"></a>';
                         html+='<a href= "javascript:void(0);" data-delete-path="/saler/delete" data-delete-id="'+content[i].salerId+'" data-role="delete" data-key="salerId" class="fa fa-lg fa-trash-o" title="删除"></a>';

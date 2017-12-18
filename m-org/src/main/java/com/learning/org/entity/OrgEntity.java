@@ -1,13 +1,14 @@
 package com.learning.org.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by liqingqing on 2016/11/11.
  */
 @Entity
 @Table(name="org")
-public class OrgEntity {
+public class OrgEntity implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private  Integer id;

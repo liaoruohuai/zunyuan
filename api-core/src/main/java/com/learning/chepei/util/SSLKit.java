@@ -5,7 +5,6 @@ import com.learning.chepei.controller.TransmitService;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +28,7 @@ public class SSLKit {
         String result = transmitService.sendService(message);
         return result;
     }
-
+/*
     public static String socketSend(String acceptContentFormOut) {
         String sendXmlToSd = acceptContentFormOut.toString();
         String sendXmlByteLengthToSd;
@@ -80,4 +79,5 @@ public class SSLKit {
         }
 
     }
+    */
 }

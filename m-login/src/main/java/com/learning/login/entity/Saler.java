@@ -1,5 +1,7 @@
 package com.learning.login.entity;
 
+import com.learning.salesNetwork.entity.SalesNetwork;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -19,6 +21,18 @@ public class Saler  implements Serializable {
     private String netNumber;//网点号
     private String salePwd;//密码
     private String isInitPwd;//是否初始密码修改标志，0-未修改，1-已修改
+
+    @OneToOne
+    @JoinColumn(name = "netNumber", referencedColumnName = "netNumber", insertable = false, updatable = false)
+    private SalesNetwork salesNetwork;
+
+    public SalesNetwork getSalesNetwork() {
+        return salesNetwork;
+    }
+
+    public void setSalesNetwork(SalesNetwork salesNetwork) {
+        this.salesNetwork = salesNetwork;
+    }
 
     public String getSalerId() {
         return salerId;
