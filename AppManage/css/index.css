@@ -10,24 +10,24 @@ body{
 }
 .container{
     text-align: center;
-   padding: 60px 10px 0 10px;
+   padding: 30px 10px 30px 10px;
 }
 .logo{
-    margin: 86px auto 40px;
-    width: 78%;
+    margin: 40px auto 40px;
+    width: 80%;
 }
 .logo img{
     max-width: 100%;
     height: auto;
 }
 .form{
-    width: 76%;
+    width: 100%;
     box-sizing: border-box;
     text-align: center;
     margin: 0 auto;
 }
 .sellform{
-    width: 84%;
+    width: 100%;
     box-sizing: border-box;
     text-align: center;
     margin: 0 auto;
@@ -46,27 +46,27 @@ body{
     padding: 13px 58px 15px 20px;
     color: #A1A1A1;
     font-size:17px;
-    border-radius: 50px;
+    border-radius: 5px;
 }
 .each_content .user_valid{
-    width: 50%;
+    width: 60%;
     box-sizing: border-box;
     background-color: #F5F5F5;
     padding: 13px 13px 15px 20px;
     color: #A1A1A1;
     font-size:17px;
-    border-radius: 50px;
+    border-radius: 5px;
     display: inline;
     float: left;
 }
 .each_content .button_valid{
-    width: 50%;
+    width: 35%;
     box-sizing: border-box;
     background-color: #2979FF;
-    padding: 13px 13px 15px 20px;
+    padding: 13px 8px 15px 8px;
     color: #fff;
     font-size:17px;
-    border-radius: 50px;
+    border-radius: 5px;
 }
 i.user_name_icon{
     display: inline-block;
@@ -203,18 +203,28 @@ i.user_password_icon{
 .right_text span{
     color: #6AA1FD;
 }
+.right_text li{
+    float: right;
+}
+
 .product{
     padding:20px 0px!important;
     font-size: 16px;
 }
 .sail{
+    width: 90%;
+    box-sizing: border-box;
+    padding: 13px 13px 15px 20px;
+    color: #A1A1A1;
+    font-size:17px;
+    border-radius: 5px;
     background-color: #2979FF!important;
     color: #fff!important;
 }
 .back{
     border: 2px solid #2979FF;
     color: #2979FF!important;
-    margin-top: 20px;
+    margin-top: 0px;
     background-color: #fff!important;
 }
 /*商品列表*/
@@ -234,7 +244,7 @@ h3.head_left{
 .con_color{
     background-color: #FBFBFB!important;
     width: 100%;
-    padding-top: 90px;
+    padding-top: 40px;
 }
 .product_list_select{
     width: 100%;
@@ -253,7 +263,7 @@ h3.head_left{
     width: 100%;
     box-sizing: border-box;
     padding: 15px 0;
-    margin-left: 15px;
+    margin-left: 0px;
     border-bottom: 2px solid #F8F8F8;
     text-decoration: none;
     color: #000;
@@ -311,8 +321,10 @@ i.select{
     padding: 5px 0!important;
 }
 .special_a span{
-    width: 40%;
+    width: 30%;
     float: left;
+    text-align: left;
+    padding-left: 20px;
 }
 .client_info{
     width:60%;
@@ -367,7 +379,7 @@ i.select{
     top:48px;
     left:15px;
     right:15px;
-    border-radius:50px;
+    border-radius:5px;
     z-index: 999;
 }
 .list_item a{
