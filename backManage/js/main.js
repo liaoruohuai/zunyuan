@@ -956,6 +956,72 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   });
               }
           },
+       //卡券信息
+          '/coupon_information/coupon_information/index.html':{
+              dataPath: '/coupon/show',
+              handle: function (tplPath) {
+                  initPage({
+                      tplPath: tplPath,
+                      showData: this.showData,
+                      dataPath: getDataPath(this.dataPath),
+                      bindEvent: this.bindEvent,
+                      submitParam: {
+                          otherValidate: function(){
+
+                              return true;
+                          },
+                          //submitUrl: '',
+                          getFormData: function() {
+                              return this.form.serialize();
+                          }
+                      }
+                  });
+              },
+              showData: function(data) {
+                  //这里填写每个页面如何处理拿到的数据
+                  console.log(data);
+                  var code=data.code;
+                  if(code!='success'){
+                      return false;
+                  }
+                  var content=data.data.coupon.content;
+                  var totalRows=data.data.coupon.totalRows;
+                  var html='';
+                  for(var i=0;i<content.length;i++){
+                      html+='<tr>';
+                      html+='<td  class="column-title">'+(i+1)+'</td>';
+                      html+=' <td  class="column-title">'+content[i].couponType+'</td>';
+                      html+='<td  class="column-title">'+content[i].couponInfo+'</td>';
+                      html+='<td  class="column-title">'+content[i].couponValidDate+'</td>';
+                      html+='<td  class="column-title">'+content[i].couponDesp+'</td>';
+                      html+='<td  class="column-title">'+content[i].grantMember+'</td>';
+                      html+='<td  class="column-title">'+content[i].grantTime+'</td>';
+                      if(content[i].couponStatus == '0'){
+                          html+=' <td  class="column-title">未发放</td>';
+                      }else{
+                          html+=' <td  class="column-title">已发放</td>';
+                      }
+
+
+                      html+=' </tr>';
+                  }
+                  $('tbody.text-center').html(html);
+                  $('.page_number').html('共'+totalRows+'条');
+              },
+              bindEvent: function() {
+                  //这里填写每个页面需要绑定的一些事件
+
+                  var _this = this;
+                  var data = JSON.parse(sessionStorage.pagerData);
+                  readyForPager(_this,data.data.apply);
+                  $('#search-form').data({ context: _this, key: 'coupon' });
+
+                  $('#import').on('click',function(){
+                   //   window.open(dataUrl +'/downLoad/apply');
+                      window.location.href = dataUrl + '/upLoad/coupon?' + $("#search-form").serialize();
+                  });
+              }
+          },
 
         //会员信息
           '/member_information/member_information/index.html':{
