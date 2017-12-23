@@ -23,10 +23,13 @@
     <div class="person_information pro_page_personInf">
         <div class="left_icon"><img src="img/c-guy@3x.png" alt=""></div>
         <div class="right_text">
-            <ul>
-                <li>销售员：<span class="name"></span></li>
-                <br />
-                <li>销售网点：<span class="address"></span></li>
+            <ul class="right_ul">
+                <div>
+                    <span  class="label_span">销售：</span><span  class="name value_span"></span>
+                </div>
+                <div>
+                    <span  class="label_span">网点：</span><span class="address value_span"></span>
+                </div>
             </ul>
         </div>
     </div>
@@ -48,13 +51,13 @@
                         <input class="user_name_input verify_form client_info" name="name" type="text" placeholder="请填写客户姓名">
                     </a></li>
                     <li><a class="special_a"><span class="client_infor">证件号</span>
-                        <input class="user_name_input verify_form client_info" name="idNum" type="text" placeholder="请输入证件号" minlength="18" maxlength="18">
+                        <input class="user_name_input verify_form client_info" name="idNum" type="text" placeholder="请输入合法证件号" minlength="18" maxlength="18">
                     </a></li>
                     <li><a class="special_a"><span class="client_infor">证件到期日</span>
                         <input class="user_name_input verify_form client_info" name="idDate" type="text" placeholder="请输入证件有效截至日期" maxlength="8">
                     </a></li>
                     <li><a class="special_a"> <span class="client_infor">客户手机号</span>
-                        <input class="user_name_input verify_form phone client_info" name="mobile" type="text" placeholder="请填写客户手机号" min="11" maxlength="11">
+                        <input class="user_name_input verify_form phone client_info" name="mobile" type="text" placeholder="请填写客户手机号码" min="11" maxlength="11">
                     </a></li>
                 </form>
             </section>
@@ -70,6 +73,7 @@
 <script src="artDialog/dist/dialog-min.js"></script>
 <script src="js/index.js"></script>
 <script src="js/ajaxJson.js"></script>
+<script src="js/IDvalidate.js"></script>
 <script>
     var salers;
     $(function(){
@@ -162,7 +166,8 @@
             '请输入您的姓名(全中文或全英文，不少于两位)',
             '请输入正确的11位数手机号码',
             '请输入正确的16或19位卡号',
-            '请输入正确的8位身份证有效截至日期'
+            '请输入正确的8位身份证有效截至日期',
+            '请输入正确的18位身份证号码'
         ];
         var isValid = true;
         $('.verify_form').each(function(i){
@@ -176,6 +181,12 @@
             }else if(i=='1'){
                 if(!((regs[0].test(val))||(regs[1].test(val)))){
                     dialogFn( errorMsgs[0] );
+                    isValid = false;
+                    return false;
+                }
+            }else if(i==2){
+                if(!validateID(val)){
+                    dialogFn(errorMsgs[4])
                     isValid = false;
                     return false;
                 }

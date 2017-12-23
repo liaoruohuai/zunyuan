@@ -225,10 +225,14 @@ public class LoginService {
         map.put("salerId",saler.getSalerId());
         return map;
     }
-    public Map<String,Object> findMember(String memberId) throws HzbuviException{
-        Member member = memberRepository.findOne(memberId);
+    public Map<String,Object> findMember(Integer memberId) throws HzbuviException{
+        Member member = memberRepository.findByMemberId(memberId);
         Map<String,Object> map=new HashMap<>();
-        map.put("memberName",member.getMemberName());
+        if (ObjectUtil.isEmpty(member.getMemberName())){
+            map.put("memberName","NULL");
+        }else{
+            map.put("memberName",member.getMemberName());
+        }
         map.put("memberPhone",member.getMemberPhone());
         return map;
     }

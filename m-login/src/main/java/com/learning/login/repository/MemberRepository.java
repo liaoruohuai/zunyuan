@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface MemberRepository extends JpaRepository<Member,String> {
 
+    Member findByMemberId(Integer memberId);
     Member findByMemberPhone(String memberPhone);
 
     @Query("select max (memberId) from Member")

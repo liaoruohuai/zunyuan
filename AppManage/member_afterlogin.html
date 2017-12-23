@@ -22,10 +22,13 @@
     <div class="person_information">
         <div class="left_icon"><img src="img/c-guy@3x.png" alt=""></div>
         <div class="right_text">
-            <ul>
-                <li>会员：<span  class="name"></span></li>
-                <br />
-                <li>手机：<span  class="phone"></span></li>
+            <ul class="right_ul">
+                <div>
+                    <span  class="label_span">会员：</span><span  class="name value_span"></span>
+                </div>
+                <div>
+                    <span  class="label_span">手机：</span><span class="phone value_span"></span>
+                </div>
             </ul>
         </div>
     </div>
@@ -68,9 +71,13 @@
                     if(code!="success"){
                         return false;
                     }
-                    var members=data.data.member;
+                    var members=data.data.members;
                     var memberName=members.memberName;
                     var memberPhone=members.memberPhone;
+                    alert(memberName);
+                    if (typeof(memberName) == "undefined"){
+                        memberName == "NULL";
+                    }
                     $('.name').text(memberName);
                     $('.phone').text(memberPhone);
                 },

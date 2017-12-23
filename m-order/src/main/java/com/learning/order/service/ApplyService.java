@@ -53,6 +53,7 @@ public class ApplyService {
         apply.setApplyDate(DateUtil.toString(new Date(),"yyyyMMdd"));
         apply.setApplyTime(DateUtil.toString(new Date(),"HHmmss"));
         apply.setBirth(apply.getIdNum().substring(6,14));
+        apply.setApplyStatus("0");
         apply.setGender(
                 ((Integer.parseInt(apply.getIdNum().substring(16,17)))%2 == 0)?"2":"1"//性别取身份证号第17位，奇数为男，偶数为女
         );
@@ -78,7 +79,7 @@ public class ApplyService {
             if (apply.getApplyResp().equals("0000")){
                 resultApply.setApplyStatus("1");
             }else {
-                resultApply.setApplyStatus("0");
+                resultApply.setApplyStatus("2");
             }
             resultApply.setLastUpdateTime(DateUtil.toString(new Date(),"yyyyMMddHHmmss"));
             applyRepository.save(resultApply);

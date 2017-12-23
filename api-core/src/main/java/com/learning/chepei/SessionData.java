@@ -7,6 +7,7 @@ import com.learning.util.encryption.MD5;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
@@ -67,6 +68,25 @@ public class SessionData {
             System.out.println(System.currentTimeMillis() + ":validNum expired:");
             HzbuviException exception = new HzbuviException("validNumExpired");
             exception.setMsg("验证码已过期");
+            throw exception;
+        }
+    }
+
+    public static String verifyValidImg(HttpServletRequest request, String newValidImg) throws HzbuviException {
+        //response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
+
+        String oldImgCode = (String) request.getSession().getAttribute("imgCode");
+
+        if (!ObjectUtil.isEmpty(oldImgCode)) {
+            if (oldImgCode.equals(newValidImg)){
+                return "ImgValidSucc";
+            } else{
+                return "ImgValidFail";
+            }
+        } else {
+            System.out.println(System.currentTimeMillis() + ":ImgCode not Found:");
+            HzbuviException exception = new HzbuviException("validImgNotFound");
+            exception.setMsg("图形验证码未找到");
             throw exception;
         }
     }

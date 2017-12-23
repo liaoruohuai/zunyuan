@@ -74,3 +74,9 @@ ADD COLUMN `applyCard` VARCHAR(19) NULL COMMENT '申请卡号' AFTER `applyType`
 
 
 ALTER TABLE `zunyuandb`.`org`  DROP INDEX `supOrgNumber` ;
+
+ALTER TABLE `zunyuandb`.`org` DROP INDEX `UK_huqfal3ufgr7n5pqj9owkwdhd` ;
+
+ALTER TABLE `zunyuandb`.`org` ADD UNIQUE INDEX `orgNumber` (`orgNumber` ASC);
+
+ALTER TABLE `zunyuandb`.`salesnetwork` CHANGE COLUMN `orgNumber` `orgNumber` VARCHAR(10) NULL DEFAULT NULL COMMENT '组织编号' ;

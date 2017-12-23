@@ -43,6 +43,12 @@
                     </div>
                 </div>
                 <div class="each_content">
+                    <input type="text" placeholder="请输入图形验证码" class="img_valid verify_form" name="memberPoint"/>
+                    <img id="imgObj" alt="验证码" src="http://127.0.0.1:8080/zunyuan/basic/login/validateCode" onclick="changeImgCode()"/>
+                    <!--input type="button" class="button_valid" id="getValidPic" value="发送验证码"/>-->
+                    <!-- <button class="button_valid" id="getVaildNum" onclick="time(this)" ></button>-->
+                </div>
+                <div class="each_content">
                     <button class="user_name" style="padding-right: 20px;" id="register">注册会员</button>
                 </div>
             </form>
@@ -59,6 +65,26 @@
        getValidNum();
        register();
     });
+
+   function changeImgCode() {
+       var imgSrc = $("#imgObj");
+       var src = imgSrc.attr("src");
+       imgSrc.attr("src", changeUrl(src));
+   }
+   //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+   function changeUrl(urlnew) {
+       var timestamp = (new Date()).valueOf();
+       var index = urlnew.indexOf("?",urlnew);
+       if (index > 0) {
+           urlnew = urlnew.substring(0, urlnew.indexOf("?",urlnew));
+       }
+       if ((urlnew.indexOf("&") >= 0)) {
+           urlnew = urlnew + "×tamp=" + timestamp;
+       } else {
+           urlnew = urlnew + "?timestamp=" + timestamp;
+       }
+       return urlnew;
+   }
 
    var wait=60;
    function time(o) {
@@ -98,7 +124,7 @@
                                dialogFn("验证码已发送至您的手机");
                            } else {
                                dialogFn("发送失败");
-                               alert(data.data.status);
+                               //alert(data.data.status);
                            }
                        },
                        function(){
@@ -147,13 +173,18 @@
                                 linkPage(pageAddress);
                             } else if(data.data.status == 'memberRegisterDuplicate'){
                                 dialogFn("该手机号已被注册");
-                            }
-                            else {
+                                changeImgCode();
+                            } else if (data.data.status == 'imgValidfail'){
+                                dialogFn("图形验证码填写错误");
+                                changeImgCode();
+                            } else{
                                 dialogFn("会员注册失败");
+                                changeImgCode();
                             }
                         },
                         function(){
                             dialogFn("网络错误，请稍后再试");
+                            changeImgCode();
                             //$("#error").html("<span style='color:red'>网络有误，请稍后再试。</span>");
                         }
                     );
