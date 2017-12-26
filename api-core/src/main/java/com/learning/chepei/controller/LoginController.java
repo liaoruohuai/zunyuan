@@ -11,6 +11,7 @@ import com.learning.login.service.LoginService;
 import com.learning.login.service.SmsLogService;
 import com.learning.util.basic.Constants;
 import com.learning.util.basic.ObjectUtil;
+import com.learning.util.basic.ValidateCode;
 import com.learning.util.basic.ValueUtil;
 import com.learning.util.exception.HzbuviException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -123,7 +125,7 @@ public class LoginController {
     @RequestMapping("/find_member")
     public String findMember(HttpServletRequest request, HttpServletResponse response){
         try {
-            String memberId = SessionData.verify(request,response);
+            Integer memberId = Integer.parseInt(SessionData.verify(request,response));
             return ValueUtil.toJson("members",loginService.findMember(memberId));
         } catch (HzbuviException e) {
             return ValueUtil.toError(e.getCode(),"");
@@ -236,6 +238,10 @@ public class LoginController {
     @RequestMapping(value = "/salerReset")
     public String Reset_saler(Saler saler,HttpServletRequest request){
         try {
+            String ImgVerify =SessionData.verifyValidImg(request,saler.getNetNumber());
+            if (!ImgVerify.equals("ImgValidSucc")){
+                return ValueUtil.toJson("status", "imgValidfail");
+            }
             String oldValidNum=SessionData.verifyValidNum(request,saler.getSalerName());
             if (oldValidNum.equals("ValidSucc")){
                 String result=loginService.salerResetPwd(saler);
@@ -259,6 +265,10 @@ public class LoginController {
     @RequestMapping(value = "/memberRegister")
     public String Register_Member(Member member,HttpServletRequest request){
         try {
+            String ImgVerify =SessionData.verifyValidImg(request,member.getMemberPoint());
+            if (!ImgVerify.equals("ImgValidSucc")){
+                return ValueUtil.toJson("status", "imgValidfail");
+            }
             String oldValidNum=SessionData.verifyValidNum(request,member.getMemberName());
             if (oldValidNum.equals("ValidSucc")){
                 String result=loginService.memberRegister(member);
@@ -288,6 +298,10 @@ public class LoginController {
     @RequestMapping(value = "/memberReset")
     public String Reset_Member(Member member,HttpServletRequest request){
         try {
+            String ImgVerify =SessionData.verifyValidImg(request,member.getMemberPoint());
+            if (!ImgVerify.equals("ImgValidSucc")){
+                return ValueUtil.toJson("status", "imgValidfail");
+            }
             String oldValidNum=SessionData.verifyValidNum(request,member.getMemberName());
             if (oldValidNum.equals("ValidSucc")){
                 String result=loginService.memberResetPwd(member);
@@ -303,5 +317,27 @@ public class LoginController {
         catch (Exception e) {
             return ValueUtil.toError(e.toString(),e.getMessage());
         }
+    }
+
+    /**
+     * 响应验证码页面
+     * @return
+     */
+    @RequestMapping(value="/validateCode")
+    public String validateCode(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        // 设置响应的类型格式为图片格式
+        response.setContentType("image/jpeg");
+        //禁止图像缓存。
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        HttpSession session = request.getSession();
+
+        ValidateCode vCode = new ValidateCode(120,40,5,100);
+        session.setAttribute("imgCode", vCode.getCode());
+        System.out.println("New Call...Code of this time is : [" + vCode.getCode() + "]");
+        vCode.write(response.getOutputStream());
+        return null;
     }
 }

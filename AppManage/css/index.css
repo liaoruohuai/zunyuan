@@ -67,6 +67,19 @@ body{
     color: #fff;
     font-size:17px;
     border-radius: 5px;
+    margin-left: 15px;
+}
+.each_content .img_valid{
+    width: 60%;
+    box-sizing: border-box;
+    background-color: #F5F5F5;
+    padding: 13px 13px 15px 20px;
+    color: #A1A1A1;
+    font-size:17px;
+    border-radius: 5px;
+    display: inline;
+    float: left;
+    text-transform: uppercase;
 }
 i.user_name_icon{
     display: inline-block;
@@ -133,6 +146,11 @@ i.user_password_icon{
     color: #fff;
     margin-top: 10px;
 }
+#memberRegister{
+    background-color: #2979FF;
+    color: #fff;
+    margin-top: 10px;
+}
 #register{
     background-color: #2979FF;
     color: #fff;
@@ -175,17 +193,16 @@ i.user_password_icon{
     text-decoration: none;
 }
 .person_information{
-    width: 80%;
+    width: 90%;
     text-align: center;
-    margin: 0 auto;
-    margin-top: 40px;
+    margin: 40px 15px 0px 15px;
     margin-bottom: 60px;
     overflow: hidden;
 
 }
 .left_icon{
     float: left;
-    width: 50px;
+    width: 20%;
     box-sizing: border-box;
     margin-left: 0px;
     margin-top: 10px;
@@ -194,17 +211,29 @@ i.user_password_icon{
     max-width: 100%;
 }
 .right_text{
-    float: left;
+    width: 80%;
+    float: right;
     text-align: left;
-    margin-left: 20px;
+    margin-left: 0px;
     line-height: 1.6;
-    margin-top: 10px;
-}
-.right_text span{
-    color: #6AA1FD;
+    margin-top: 20px;
 }
 .right_text li{
-    float: right;
+    float: left;
+}
+
+.right_ul{
+    width: 100%;
+}
+
+.label_span{
+    color: #0f0f0f;
+    float: left;
+    text-align: right;
+    width: 80px;
+}
+.value_span{
+    color: #6AA1FD;
 }
 
 .product{
@@ -245,6 +274,8 @@ h3.head_left{
     background-color: #FBFBFB!important;
     width: 100%;
     padding-top: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .product_list_select{
     width: 100%;

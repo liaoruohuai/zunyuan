@@ -43,12 +43,13 @@
                     </div>
                 </div>
                 <div class="each_content">
-                    <input type="text" placeholder="请输入图形验证码" class="user_valid verify_form" name="salerName"/>
-                    <input type="button" class="button_valid" id="" value="发送验证码"/>
+                    <input type="text" placeholder="请输入图形验证码" class="img_valid verify_form" name="netNumber" maxlength="5"/>
+                    <img id="imgObj" alt="验证码" src="http://127.0.0.1:8080/zunyuan/basic/login/validateCode" onclick="changeImgCode()"/>
+                    <!--input type="button" class="button_valid" id="getValidPic" value="发送验证码"/>-->
                     <!-- <button class="button_valid" id="getVaildNum" onclick="time(this)" ></button>-->
                 </div>
                 <div class="each_content">
-                    <button class="user_name" style="padding-right: 20px;" id="resetPwd">重置</button>
+                    <button class="user_name" style="padding-right: 0px;" id="resetPwd">重置</button>
                 </div>
             </form>
         </section>
@@ -64,6 +65,26 @@
        resetPwd();
        getValidNum();
     });
+
+   function changeImgCode() {
+       var imgSrc = $("#imgObj");
+       var src = imgSrc.attr("src");
+       imgSrc.attr("src", changeUrl(src));
+   }
+   //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+   function changeUrl(urlnew) {
+       var timestamp = (new Date()).valueOf();
+       var index = urlnew.indexOf("?",urlnew);
+       if (index > 0) {
+           urlnew = urlnew.substring(0, urlnew.indexOf("?",urlnew));
+       }
+       if ((urlnew.indexOf("&") >= 0)) {
+           urlnew = urlnew + "×tamp=" + timestamp;
+       } else {
+           urlnew = urlnew + "?timestamp=" + timestamp;
+       }
+       return urlnew;
+   }
 
    var wait=60;
    function time(o) {
@@ -148,13 +169,17 @@
                                 dialogFn("密码重置成功，请使用新密码登陆");
                                 var pageAddress='saler_login.html';
                                 linkPage(pageAddress);
-                            } else {
-
+                            } else if (data.data.status == 'imgValidfail'){
+                                dialogFn("图形验证码填写错误");
+                                changeImgCode();
+                            } else{
                                 dialogFn("密码重置失败");
+                                changeImgCode();
                             }
                          },
                         function(){
                             dialogFn("网络错误，请稍后再试");
+                            changeImgCode();
                         //$("#error").html("<span style='color:red'>网络有误，请稍后再试。</span>");
                         }
                     );

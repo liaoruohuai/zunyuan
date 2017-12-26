@@ -16,7 +16,7 @@ public class TxnSequence {
     public TxnSequence(){
         String NowDate = DateUtil.toString(new Date(),"yyyyMMdd");
         if (NowDate.equals(DateStamp)){
-            ++SellCardID;
+            SellCardID++;
         }else{
             SellCardID = 1;
             DateStamp = NowDate;
@@ -24,6 +24,7 @@ public class TxnSequence {
     }
     public static String getSellCardID() {
         DecimalFormat decimalFormat = new DecimalFormat("00000000");
-        return decimalFormat.format(SellCardID);
+        TxnSequence ts = new TxnSequence();
+        return decimalFormat.format(ts.SellCardID);
     }
 }
