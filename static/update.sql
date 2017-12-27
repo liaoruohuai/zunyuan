@@ -83,3 +83,20 @@ ALTER TABLE `zunyuandb`.`salesnetwork` CHANGE COLUMN `orgNumber` `orgNumber` VAR
 
 ALTER TABLE `zunyuandb`.`smslog`
 ADD INDEX `phoneNumber` (`phoneNum` ASC, `smsDate` ASC);
+
+
+
+
+CREATE TABLE `zunyuandb`.`coupon` (
+ `id` INT NOT NULL AUTO_INCREMENT,
+ `couponType` VARCHAR(8) NULL COMMENT '类型- 0 新户券',
+ `couponInfo` VARCHAR(128) NULL COMMENT '卡券核销代码',
+ `couponValidDate` VARCHAR(16) NULL COMMENT '卡券有效期\n',
+ `couponDesp` VARCHAR(128) NULL COMMENT '卡券说明',
+ `grantMember` VARCHAR(45) NULL COMMENT '赠予会员手机号\n',
+ `grantTime` VARCHAR(16) NULL COMMENT '赠予时间',
+ PRIMARY KEY (`id`))
+COMMENT = '卡券表';
+
+ALTER TABLE `zunyuandb`.`coupon`
+ADD COLUMN `couponStatus` VARCHAR(16) NULL AFTER `grantTime`;
