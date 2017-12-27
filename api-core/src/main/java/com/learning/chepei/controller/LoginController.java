@@ -13,6 +13,7 @@ import com.learning.util.basic.Constants;
 import com.learning.util.basic.ObjectUtil;
 import com.learning.util.basic.ValidateCode;
 import com.learning.util.basic.ValueUtil;
+import com.learning.util.date.DateUtil;
 import com.learning.util.exception.HzbuviException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -214,12 +217,21 @@ public class LoginController {
      * @return
      */
     @RequestMapping(value = "/smsValid")
-    public String smsValid(SmsLog smslog, HttpServletResponse response){
+    public String smsValid(SmsLog smslog, HttpServletRequest request, HttpServletResponse response){
         try {
+            String ImgVerify =SessionData.verifyValidImg(request,smslog.getSmsContent());
+            if (!ImgVerify.equals("ImgValidSucc")){
+                return ValueUtil.toJson("status", "imgValidfail");
+            }
+            /*检测该手机是否最近一分钟首次发送短信*/
+            if (!smsLogService.IsUniqueInLastMinute(smslog.getPhoneNum(), DateUtil.toString(new Date(),"yyyyMMddHHmmss"))){
+                return ValueUtil.toJson("status", "NotUniqueSms");
+            }
+
             String validNum = smsLogService.genValidNum();
             String phoneNum = smslog.getPhoneNum();
             String smsContent = "本次验证码: " + validNum + " 有效时间60秒,请注意保密";
-            String result = SmsKit.send(phoneNum, smsContent);
+            String result = "";//SmsKit.send(phoneNum, smsContent);
             smsLogService.saveSmsLog(phoneNum, smsContent, result);
             SessionData.validNum(response, validNum);
             return ValueUtil.toJson("status", "success");
@@ -238,10 +250,11 @@ public class LoginController {
     @RequestMapping(value = "/salerReset")
     public String Reset_saler(Saler saler,HttpServletRequest request){
         try {
-            String ImgVerify =SessionData.verifyValidImg(request,saler.getNetNumber());
+            /*String ImgVerify =SessionData.verifyValidImg(request,saler.getNetNumber());
             if (!ImgVerify.equals("ImgValidSucc")){
                 return ValueUtil.toJson("status", "imgValidfail");
-            }
+            }*/
+
             String oldValidNum=SessionData.verifyValidNum(request,saler.getSalerName());
             if (oldValidNum.equals("ValidSucc")){
                 String result=loginService.salerResetPwd(saler);
@@ -265,10 +278,10 @@ public class LoginController {
     @RequestMapping(value = "/memberRegister")
     public String Register_Member(Member member,HttpServletRequest request){
         try {
-            String ImgVerify =SessionData.verifyValidImg(request,member.getMemberPoint());
+            /*String ImgVerify =SessionData.verifyValidImg(request,member.getMemberPoint());
             if (!ImgVerify.equals("ImgValidSucc")){
                 return ValueUtil.toJson("status", "imgValidfail");
-            }
+            }*/
             String oldValidNum=SessionData.verifyValidNum(request,member.getMemberName());
             if (oldValidNum.equals("ValidSucc")){
                 String result=loginService.memberRegister(member);
@@ -298,10 +311,10 @@ public class LoginController {
     @RequestMapping(value = "/memberReset")
     public String Reset_Member(Member member,HttpServletRequest request){
         try {
-            String ImgVerify =SessionData.verifyValidImg(request,member.getMemberPoint());
+            /*String ImgVerify =SessionData.verifyValidImg(request,member.getMemberPoint());
             if (!ImgVerify.equals("ImgValidSucc")){
                 return ValueUtil.toJson("status", "imgValidfail");
-            }
+            }*/
             String oldValidNum=SessionData.verifyValidNum(request,member.getMemberName());
             if (oldValidNum.equals("ValidSucc")){
                 String result=loginService.memberResetPwd(member);
@@ -332,10 +345,16 @@ public class LoginController {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
 
-        HttpSession session = request.getSession();
+        //HttpSession session = request.getSession();
 
         ValidateCode vCode = new ValidateCode(120,40,5,100);
-        session.setAttribute("imgCode", vCode.getCode());
+        //request.getSession().setAttribute("imgCode", vCode.getCode());
+        request.getSession().setAttribute("imgCode", vCode.getCode());
+                //setAttribute("imgCode", vCode.getCode());
+        System.out.println("申请时的SessionId=[" + request.getSession(false).getId() + "]");
+        String JSESSIONID = request.getSession(false).getId();
+        Cookie cookie = new Cookie("JSESSIONID",JSESSIONID);
+        response.addCookie(cookie);
         System.out.println("New Call...Code of this time is : [" + vCode.getCode() + "]");
         vCode.write(response.getOutputStream());
         return null;

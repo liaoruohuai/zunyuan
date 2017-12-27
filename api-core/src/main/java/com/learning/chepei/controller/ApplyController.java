@@ -11,6 +11,7 @@ import com.learning.login.service.MemberService;
 import com.learning.order.entity.Apply;
 import com.learning.order.service.ApplyService;
 import com.learning.order.service.OrderService;
+import com.learning.util.basic.Constants;
 import com.learning.util.basic.ObjectUtil;
 import com.learning.util.basic.TxnSequence;
 import com.learning.util.basic.ValueUtil;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -56,7 +58,12 @@ public class ApplyController {
     @RequestMapping("/SalerSellCard")
     public String salerSellCard(Apply apply, HttpServletResponse response){
         try {
-            Apply resultApply = applyService.salerInitAppy(apply);
+            String searchResult = applyService.findOldApply(apply);
+            if (!searchResult.equals("NewCard")){
+                return ValueUtil.toJson("status", searchResult);
+            }
+
+            Apply resultApply = applyService.salerInitApply(apply);
             String message = SellCardServiceImpl.getXMLReq(resultApply);
 
             System.out.println("售卡请求报文：+ [" + message + "]");
@@ -107,5 +114,15 @@ public class ApplyController {
         PageModel pageModel = new PageModel((Page) result.get("page"));
         pageModel.setCondition(result.get("condition"));
         return  ValueUtil.toJson("apply",pageModel);
+    }
+    @RequestMapping(value = "getSalerApplyList")
+    public String getSalerApplyList(HttpServletRequest request, HttpServletResponse response){
+        try {
+            response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
+            String salerId = SessionData.verify(request,response);
+            return ValueUtil.toJson("applyList",applyService.getSalerApplyList(salerId));
+        } catch (HzbuviException e) {
+            return ValueUtil.toError(e.getCode(),"");
+        }
     }
 }

@@ -7,7 +7,7 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
-    <title>商品列表</title>
+    <title>我的售卡记录</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/index.css" />
     <style>
@@ -15,7 +15,7 @@
 </head>
 <body>
 <header class="header">
-    <h3 class="head_left"><a href="javaScript:void(0);" class="go_back"></a>商品列表</h3>
+    <h3 class="head_left"><a href="javaScript:void(0);" class="go_back"></a>售卡记录</h3>
 </header>
 <div class="con_color" style="padding-top: 60px;">
     <ul class="product_list_select">
@@ -27,12 +27,56 @@
 <script src="js/index.js"></script>
 <script src="js/ajaxJson.js"></script>
 <script>
+    var salers;
     $(function(){
         goBack();
         listInformation();
     });
+    function getUserInformation(){
+        getJSON(url+"/login/find_saler",
+            function(data){
+                var code=data.code;
+                if(code!="success"){
+                    return false;
+                }
+                salers=data.data.salers;
+                /*
+                var salerName=salers.salerName;
+                var netName=salers.netName;
+                $('.name').text(salerName);
+                $('.address').text(netName);
+                $('.salesId').text(salers.salerId);
+                */
+            },
+            function(){
+
+            })
+    }
     function listInformation(){
-        getJSON(url+"/product/load",
+        postJSON(
+            url + "/apply/getSalerApplyList",
+            '',
+            function(data){
+                var code=data.code;
+                if(code!='success'){
+                    return false;
+                }
+                var applyList=data.data.applyList;
+                var html='';
+                for(var i=0;i<applyList.length;i++){
+                    var applyCard=applyList[i].applyCard;
+                    var IdNum=applyList[i].idNum;
+                    var mobile=applyList[i].mobile;
+                    html+='<li data-applyCard="'+applyCard+'" data-IdNum="'+IdNum+'"><a href="javaScript:void(0);">'+applyCard+'<i class=""></i></a></li>'
+                }
+                $('.product_list_select').html(html);
+                //listSelected();
+            },
+            function(){
+
+            }
+        )
+        /*getJSON(url+"/product/load",
                 function(data){
                     var code=data.code;
                     if(code!='success'){
@@ -51,7 +95,7 @@
                 },
                 function(){
 
-                })
+                })*/
     }
     function listSelected(){
         $('.product_list_select li a').off('click').on('click',function(){

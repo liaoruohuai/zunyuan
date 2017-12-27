@@ -9,6 +9,8 @@ import com.learning.util.basic.TxnSequence;
 import com.learning.util.basic.ValueUtil;
 import com.learning.util.comm.RanKit;
 import com.learning.util.date.DateUtil;
+import com.learning.util.exception.HzbuviException;
+import javafx.collections.transformation.SortedList;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -25,9 +27,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -40,6 +40,45 @@ public class ApplyService {
 
     private static int defaultPageSize = 15;
 
+    /**
+     * 查询员工的售卡记录
+     */
+    public List<Map<String,Object>> getSalerApplyList(String salesId) throws HzbuviException{
+        List<Map<String,Object>> results=new ArrayList<>();
+        List<Apply> applys = applyRepository.findBySalesIdAndApplyStatus(salesId,"1");
+
+        applys.forEach(apply -> {
+            if ("1".equals(apply.getApplyStatus())){
+                Map<String,Object> map=new HashMap<>();
+                map.put("applyCard",apply.getApplyCard());
+                map.put("name",apply.getName());
+                map.put("idNum",apply.getIdNum());
+                map.put("applyTime",apply.getApplyDate()+apply.getApplyTime());
+                map.put("mobile",apply.getMobile());
+                map.put("gender",apply.getGender());
+                results.add(map);
+            }
+        });
+        return results;
+    }
+
+    /**
+     * 查询是否已有同卡号申请成功
+     *
+     */
+    public String findOldApply(Apply apply){
+        Apply oldApply = applyRepository.findByApplyCardAndApplyResp(apply.getApplyCard(),"0000");
+        if (ObjectUtil.isEmpty(oldApply)){
+            return "NewCard";
+        } else if(oldApply.getName().equals(apply.getName()) &&
+                  oldApply.getIdNum().equals(apply.getIdNum()) &&
+                  oldApply.getMobile().equals(apply.getMobile())
+                ) {
+            return "success";
+        } else{
+            return "ApplyByAnotherOne";
+        }
+    }
 
     /**
      * 员工售卡预设Apply信息
@@ -47,7 +86,7 @@ public class ApplyService {
      * @param apply
      * @return
      */
-    public Apply salerInitAppy(Apply apply){
+    public Apply salerInitApply(Apply apply){
         apply.setApplyId(DateUtil.toString(new Date(),"yyyyMMddHHmmss") + TxnSequence.getSellCardID());
         apply.setApplyType("1");
         apply.setApplyDate(DateUtil.toString(new Date(),"yyyyMMdd"));
