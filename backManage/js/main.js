@@ -1016,9 +1016,9 @@ require(['jquery','bbx','validate-zh','custom','ue','pager'],function($,bootbox)
                   readyForPager(_this,data.data.apply);
                   $('#search-form').data({ context: _this, key: 'coupon' });
 
-                  $('#import').on('click',function(){
+                  $('#send').on('click',function(){
                    //   window.open(dataUrl +'/downLoad/apply');
-                      window.location.href = dataUrl + '/upLoad/coupon?' + $("#search-form").serialize();
+                      window.location.href = dataUrl + '/coupon/sms';
                   });
               }
           },

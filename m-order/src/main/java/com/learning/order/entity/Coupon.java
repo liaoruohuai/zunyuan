@@ -17,7 +17,7 @@ public class Coupon {
     private String couponDesp;
     private String grantMember;
     private String grantTime;
-    private String couponStatus;
+    private String couponStatus; //0-未发送，1-待发送，2-已发送
 
 
     public String getCouponStatus() {

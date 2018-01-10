@@ -1,18 +1,11 @@
 package com.learning.order.service;
 
 import com.learning.order.entity.Apply;
-import com.learning.order.entity.Orders;
 import com.learning.order.repository.ApplyRepository;
-import com.learning.util.basic.Constants;
 import com.learning.util.basic.ObjectUtil;
 import com.learning.util.basic.TxnSequence;
 import com.learning.util.basic.ValueUtil;
-import com.learning.util.comm.RanKit;
 import com.learning.util.date.DateUtil;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

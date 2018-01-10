@@ -1,8 +1,11 @@
 package com.learning.order.service;
 
+import com.learning.login.entity.Member;
+import com.learning.login.repository.MemberRepository;
 import com.learning.order.entity.Coupon;
 import com.learning.order.repository.CouponRepository;
 import com.learning.util.basic.ValueUtil;
+import com.learning.util.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +18,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +30,9 @@ import java.util.Map;
 public class CouponService {
     @Autowired
     private CouponRepository couponRepository;
+    @Autowired
+    private MemberRepository memberRepository;
+
     private static int defaultPageSize = 15;
 
     /**
@@ -47,10 +55,10 @@ public class CouponService {
 
         //new Sort(Direction.DESC, new String[] { "id" }
         Pageable pageable = new PageRequest(Integer.valueOf(page), defaultPageSize, new Sort(Sort.Direction.DESC, new String[]{"couponType"}));
-        Page<Coupon> applies = couponRepository.findAll(getWhereClause(couponStatus, grantMember), pageable);
+        Page<Coupon> coupons = couponRepository.findAll(getWhereClause(couponStatus, grantMember), pageable);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("page", applies);
+        map.put("page", coupons);
         map.put("condition", map1);
         return map;
     }
@@ -75,5 +83,37 @@ public class CouponService {
         };
     }
 
+
+
+    public int PreCoupons(){
+        //已开户，未发券的客户
+        List<Member> members = memberRepository.findByIsActiveAndIsCouponed("1","0");
+        //未发送的礼券
+        List<Coupon> coupons = couponRepository.findAll(getWhereClause("0", null));
+
+        int sendcoupons = Math.min(members.size(),coupons.size());
+        for(int i = 0; i < sendcoupons;i++){
+            Member member = members.get(i);
+            Coupon coupon = coupons.get(i);
+
+            member.setIsCouponed("1");
+            memberRepository.save(member);
+            //待发送
+            coupon.setCouponStatus("1");
+            coupon.setGrantMember(member.getMemberPhone());
+            coupon.setGrantTime(DateUtil.toString(new Date(),"yyyyMMdd"));
+            couponRepository.save(coupon);
+        }
+        //总共待发送礼券数量
+        return sendcoupons;
+    }
+
+        public   List<Coupon> findSendCoupon(){
+            return couponRepository.findAll(getWhereClause("1", null));
+        }
+
+        public void save(Coupon coupon){
+            couponRepository.save(coupon);
+        }
 
 }

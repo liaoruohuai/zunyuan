@@ -6,6 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
 /**
  * Author:LRH
  * Date:2017/12/11
@@ -22,4 +25,6 @@ public interface MemberRepository extends JpaRepository<Member,String> {
     Page<Member> findAll(Specification<Member> whereClause, Pageable pageable);
 
     Member  findByMemberId(String MemberId);
+
+    List<Member> findByIsActiveAndIsCouponed(String isActive,String isCouponed);
 }

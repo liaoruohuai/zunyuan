@@ -18,7 +18,24 @@ public class Member {
     private String memberPoint;//会员积分,
     private String isInitPwd;//是否初始密码修改标志，0-未修改，1-已修改
     private String lastLoginTime;//最后登录时间,
+    private String isActive;//是否开户 1-开户 0-没开
+    private String isCouponed;//是否已经发券 1-已发，0-没发
 
+    public String getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
+    }
+
+    public String getIsCouponed() {
+        return isCouponed;
+    }
+
+    public void setIsCouponed(String isCouponed) {
+        this.isCouponed = isCouponed;
+    }
 
     public Integer getMemberId() {
         return memberId;

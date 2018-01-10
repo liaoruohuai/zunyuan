@@ -16,6 +16,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,5 +87,9 @@ public class MemberService {
                 return predicate;
             }
         };
+    }
+
+    public List<Member> findByIsActiveAndIsCouponed(String isActive, String isCouponed){
+        return  memberRepository.findByIsActiveAndIsCouponed(isActive,isCouponed);
     }
 }
