@@ -51,10 +51,10 @@
                         <input class="user_name_input verify_form client_info" name="name" type="text" placeholder="请填写客户姓名">
                     </a></li>
                     <li><a class="special_a"><span class="client_infor">证件号</span>
-                        <input class="user_name_input verify_form client_info" name="idNum" type="text" placeholder="请输入合法证件号" minlength="18" maxlength="18">
+                        <input class="user_name_input verify_form client_info" name="idNum" type="text" placeholder="请输入客户身份证" minlength="18" maxlength="18">
                     </a></li>
                     <li><a class="special_a"><span class="client_infor">证件到期日</span>
-                        <input class="user_name_input verify_form client_info" name="idDate" type="text" placeholder="请输入证件有效截至日期" maxlength="8">
+                        <input class="user_name_input verify_form client_info" name="idDate" type="text" placeholder="例如：20590101" maxlength="8">
                     </a></li>
                     <li><a class="special_a"> <span class="client_infor">客户手机号</span>
                         <input class="user_name_input verify_form phone client_info" name="mobile" type="text" placeholder="请填写客户手机号码" min="11" maxlength="11">
@@ -112,11 +112,14 @@
                 url+"/apply/SalerSellCard",
                 $('#sell-card-form').serialize() + "&salesId=" + salers.salerId,
                 function(data){
-                    if (data.data.status == 'success') {
+                    if (data.data.status == 'success'){
                         dialogFn("售卡成功");
                         return true;
                         /*var pageAddress='saler_afterlogin.html';
                         linkPage(pageAddress);*/
+                    } else if (data.data.status == 'ApplyByAnotherOne'){
+                        dialogFn("该卡已被售给其他客户，请换卡");
+                        return true;
                     } else {
                         dialogFn("售卡失败: " + data.data.status);
                         return false;

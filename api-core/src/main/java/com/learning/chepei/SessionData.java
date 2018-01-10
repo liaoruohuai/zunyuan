@@ -75,10 +75,12 @@ public class SessionData {
     public static String verifyValidImg(HttpServletRequest request, String newValidImg) throws HzbuviException {
         //response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
 
-        String oldImgCode = (String) request.getSession().getAttribute("imgCode");
-
+        //System.out.println("验证时的SeesionID = [" + request .getId() + "]");
+        String oldImgCode = (String) request.getSession(false).getAttribute("imgCode");
+        System.out.println("验证时的SeesionID = [" + request.getSession(false).getId() + "]");
+        System.out.println("后台生成的验证码=[" + oldImgCode + "],用户填写的验证码=[" + newValidImg + "]");
         if (!ObjectUtil.isEmpty(oldImgCode)) {
-            if (oldImgCode.equals(newValidImg)){
+            if (oldImgCode.equalsIgnoreCase(newValidImg)){
                 return "ImgValidSucc";
             } else{
                 return "ImgValidFail";

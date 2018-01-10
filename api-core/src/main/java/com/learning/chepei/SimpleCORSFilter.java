@@ -1,5 +1,7 @@
 package com.learning.chepei;
 
+
+import com.learning.util.basic.Constants;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -21,7 +23,7 @@ public class SimpleCORSFilter implements Filter{
     @Override
     public void doFilter(ServletRequest request, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
-        response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:8081");
+        response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,X-Session");

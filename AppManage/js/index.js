@@ -13,8 +13,23 @@ function dialogFn(messages){
     var d = dialog({
         title: '提示',
         content:messages,
+        //Modal: true,
+        lock: true,
        ok:function(){}
     });
     d.width(200);
-    d.show();
+    d.showModal();
+}
+
+function dialogFn_SUC(messages,linkpage){
+    var d = dialog({
+        title: '提示',
+        content:messages,
+        //Modal: true,
+        ok:function(){
+            linkPage(linkpage);
+        }
+    });
+    d.width(200);
+    d.showModal();
 }
