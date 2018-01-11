@@ -7,7 +7,7 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
-    <title>我的售卡记录</title>
+    <title>尊远员工--售卡记录</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/index.css" />
     <style>
@@ -22,8 +22,8 @@
 
     </ul>
 </div>
-<!--<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>-->
-<script src="js/jquery-2.1.4.js"></script>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<!--<script src="js/jquery-2.1.4.js"></script>-->
 <script src="js/index.js"></script>
 <script src="js/ajaxJson.js"></script>
 <script>
@@ -67,7 +67,7 @@
                     var applyCard=applyList[i].applyCard;
                     var IdNum=applyList[i].idNum;
                     var mobile=applyList[i].mobile;
-                    html+='<li data-applyCard="'+applyCard+'" data-IdNum="'+IdNum+'"><a href="javaScript:void(0);">'+applyCard+'<i class=""></i></a></li>'
+                    html+='<li data-applyCard="'+applyCard+'" data-IdNum="'+IdNum+'"><a href="javaScript:void(0);" font="8">'+applyCard+'<i class=""></i></a></li>'
                 }
                 $('.product_list_select').html(html);
                 //listSelected();
@@ -76,26 +76,6 @@
 
             }
         )
-        /*getJSON(url+"/product/load",
-                function(data){
-                    var code=data.code;
-                    if(code!='success'){
-                        return false;
-                    }
-                    var products=data.data.products;
-                    var html='';
-                    for(var i=0;i<products.length;i++){
-                        var productName=products[i].productName;
-                        var prudctId=products[i].prudctId;
-                        var pruductPrice=products[i].pruductPrice;
-                        html+='<li data-prudctid="'+prudctId+'" data-pruductprice="'+pruductPrice+'"><a href="javaScript:void(0);">'+productName+'<i class=""></i></a></li>'
-                    }
-                    $('.product_list_select').html(html);
-                    listSelected();
-                },
-                function(){
-
-                })*/
     }
     function listSelected(){
         $('.product_list_select li a').off('click').on('click',function(){

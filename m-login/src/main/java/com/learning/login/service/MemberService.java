@@ -2,6 +2,7 @@ package com.learning.login.service;
 
 import com.learning.login.entity.Member;
 import com.learning.login.repository.MemberRepository;
+import com.learning.util.basic.ObjectUtil;
 import com.learning.util.basic.ValueUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,42 @@ public class MemberService {
     public String insert(Member member){
         memberRepository.save(member);
         return member.getMemberId().toString();
+    }
+
+    public String updateMemberInfo(Member oldMember){
+        Member resultMember = memberRepository.findByMemberId(oldMember.getMemberId());
+        if (ObjectUtil.isEmpty(resultMember)){
+            return "MemberNotFound";
+        } else{
+            try {
+                resultMember.setMemberName(oldMember.getMemberName());
+                resultMember.setMemberCertNo(oldMember.getMemberCertNo());
+                resultMember.setMemberGender(oldMember.getMemberGender().replace("男", "1").replace("女", "2"));
+                resultMember.setMemberCertType("1");
+                resultMember.setMemberVocation(oldMember.getMemberVocation());
+                resultMember.setMemberCertDate(oldMember.getMemberCertDate());
+                resultMember.setMemberFamilyAddress(oldMember.getMemberFamilyAddress());
+                resultMember.setMemberBirth(oldMember.getMemberCertNo().substring(6,14));
+
+                String[] address = oldMember.getMemberCity().split(" ");
+                for (int i = 0, len = address.length; i < len; i++) {
+                    switch (i) {
+                        case 0:
+                            resultMember.setMemberProvince(address[0]);
+                        case 1:
+                            resultMember.setMemberCity(address[1]);
+                        case 2:
+                            resultMember.setMemberDistrict(address[2]);
+                        default:
+                            break;
+                    }
+                }
+                memberRepository.save(resultMember);
+                return "success";
+            }catch (Exception e) {
+                return ValueUtil.toError(e.toString(),e.getMessage());
+            }
+        }
     }
 
     /**

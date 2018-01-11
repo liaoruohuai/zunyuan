@@ -231,7 +231,7 @@ public class LoginController {
             String validNum = smsLogService.genValidNum();
             String phoneNum = smslog.getPhoneNum();
             String smsContent = "本次验证码: " + validNum + " 有效时间60秒,请注意保密";
-            String result = "";//SmsKit.send(phoneNum, smsContent);
+            String result = SmsKit.send(phoneNum, smsContent);
             smsLogService.saveSmsLog(phoneNum, smsContent, result);
             SessionData.validNum(response, validNum);
             return ValueUtil.toJson("status", "success");

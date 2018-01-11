@@ -1,7 +1,9 @@
 package com.learning.chepei.controller;
 
 import com.learning.chepei.PageModel;
+import com.learning.login.entity.Member;
 import com.learning.login.service.MemberService;
+import com.learning.util.basic.ObjectUtil;
 import com.learning.util.basic.ValueUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,5 +30,21 @@ public class MemberController {
         PageModel pageModel = new PageModel((Page) result.get("page"));
         pageModel.setCondition(result.get("condition"));
         return  ValueUtil.toJson("member",pageModel);
+    }
+
+    /**
+     * 会员信息修改接口
+     * @param member
+     * @param response
+     * @return
+     */
+    @RequestMapping("/updateMemberInfo")
+    public String updateMemberInfo(Member member, HttpServletResponse response){
+        try {
+            String result = memberService.updateMemberInfo(member);
+            return ValueUtil.toJson("status", result);
+        } catch (Exception e) {
+            return ValueUtil.toError(e.getMessage(),"");
+        }
     }
 }

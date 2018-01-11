@@ -126,6 +126,7 @@ public class LoginService {
             resultMember.setMemberPwd(memberPwd);
             resultMember.setIsInitPwd("1");
             resultMember.setMemberLevel("1");//暂用会员等级表示会员来源，1-自主注册，2-员工售卡导流
+            resultMember.setRegistTime(DateUtil.toString(new Date(),"yyyyMMddHHmmss"));//增加会员注册时间记录
             System.out.println(resultMember.toString());
             memberRepository.save(resultMember);
             return "MemberRegisterSucc";
@@ -228,12 +229,30 @@ public class LoginService {
     public Map<String,Object> findMember(Integer memberId) throws HzbuviException{
         Member member = memberRepository.findByMemberId(memberId);
         Map<String,Object> map=new HashMap<>();
-        if (ObjectUtil.isEmpty(member.getMemberName())){
-            map.put("memberName","NULL");
-        }else{
-            map.put("memberName",member.getMemberName());
-        }
+        map.put("memberId",member.getMemberId());
+        map.put("memberName",(ObjectUtil.isEmpty(member.getMemberName()) == true) ? "NULL" : member.getMemberName());
         map.put("memberPhone",member.getMemberPhone());
+        map.put("memberCertNo",(ObjectUtil.isEmpty(member.getMemberCertNo()) == true) ? "NULL" : member.getMemberCertNo());
+        map.put("memberVocation",(ObjectUtil.isEmpty(member.getMemberVocation()) == true) ? "NULL" : member.getMemberVocation());
+        map.put("memberCertDate",(ObjectUtil.isEmpty(member.getMemberCertDate()) == true) ? "NULL" : member.getMemberCertDate());
+        map.put("memberFamilyAddress",(ObjectUtil.isEmpty(member.getMemberFamilyAddress()) == true) ? "NULL" : member.getMemberFamilyAddress());
+        map.put("memberGender",(ObjectUtil.isEmpty(member.getMemberGender()) == true) ? "NULL" : member.getMemberFamilyAddress().replace("1","男").replace("2","女"));
+        //map.put("memberProvince",(ObjectUtil.isEmpty(member.getMemberProvince()) == true) ? "NULL" : member.getMemberProvince());
+        //会员城市，以省份是否为空来判断有无信息，返回值也是省+城+区拼接，但前台传回来要分开存
+        map.put("memberCity",
+                (ObjectUtil.isEmpty(member.getMemberProvince()) == true)
+                        ? "NULL" : member.getMemberProvince()+ " " + member.getMemberCity() + " " + member.getMemberDistrict());
+        map.put("memberInfoFull",
+                (
+                        ObjectUtil.isEmpty(member.getMemberName()) ||
+                        ObjectUtil.isEmpty(member.getMemberCertNo()) ||
+                        ObjectUtil.isEmpty(member.getMemberPhone()) ||
+                        ObjectUtil.isEmpty(member.getMemberVocation()) ||
+                        ObjectUtil.isEmpty(member.getMemberCertDate()) ||
+                        ObjectUtil.isEmpty(member.getMemberFamilyAddress()) ||
+                        ObjectUtil.isEmpty(member.getMemberProvince())
+                )?"NotFull":"Full"
+                );
         return map;
     }
     public String insert(Saler saler) {

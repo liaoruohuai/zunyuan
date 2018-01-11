@@ -7,7 +7,7 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
-    <title>尊远</title>
+    <title>尊远员工-重置密码</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="artDialog/css/ui-dialog.css">
@@ -16,7 +16,10 @@
     </style>
 </head>
 <body>
-<div class="container" style="padding: 10px 10px 30px 10px;" >
+<header class="header">
+    <h3 class="head_left"><a href="javaScript:void(0);" class="go_back"></a>修改登陆密码</h3>
+</header>
+<div class="container" style="padding: 60px 10px 30px 10px;" >
     <div class="logo"><img src="img/zunyuan_logo.jpg" alt=""></div>
     <div class="form" id="login">
         <section>
@@ -27,13 +30,13 @@
                 </div>
                 <div class="each_content">
                     <input type="text" placeholder="请输入图形验证码" class="img_valid verify_form" name="netNumber" maxlength="5"/>
-                    <img id="imgObj" alt="验证码" src="http://127.0.0.1:8080/zunyuan/basic/login/validateCode" onclick="changeImgCode()"/>
+                    <img id="imgObj" alt="验证码" src="/zunyuan/basic/login/validateCode" onclick="changeImgCode()"/>
                     <!--input type="button" class="button_valid" id="getValidPic" value="发送验证码"/>-->
                     <!-- <button class="button_valid" id="getVaildNum" onclick="time(this)" ></button>-->
                 </div>
                 <div class="each_content">
                     <input type="text" placeholder="请输入短信验证码" class="user_valid verify_form" name="salerName"/>
-                    <input type="button" class="button_valid" id="getVaildNum" value="发送验证码"/>
+                    <input type="button" class="button_valid" id="getVaildNum" value="获取验证码"/>
                    <!-- <button class="button_valid" id="getVaildNum" onclick="time(this)" ></button>-->
                 </div>
                 <div class="each_content">
@@ -64,6 +67,7 @@
    $(function(){
        resetPwd();
        getValidNum();
+       goBack();
     });
 
    function changeImgCode() {
@@ -115,7 +119,6 @@
                time(obj);
 
                var strbody= "phoneNum=" + $('.phone_number').val() + "&smsContent=" + $('.img_valid').val();
-               alert(strbody);
                //alert($('#saler-resetPwd-form').serialize());
                postJSON(
                    url+"/login/smsValid",
@@ -179,7 +182,7 @@
                         $('#saler-resetPwd-form').serialize(),
                         function(data){
                             if (data.data.status == 'success') {
-                                dialogFn_SUC("密码重置成功，请使用新密码登陆","saler_login.html");
+                                dialogFn_SUC("密码重置成功，请使用新密码登录","saler_login.html");
                                 /*var pageAddress='saler_login.html';
                                 linkPage(pageAddress);*/
                             } else if (data.data.status == 'imgValidfail'){

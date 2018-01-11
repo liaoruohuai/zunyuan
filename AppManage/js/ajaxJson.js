@@ -13,7 +13,7 @@
         success: function (data, status, xhr) {
            e(data);
         },
-        error: function (xhr, errorType, error) {
+        error: function () {
            f();
         }
     });

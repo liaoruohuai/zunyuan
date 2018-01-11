@@ -55,6 +55,22 @@ public class ApplyController {
      * @param response
      * @return
      */
+    @RequestMapping("/memberApplyCard")
+    public String memberApplyCard(Apply apply, HttpServletResponse response) {
+        try {
+            String searchResult = applyService.memberApply(apply);
+            return ValueUtil.toJson("status", searchResult);
+        }catch (Exception e) {
+            return ValueUtil.toError(e.getMessage(),"");
+        }
+    }
+
+    /**
+     * 员工售卡接口
+     * @param apply
+     * @param response
+     * @return
+     */
     @RequestMapping("/SalerSellCard")
     public String salerSellCard(Apply apply, HttpServletResponse response){
         try {
@@ -85,6 +101,7 @@ public class ApplyController {
                 newMember.setIsInitPwd("0");
                 newMember.setMemberLevel("2");
                 newMember.setMemberPoint("0");
+                newMember.setRegistTime(DateUtil.toString(new Date(),"yyyyMMddHHmmss"));
 
                 memberService.insert(newMember);
                 if (ObjectUtil.isEmpty(newMember.getMemberId())) {
@@ -115,12 +132,28 @@ public class ApplyController {
         pageModel.setCondition(result.get("condition"));
         return  ValueUtil.toJson("apply",pageModel);
     }
+
     @RequestMapping(value = "getSalerApplyList")
     public String getSalerApplyList(HttpServletRequest request, HttpServletResponse response){
         try {
             response.setHeader("Access-Control-Allow-Origin", Constants.frontManageUrl);
             String salerId = SessionData.verify(request,response);
             return ValueUtil.toJson("applyList",applyService.getSalerApplyList(salerId));
+        } catch (HzbuviException e) {
+            return ValueUtil.toError(e.getCode(),"");
+        }
+    }
+
+    /**
+     * 根据会员id查找申请(APP)
+     * @param request
+     * @return
+     */
+    @RequestMapping("/findMemberApply")
+    public String findMember(HttpServletRequest request, HttpServletResponse response){
+        try {
+            Integer memberId = Integer.parseInt(SessionData.verify(request,response));
+            return ValueUtil.toJson("applys",applyService.findMemberApply(memberId));
         } catch (HzbuviException e) {
             return ValueUtil.toError(e.getCode(),"");
         }

@@ -7,7 +7,7 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
-    <title>尊远</title>
+    <title>尊远员工--售卡</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="artDialog/css/ui-dialog.css">
     <link rel="stylesheet" href="css/index.css" />
@@ -17,7 +17,7 @@
 </head>
 <body>
 <header class="header">
-    <h3 class="head_left"><a href="#" class="go_back"></a>员工售卡</h3>
+    <h3 class="head_left"><a href="javaScript:void(0);" class="go_back"></a>员工售卡</h3>
 </header>
 <div class="con_color">
     <div class="person_information pro_page_personInf">
@@ -45,7 +45,7 @@
             <section>
                 <form action="" target="_self" id="sell-card-form" method="post">
                     <li><a class="special_a"><span class="client_infor">卡号</span>
-                        <input class="user_name_input verify_form client_info" name="applyCard" type="text" placeholder="请输入卡号" minlength="16" maxlength="19">
+                        <input class="user_name_input verify_form client_info" name="applyCard" type="text" placeholder="请输入联名卡卡号" minlength="16" maxlength="19">
                     </a></li>
                     <li><a class="special_a"><span class="client_infor">姓名</span>
                         <input class="user_name_input verify_form client_info" name="name" type="text" placeholder="请填写客户姓名">
@@ -118,7 +118,7 @@
                         /*var pageAddress='saler_afterlogin.html';
                         linkPage(pageAddress);*/
                     } else if (data.data.status == 'ApplyByAnotherOne'){
-                        dialogFn("该卡已被售给其他客户，请换卡");
+                        dialogFn("售卡失败：该卡已被售给其他客户，请换卡");
                         return true;
                     } else {
                         dialogFn("售卡失败: " + data.data.status);
@@ -129,30 +129,6 @@
                     dialogFn("网络错误，请稍后再试");
                 }
             );
-
-            /*getJSON(url+"/order/sell?productId="+prudctId+"&pruductPrice="+pruductPrice+"&customerName="+clientName+"&customerPhone="+phone,
-                    function(data){
-                        console.log(data);
-                        var code=data.code;
-                        var sellCode=data.data.sellCode;
-                        var status=data.data.status;
-                        var message=data.data.message;
-                        if(code!='success'){
-                            return false;
-                        }
-                        if(status=='fail'){
-                            dialogFn(message);
-                            return false;
-                        }
-
-                        $('.sail_succ_content').css('display','block');
-                        $('.product_list_select').css('display','none');
-                        $('.product_number').text(sellCode);
-                        $('#sail').html('返回');
-
-                    },
-                    function(){
-                    })*/
         })
     }
 

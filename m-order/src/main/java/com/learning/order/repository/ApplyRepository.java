@@ -24,4 +24,6 @@ public interface  ApplyRepository extends JpaRepository<Apply,String> {
 
     List<Apply> findBySalesIdAndApplyStatus(String salesId, String applyStatus);
 
+    Apply findByMemberIdAndApplyTypeIs(Integer memberId, String applyType);
+
 }
