@@ -14,7 +14,7 @@ body{
    padding: 60px 10px 30px 10px;
 }
 .logo{
-    margin: 40px auto 40px;
+    margin: 20px auto 10px;
     width: 80%;
 }
 .logo img{
@@ -324,8 +324,8 @@ h3.head_left{
     background-color: #FBFBFB!important;
     width: 100%;
     padding-top: 40px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 .product_list_select{
     width: 100%;
@@ -563,4 +563,7 @@ i.select{
 {
     background-color: #999;
     color: #fff;
+}
+footer{
+    font-size:12px;
 }

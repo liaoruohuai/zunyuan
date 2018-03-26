@@ -26,4 +26,6 @@ public interface  ApplyRepository extends JpaRepository<Apply,String> {
 
     Apply findByMemberIdAndApplyTypeIs(Integer memberId, String applyType);
 
+    Apply findByLastUpdateTime(String lastUpdateTime);
+
 }

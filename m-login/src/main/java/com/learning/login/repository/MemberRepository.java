@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface MemberRepository extends JpaRepository<Member,String> {
 
     Member findByMemberId(Integer memberId);
+
     Member findByMemberPhone(String memberPhone);
 
     @Query("select max (memberId) from Member")
@@ -21,5 +22,7 @@ public interface MemberRepository extends JpaRepository<Member,String> {
 
     Page<Member> findAll(Specification<Member> whereClause, Pageable pageable);
 
-    Member  findByMemberId(String MemberId);
+    Member findByMemberId(String MemberId);
+
+    Member findByMemberWxOpenid(String MemberWxOpenid);
 }

@@ -2,9 +2,11 @@ package com.learning.login.service;
 
 import com.learning.login.entity.Member;
 import com.learning.login.entity.Saler;
+import com.learning.login.entity.SysConfig;
 import com.learning.login.entity.User;
 import com.learning.login.repository.MemberRepository;
 import com.learning.login.repository.SalerRepository;
+import com.learning.login.repository.SysConfigRepository;
 import com.learning.login.repository.UserRepository;
 import com.learning.salesNetwork.entity.SalesNetwork;
 import com.learning.salesNetwork.repository.SalesNetRepository;
@@ -50,10 +52,12 @@ public class LoginService {
     private UserRepository userRepository;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private SysConfigRepository sysConfigRepository;
 
     private static int defaultPageSize = 10;
 
-    private static final Logger logger = LoggerFactory.getLogger("OrderWebServiceImpl");
+    private static final Logger logger = LoggerFactory.getLogger("LoginService");
 
     public String salerLogin(Saler saler) throws Exception{
         //String salerName=saler.getSalerName();
@@ -95,7 +99,7 @@ public class LoginService {
         String memberPhone=member.getMemberPhone();
         String memberPwd=member.getMemberPwd();
         System.out.println("This line is for test:" + memberPhone + " " + memberPwd);
-        ValueUtil.verify(memberPhone,"salerName null");
+        ValueUtil.verify(memberPhone,"memberPhone null");
         Member resultMember = memberRepository.findByMemberPhone(memberPhone);
 
         if (ObjectUtil.isEmpty(resultMember)){
@@ -104,6 +108,10 @@ public class LoginService {
         else if (resultMember.getMemberPwd().equals(member.getMemberPwd()))
         {
             resultMember.setLastLoginTime(DateUtil.toString(new Date(),"yyyyMMddHHmmss"));
+            if (!ObjectUtil.isEmpty(member.getMemberWxOpenid())&&!"NULL".equals(member.getMemberWxOpenid()))
+                resultMember.setMemberWxOpenid(member.getMemberWxOpenid());
+            if (!ObjectUtil.isEmpty(member.getMemberHeadImgUrl())&&!"NULL".equals(member.getMemberHeadImgUrl()))
+                resultMember.setMemberHeadImgUrl(member.getMemberHeadImgUrl());
             memberRepository.save(resultMember);
             return resultMember.getMemberId().toString();
         }else{
@@ -253,6 +261,7 @@ public class LoginService {
                         ObjectUtil.isEmpty(member.getMemberProvince())
                 )?"NotFull":"Full"
                 );
+        map.put("memberHeadImgUrl",(ObjectUtil.isEmpty(member.getMemberHeadImgUrl()) == true) ? "NULL" : member.getMemberHeadImgUrl());
         return map;
     }
     public String insert(Saler saler) {
@@ -306,5 +315,39 @@ public class LoginService {
         newsaler.setIsInitPwd(saler.getIsInitPwd());
         salerRepository.save(newsaler);
         return "success";
+    }
+
+    public SysConfig getAccessToken(){
+        return sysConfigRepository.findByKeyName("access_token");
+    }
+
+    public String getAccessTokenValue(){
+        return sysConfigRepository.findByKeyName("access_token").getContent();
+    }
+
+    public String saveAccessToken(String newToken){
+        SysConfig newsys = sysConfigRepository.findByKeyName("access_token");
+        newsys.setLastTime(DateUtil.toString(new Date(),"yyyyMMddHHmmss"));
+        newsys.setContent(newToken);
+        sysConfigRepository.save(newsys);
+        logger.info("本次Token更新时间=[" + newsys.getLastTime() + "], Content=[" + newsys.getContent() + "]" );
+        return "success";
+    }
+
+    public Integer findMemberByWx(Member member){
+        try {
+            Member newMemebr = memberRepository.findByMemberWxOpenid(member.getMemberWxOpenid());
+            if (ObjectUtil.isEmpty(newMemebr)) {
+                return -1;
+            } else {
+                newMemebr.setMemberHeadImgUrl(member.getMemberHeadImgUrl());
+                memberRepository.save(newMemebr);
+                return newMemebr.getMemberId();
+            }
+        }catch (Exception e){
+            logger.info(ValueUtil.toError("findException", e.getMessage()));
+            return -2;
+        }
+
     }
 }

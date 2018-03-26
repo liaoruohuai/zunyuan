@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>联名卡推广--忘记密码</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="artDialog/css/ui-dialog.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<header class="header">
+    <h3 class="head_left"><a href="javaScript:void(0);" class="go_back"></a>修改登录密码</h3>
+</header>
+<div class="container">
+    <ul class="saler_pwd_hex">
+
+    </ul>
+    <footer class="footer">Powered By Zunyuan Technology Co,.Ltd </footer>
+</div>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="js/ajaxJson.js"></script>
+<script src="artDialog/dist/dialog-min.js"></script>
+<script src="js/index.js"></script>
+<script src="js/md5.js"></script>
+<script>
+   $(function(){
+       ToHex5();
+    });
+
+   function ToHex5() {
+       var salerList=[
+           '13462161680',
+           '15937470257',
+           '13698891117'
+       ];
+       var html='';
+       for(var i=0;i<salerList.length;i++){
+           var phone = salerList[i];
+           var pwdReal= phone.substring(5);
+           var pwdHex=hex_md5(pwdReal);
+           html+='<li data-pwdHex="'+phone+'" data-IdNum="'+pwdReal+'"><a href="javaScript:void(0);" font="8">'+ 'update saler set salePwd =\''+pwdHex+'\' where salerPhone = \'' + phone +'\'; <i class=""></i></a></li>'
+       }
+       $('.saler_pwd_hex').html(html);
+   }
+
+
+
+</script>
+</body>
+</html>

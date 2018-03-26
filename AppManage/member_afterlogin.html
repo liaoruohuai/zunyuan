@@ -7,7 +7,7 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
-    <title>尊远会员--HOME页面</title>
+    <title>联名卡推广--会员HOME页面</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="artDialog/css/ui-dialog.css"/>
@@ -21,7 +21,7 @@
 </header>
 <div class="container">
     <div class="person_information">
-        <div class="left_icon"><img src="img/c-guy@3x.png" alt=""></div>
+        <div class="left_icon"><img src="img/c-guy@3x.png" alt="" id="headUrl"></div>
         <div class="right_text">
             <ul class="right_ul">
                 <div>
@@ -70,6 +70,7 @@
         })
     }
     function getUserInformation(){
+	var imgSrc = $("#headUrl");
         getJSON(url+"/login/find_member",
                 function(data){
                     var code=data.code;
@@ -82,6 +83,9 @@
                     var memberInfoFull = members.memberInfoFull;
                     $('.name').text(memberName);
                     $('.phone').text(memberPhone);
+		    if (members.memberHeadImgUrl !== "NULL"){
+		       imgSrc.attr("src", members.memberHeadImgUrl);
+		    } 
                     if (memberInfoFull == "NotFull"){
                         dialogFn_SUC("尊敬的会员您好，您的资料不齐全，将影响申领卡片，请补填完整","member_FillInfo.html")
                     }

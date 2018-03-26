@@ -7,7 +7,7 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
-    <title>尊远会员--个人信息</title>
+    <title>联名卡推广--个人信息</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="artDialog/css/ui-dialog.css"/>
@@ -140,6 +140,7 @@
         })
     }
 
+    /*
     document.addEventListener('touchstart', function(event) {
         // 判断默认行为是否可以被禁用
         if (event.cancelable) {
@@ -149,6 +150,7 @@
             }
         }
     }, false);
+    */
 
     $("#showSexPicker").picker({
         title: "请选择性别",
@@ -159,7 +161,7 @@
             }
         ],
         onChange: function (id) {
-           $("#showSexPicker").picker("close");
+           //$("#showSexPicker").picker("close");
             //$("#showSexPicker").val(result.value);
         },
         onConfirm: function (id) {
@@ -187,7 +189,7 @@
             }
         ],
         onChange: function (id) {
-            $("#showVocationPicker").picker("close");
+            //$("#showVocationPicker").picker("close");
             //$("#showSexPicker").val(result.value);
         },
         onConfirm: function (id) {

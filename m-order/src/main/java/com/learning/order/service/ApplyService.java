@@ -93,10 +93,19 @@ public class ApplyService {
                   oldApply.getIdNum().equals(apply.getIdNum()) &&
                   oldApply.getMobile().equals(apply.getMobile())
                 ) {
-            return "success";
+            return "successAlready";
         } else{
             return "ApplyByAnotherOne";
         }
+    }
+
+    /**
+     * 根据验证码匹配之前提交的申请资料
+     *
+     */
+    public Apply findValidApply(Apply apply){
+        Apply oldApply = applyRepository.findByLastUpdateTime(apply.getLastUpdateTime());
+        return oldApply;
     }
 
     /**

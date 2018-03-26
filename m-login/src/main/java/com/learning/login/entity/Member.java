@@ -29,6 +29,10 @@ public class Member {
     private String memberBirth;//会员生日
     private String registTime;//会员注册时间
 
+    private String memberWxOpenid;//会员微信openid
+    private String memberHeadImgUrl;//会员微信头像地址
+
+    private String isCouponed;//是否已送券，送券则填已送券码，NULL表示未送券
 
     public Integer getMemberId() {
         return memberId;
@@ -182,6 +186,30 @@ public class Member {
         this.registTime = registTime;
     }
 
+    public String getMemberWxOpenid() {
+        return memberWxOpenid;
+    }
+
+    public void setMemberWxOpenid(String memberWxOpenid) {
+        this.memberWxOpenid = memberWxOpenid;
+    }
+
+    public String getMemberHeadImgUrl() {
+        return memberHeadImgUrl;
+    }
+
+    public void setMemberHeadImgUrl(String memberHeadImgUrl) {
+        this.memberHeadImgUrl = memberHeadImgUrl;
+    }
+
+    public String getIsCouponed() {
+        return isCouponed;
+    }
+
+    public void setIsCouponed(String isCouponed) {
+        this.isCouponed = isCouponed;
+    }
+
     @Override
     public String toString() {
         return "Member{" +
@@ -204,6 +232,8 @@ public class Member {
                 ", memberGender='" + memberGender + '\'' +
                 ", memberBirth='" + memberBirth + '\'' +
                 ", registTime='" + registTime + '\'' +
+                ", memberWxOpenid='" + memberWxOpenid + '\'' +
+                ", memberHeadImgUrl='" + memberHeadImgUrl + '\'' +
                 '}';
     }
 }

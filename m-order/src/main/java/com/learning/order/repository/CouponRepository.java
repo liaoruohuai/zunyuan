@@ -16,4 +16,6 @@ public interface CouponRepository extends JpaRepository<Coupon,Integer> {
     Page<Coupon> findAll(Specification<Coupon> whereClause, Pageable pageable);
 
     List<Coupon> findAll(Specification<Coupon> whereClause);
+
+    Coupon findFirstByCouponStatusEquals(String CouponStatus);
 }

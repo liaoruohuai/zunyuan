@@ -3,10 +3,8 @@ package com.learning.chepei.controller;
 import com.learning.chepei.PageModel;
 import com.learning.chepei.SessionData;
 import com.learning.chepei.util.SmsKit;
-import com.learning.login.entity.Member;
-import com.learning.login.entity.Saler;
-import com.learning.login.entity.SmsLog;
-import com.learning.login.entity.User;
+import com.learning.chepei.util.WeixinKit;
+import com.learning.login.entity.*;
 import com.learning.login.service.LoginService;
 import com.learning.login.service.SmsLogService;
 import com.learning.util.basic.Constants;
@@ -15,6 +13,8 @@ import com.learning.util.basic.ValidateCode;
 import com.learning.util.basic.ValueUtil;
 import com.learning.util.date.DateUtil;
 import com.learning.util.exception.HzbuviException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -39,6 +37,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
+
+    private static final Logger logger = LoggerFactory.getLogger("LoginController");
 
     @Autowired
     private LoginService loginService;
@@ -85,6 +85,7 @@ public class LoginController {
     @RequestMapping("/memberLogin")
     public String memberLogin(Member member, HttpServletResponse response){
         try {
+
             Integer id=Integer.parseInt(loginService.memberLogin(member));
 
             if (id!=-1&&id!=-2) {
@@ -358,5 +359,45 @@ public class LoginController {
         System.out.println("New Call...Code of this time is : [" + vCode.getCode() + "]");
         vCode.write(response.getOutputStream());
         return null;
+    }
+
+    /**
+     * 会员前台登录接口
+     * @param member
+     * @param response
+     * @return
+     */
+    @RequestMapping("/wxMemberLogin")
+    public String wxMemberLogin(Member member, HttpServletResponse response){
+        try {
+            if (!ObjectUtil.isEmpty(member.getMemberFamilyAddress())) {
+                String openid = WeixinKit.getUserAccessToken(member.getMemberFamilyAddress());
+                logger.info("本次访问用户openid=[" + openid + "]");
+                if (!ObjectUtil.isEmpty(openid)){
+                    member.setMemberWxOpenid(openid);
+                    member.setMemberHeadImgUrl(WeixinKit.getUserInfo(loginService.getAccessTokenValue(),openid));
+                    logger.info("本次访问用户HeadImgUrl=[" + member.getMemberHeadImgUrl() + "]");
+                    //loginService.saveMember(member);
+                    Integer memberId = loginService.findMemberByWx(member);
+                    logger.info("系统已有会员Id = ["+ memberId.toString() + "]");
+                    if (memberId == -1){
+                        return ValueUtil.toJson("status", "MemberNotFound","openid",openid, "headUrl",member.getMemberHeadImgUrl());
+                    }else if (memberId == -2){
+                        return ValueUtil.toJson("status", "MemberMoreFound","openid",openid, "headUrl",member.getMemberHeadImgUrl());
+                    }else{
+                        SessionData.login(response, String.valueOf(memberId));
+                        return ValueUtil.toJson("members", loginService.findMember(memberId));
+                    }
+                }else{
+                    return ValueUtil.toJson("status", "NoOpenid");
+                }
+            }
+            else
+            {
+                return ValueUtil.toJson("status", "NoCode");
+            }
+        } catch (Exception e) {
+            return ValueUtil.toError(e.getMessage(),"");
+        }
     }
 }

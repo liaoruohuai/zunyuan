@@ -36,6 +36,8 @@ public class Apply implements Serializable {
     private String gender;
     private String nation;
     private String birth;
+
+    private String insurance;
     @OneToOne
     @JoinColumn(name = "salesId", referencedColumnName = "salerId", insertable = false, updatable = false)
     private Saler saler;
@@ -235,6 +237,14 @@ public class Apply implements Serializable {
 
     public void setBirth(String birth) {
         this.birth = birth;
+    }
+
+    public String getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(String insurance) {
+        this.insurance = insurance;
     }
 
     @Override

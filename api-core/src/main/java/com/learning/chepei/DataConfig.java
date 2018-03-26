@@ -44,6 +44,16 @@ public   class DataConfig {
     @Value("${issueCard.mchnt_cd}")
     private String issueCard_mchnt_cd;
 
+    @Value("${weixin.AppID}")
+    private String weixin_appId;
+    @Value("${weixin.AppSecret}")
+    private String weixin_appSecret;
+    @Value("${weixin.token}")
+    private String weixin_token;
+    @Value("${weixin.EncodingAESKey}")
+    private String weixin_aesKey;
+
+
     public static String SMS_NAME;
     public static String SMS_PWD;
     public static String SMS_URL;
@@ -57,6 +67,11 @@ public   class DataConfig {
     public static String ISSUECARD_TERM_ID;
     public static String ISSUECARD_BRANCH_ID;
     public static String ISSUECARD_MCHNT_CD;
+
+    public static String WEIXIN_APPID;
+    public static String WEIXIN_APPSECRET;
+    public static String WEIXIN_TOKEN;
+    public static String WEIXIN_AESKey;
 
     public DataConfig() {
     }
@@ -75,6 +90,10 @@ public   class DataConfig {
         ISSUECARD_TERM_ID = issueCard_term_id;
         ISSUECARD_BRANCH_ID = issueCard_branch_id;
         ISSUECARD_MCHNT_CD = issueCard_mchnt_cd;
+        WEIXIN_APPID=weixin_appId;
+        WEIXIN_APPSECRET=weixin_appSecret;
+        WEIXIN_TOKEN=weixin_token;
+        WEIXIN_AESKey=weixin_aesKey;
     }
 }
 

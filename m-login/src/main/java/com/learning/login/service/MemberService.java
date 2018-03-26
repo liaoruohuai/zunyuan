@@ -29,6 +29,15 @@ public class MemberService {
 
     private static int defaultPageSize = 15;
 
+    public String findOldMember(Member member){
+        Member oldMember = memberRepository.findByMemberPhone(member.getMemberPhone());
+        if (!ObjectUtil.isEmpty(oldMember)&&!ObjectUtil.isEmpty(oldMember.getMemberPhone())) {
+            return "MemberExisted";
+        }else{
+            return "NewMember";
+        }
+    }
+
     public String insert(Member member){
         memberRepository.save(member);
         return member.getMemberId().toString();

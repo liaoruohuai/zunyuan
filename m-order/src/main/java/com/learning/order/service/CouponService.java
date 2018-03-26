@@ -2,7 +2,9 @@ package com.learning.order.service;
 
 import com.learning.order.entity.Coupon;
 import com.learning.order.repository.CouponRepository;
+import com.learning.util.basic.ObjectUtil;
 import com.learning.util.basic.ValueUtil;
+import com.learning.util.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +29,17 @@ public class CouponService {
     @Autowired
     private CouponRepository couponRepository;
     private static int defaultPageSize = 15;
+
+    public Coupon getOneCoupon(String memberPhone){
+        Coupon coupon = couponRepository.findFirstByCouponStatusEquals("0");
+        if (!ObjectUtil.isEmpty(coupon)&&!ObjectUtil.isEmpty(coupon.getCouponInfo())) {
+            coupon.setCouponStatus("1");
+            coupon.setGrantMember(memberPhone);
+            coupon.setGrantTime(DateUtil.toString(new Date(), "yyyyMMddHHmmss"));
+            couponRepository.save(coupon);
+        }
+        return coupon;
+    }
 
     /**
      * 查询申请记录
