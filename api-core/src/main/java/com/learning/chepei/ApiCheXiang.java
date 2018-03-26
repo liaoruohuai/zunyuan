@@ -13,6 +13,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.xml.ws.Endpoint;
@@ -23,6 +24,7 @@ import javax.xml.ws.Endpoint;
  * E-mail : i@wrqzn.com
  */
 @SpringBootApplication
+//@EnableScheduling
 public class ApiCheXiang extends SpringBootServletInitializer{
 
     public static void main(String[] args) {

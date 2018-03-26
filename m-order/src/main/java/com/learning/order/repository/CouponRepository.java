@@ -17,5 +17,5 @@ public interface CouponRepository extends JpaRepository<Coupon,Integer> {
 
     List<Coupon> findAll(Specification<Coupon> whereClause);
 
-
+    Coupon findFirstByCouponStatusEquals(String CouponStatus);
 }

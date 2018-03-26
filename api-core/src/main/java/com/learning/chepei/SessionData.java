@@ -108,7 +108,7 @@ public class SessionData {
         Cookie validNumber = new Cookie("validNum", validMD5);
         validNumber.setPath("/");
         validNumber.setMaxAge(60);
-        System.out.println(System.currentTimeMillis() + ":validNum:" + validNum);
+        System.out.println(System.currentTimeMillis() + ":客户意愿validNum:" + validNum);
         response.addCookie(validNumber);
     }
 

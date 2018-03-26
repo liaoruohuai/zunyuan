@@ -7,7 +7,7 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
-    <title>尊远</title>
+    <title>联名卡推广--会员注册</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="artDialog/css/ui-dialog.css">
@@ -16,8 +16,11 @@
     </style>
 </head>
 <body>
+<header class="header">
+    <h3 class="head_left"><a href="javaScript:void(0);" class="go_back"></a>会员注册</h3>
+</header>
 <div class="container">
-    <div class="logo"><img src="img/zunyuan_logo.jpg" alt=""></div>
+    <div class="logo"><img src="img/zunyuan-cover.png" alt=""></div>
     <div class="form" id="login">
         <section>
             <form action="" target="_self" id="member-register-form" method="post">
@@ -27,7 +30,7 @@
                 </div>
                 <div class="each_content">
                     <input type="text" placeholder="请输入图形验证码" class="img_valid verify_form" name="memberPoint" maxlength="5"/>
-                    <img id="imgObj" alt="验证码" src="http://127.0.0.1:8080/zunyuan/basic/login/validateCode" onclick="changeImgCode()"/>
+                    <img id="imgObj" alt="验证码" src="/zunyuan/basic/login/validateCode" onclick="changeImgCode()"/>
                     <!--input type="button" class="button_valid" id="getValidPic" value="发送验证码"/>-->
                     <!-- <button class="button_valid" id="getVaildNum" onclick="time(this)" ></button>-->
                 </div>
@@ -54,9 +57,10 @@
             </form>
         </section>
     </div>
+    <footer class="footer">Powered By Zunyuan Technology Co,.Ltd </footer>
 </div>
-<!--<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>-->
-<script src="js/jquery-2.1.4.js"></script>
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<!--<script src="js/jquery-2.1.4.js"></script>-->
 <script src="js/ajaxJson.js"></script>
 <script src="artDialog/dist/dialog-min.js"></script>
 <script src="js/index.js"></script>
@@ -65,6 +69,7 @@
    $(function(){
        getValidNum();
        register();
+       goBack();
     });
 
    function changeImgCode() {
@@ -182,7 +187,7 @@
                         $('#member-register-form').serialize(),
                         function(data){
                             if (data.data.status == 'success') {
-                                dialogFn_SUC("会员注册成功，请登陆","member_login.html");
+                                dialogFn_SUC("会员注册成功，请登录","member_login.html");
                                 /*var pageAddress='member_login.html';
                                 linkPage(pageAddress);*/
                             } else if(data.data.status == 'memberRegisterDuplicate'){

@@ -19,17 +19,43 @@ function dialogFn(messages){
     });
     d.width(200);
     d.showModal();
-}
+};
 
 function dialogFn_SUC(messages,linkpage){
     var d = dialog({
         title: '提示',
         content:messages,
         //Modal: true,
+        lock: true,
         ok:function(){
             linkPage(linkpage);
         }
     });
     d.width(200);
     d.showModal();
+}
+
+function dialogFn_func(messages,f){
+    var d = dialog({
+        title: '提示',
+        content:messages,
+        //Modal: true,
+        lock: true,
+        ok:function(){
+            f()
+        },
+        cancel:function () {
+        }
+    });
+    d.width(200);
+    d.showModal();
+}
+
+function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return unescape(r[2]);
+    }
+    return null;
 }

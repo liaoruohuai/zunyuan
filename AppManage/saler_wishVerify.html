@@ -44,23 +44,10 @@
         <div class="sellform">
             <section>
                 <form action="" target="_self" id="sell-card-form" method="post">
-                    <li><a class="special_a"><span class="client_infor">卡号</span>
-                        <input class="user_name_input verify_form client_info" name="applyCard" type="text" placeholder="请输入联名卡卡号" minlength="16" maxlength="19">
-                    </a></li>
-                    <li><a class="special_a"><span class="client_infor">姓名</span>
-                        <input class="user_name_input verify_form client_info" name="name" type="text" placeholder="请填写客户姓名">
-                    </a></li>
-                    <li><a class="special_a"><span class="client_infor">证件号</span>
-                        <input class="user_name_input verify_form client_info" name="idNum" type="text" placeholder="请输入客户身份证" minlength="18" maxlength="18">
-                    </a></li>
-                    <li><a class="special_a"><span class="client_infor">证件到期日</span>
-                        <input class="user_name_input verify_form client_info" name="idDate" type="text" placeholder="例如：20590101" maxlength="8">
-                    </a></li>
-                    <li><a class="special_a"> <span class="client_infor">客户手机号</span>
-                        <input class="user_name_input verify_form phone client_info" name="mobile" type="text" placeholder="请填写客户手机号码" min="11" maxlength="11">
-                    </a></li>
-                    <li><a class="special_a"> <span class="client_infor">车险到期日</span>
-                        <input class="user_name_input verify_form insurance client_info" name="insurance" type="text" placeholder="请填写客户车险到期日" min="8" maxlength="8">
+                    <li><a class="special_a"> <span class="client_infor" style="width: 100%">请填写客户收到的短信验证码：</span>
+                        <input class="user_name_input verify_form client_info" name="lastUpdateTime" type="text"
+                               style="border: 1px solid black;margin-top: 20px;float: inherit;width: 30%"
+                               placeholder="6位验证码" min="6" maxlength="6">
                     </a></li>
                 </form>
             </section>
@@ -68,7 +55,7 @@
     </ul>
     <div class="form form_bottom">
         <div class="each_content">
-            <button class="sail" id="sellCard">售卡</button>
+            <button class="sail" id="sellCard">提交</button>
         </div>
     </div>
 </div>
@@ -112,18 +99,16 @@
 
             //alert($('#sell-card-form').serialize() + "&salesId=" + salers.salerId);
             postJSON(
-                url+"/apply/wishVerify",
+                url+"/apply/SalerSellCard",
                 $('#sell-card-form').serialize() + "&salesId=" + salers.salerId,
                 function(data){
-                    if (data.data.status == 'success') {
-                        var pageAddress = 'saler_wishVerify.html';
-                        linkPage(pageAddress);
-                        //dialogFn("售卡成功");
-                        //return true;
-                    } else if (data.data.status == 'successAlready'){
+                    if (data.data.status == 'success'){
                         dialogFn_SUC("售卡成功","saler_afterlogin.html");
-                    } else if (data.data.status == 'ApplyByAnotherOne'){
+                    } else if (data.data.status == 'ApplyByAnotherOne') {
                         dialogFn("售卡失败：该卡已被售给其他客户，请换卡");
+                        return true;
+                    }else if (data.data.status == 'validDiff'){
+                        dialogFn("验证码错误：请填写正确的验证码！");
                         return true;
                     } else {
                         dialogFn("售卡失败: " + data.data.status);
@@ -139,51 +124,17 @@
 
     function verifyForm(){
         var regs=[
-            /^[\u4e00-\u9fa5]{2,}$/,//验证中文姓名
-            /^[a-zA-Z \s]{2,20}$/,//验证中文姓名
-            /^1\d{10}$/,//验证手机号
-            /^\d{19}$/, //验证19位卡号
-            /^([\d]{4}(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-8])))))|((((([02468][048])|([13579][26]))00)|([0-9]{2}(([02468][048])|([13579][26]))))(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-9])))))$/,
-            /^\d{16}$/,//验证16位卡号
+            /^\d{6}$/,//验证6位数字验证码
         ];
         var errorMsgs=[
-            '请输入您的姓名(全中文或全英文，不少于两位)',
-            '请输入正确的11位数手机号码',
-            '请输入正确的16或19位卡号',
-            '请输入正确的8位身份证有效截至日期',
-            '请输入正确的18位身份证号码'
+            '请输入正确的6位数字验证码'
         ];
         var isValid = true;
         $('.verify_form').each(function(i){
             var val = $(this).val();
             if(i=='0'){
-                if(!(regs[3].test(val))&&!regs[5].test(val)) {
-                    dialogFn(errorMsgs[2]);
-                    isValid = false;
-                    return false;
-                }
-            }else if(i=='1'){
-                if(!((regs[0].test(val))||(regs[1].test(val)))){
+                if( !regs[0].test(val) ){
                     dialogFn( errorMsgs[0] );
-                    isValid = false;
-                    return false;
-                }
-            }else if(i==2){
-                if(!validateID(val)){
-                    dialogFn(errorMsgs[4])
-                    isValid = false;
-                    return false;
-                }
-            }else if(i=='3'){
-                if( !regs[4].test(val)){
-                    dialogFn( errorMsgs[3] );
-                    isValid = false;
-                    return false;
-                }
-            }
-            else if(i=='4'){
-                if( !regs[2].test(val) ){
-                    dialogFn( errorMsgs[1] );
                     isValid = false;
                     return false;
                 }

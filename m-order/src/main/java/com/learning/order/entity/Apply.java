@@ -1,5 +1,6 @@
 package com.learning.order.entity;
 
+import com.learning.login.entity.Member;
 import com.learning.login.entity.Saler;
 
 import javax.persistence.*;
@@ -28,16 +29,39 @@ public class Apply implements Serializable {
     private String applyDate;
     private String applyTime;
     private String salesId;
+    private Integer memberId;
     private String applyStatus;
     private String applyResp;
     private String lastUpdateTime;
     private String gender;
     private String nation;
     private String birth;
+
+    private String insurance;
     @OneToOne
     @JoinColumn(name = "salesId", referencedColumnName = "salerId", insertable = false, updatable = false)
     private Saler saler;
 
+    @OneToOne
+    @JoinColumn(name = "memberId", referencedColumnName = "memberId", insertable = false, updatable = false)
+    private Member member;
+
+
+    public Integer getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Integer memberId) {
+        this.memberId = memberId;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
     public Saler getSaler() {
         return saler;
@@ -213,6 +237,14 @@ public class Apply implements Serializable {
 
     public void setBirth(String birth) {
         this.birth = birth;
+    }
+
+    public String getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(String insurance) {
+        this.insurance = insurance;
     }
 
     @Override

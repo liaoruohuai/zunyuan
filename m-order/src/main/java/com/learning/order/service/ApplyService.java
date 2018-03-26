@@ -1,5 +1,7 @@
 package com.learning.order.service;
 
+import com.learning.login.entity.Member;
+import com.learning.login.repository.MemberRepository;
 import com.learning.order.entity.Apply;
 import com.learning.order.entity.Orders;
 import com.learning.order.repository.ApplyRepository;
@@ -37,6 +39,8 @@ import java.util.*;
 public class ApplyService {
     @Autowired
     private ApplyRepository applyRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     private static int defaultPageSize = 15;
 
@@ -63,6 +67,21 @@ public class ApplyService {
     }
 
     /**
+     * 查询会员自助申卡信息
+     *
+     */
+    public Map<String,Object> findMemberApply(Integer memberId){
+        Apply resultApply = applyRepository.findByMemberIdAndApplyTypeIs(memberId,"0");
+        Map<String,Object> map=new HashMap<>();
+        map.put("IsApply", (ObjectUtil.isEmpty(resultApply))?"NO":"YES");
+        if (!ObjectUtil.isEmpty(resultApply)) {
+            map.put("applyCard", (ObjectUtil.isEmpty(resultApply.getApplyCard()) == true) ? "NULL" : resultApply.getApplyCard());
+            map.put("applyStatus", (ObjectUtil.isEmpty(resultApply.getApplyStatus()) == true) ? "NULL" : resultApply.getApplyStatus());
+        }
+        return map;
+    }
+
+    /**
      * 查询是否已有同卡号申请成功
      *
      */
@@ -74,9 +93,65 @@ public class ApplyService {
                   oldApply.getIdNum().equals(apply.getIdNum()) &&
                   oldApply.getMobile().equals(apply.getMobile())
                 ) {
-            return "success";
+            return "successAlready";
         } else{
             return "ApplyByAnotherOne";
+        }
+    }
+
+    /**
+     * 根据验证码匹配之前提交的申请资料
+     *
+     */
+    public Apply findValidApply(Apply apply){
+        Apply oldApply = applyRepository.findByLastUpdateTime(apply.getLastUpdateTime());
+        return oldApply;
+    }
+
+    /**
+     * 会员自助申卡
+     *
+     */
+    public String memberApply(Apply apply){
+        Apply resultApply = applyRepository.findByMemberIdAndApplyTypeIs(apply.getMemberId(),"0");
+        if (!ObjectUtil.isEmpty(resultApply)){
+            return "alreadyApply";
+        } else{
+            resultApply = new Apply();
+            Member member = memberRepository.findByMemberId(apply.getMemberId());
+            resultApply.setApplyId(DateUtil.toString(new Date(),"yyyyMMddHHmmss") + TxnSequence.getSellCardID());
+            resultApply.setApplyType("0");
+            resultApply.setMemberId(member.getMemberId());
+            resultApply.setApplyDate(DateUtil.toString(new Date(),"yyyyMMdd"));
+            resultApply.setApplyTime(DateUtil.toString(new Date(),"HHmmss"));
+            resultApply.setBirth(member.getMemberCertNo().substring(6,14));
+            resultApply.setApplyStatus("0");
+            resultApply.setGender(member.getMemberGender());
+            resultApply.setAddress(apply.getAddress());
+
+            resultApply.setIdNum(member.getMemberCertNo());
+            resultApply.setIdDate(member.getMemberCertDate());
+            resultApply.setName(member.getMemberName());
+            resultApply.setMobile(member.getMemberPhone());
+            resultApply.setVocation(member.getMemberVocation());
+            resultApply.setSalesId("9999");
+
+
+            String[] address = apply.getAddress().replace(","," ").split(" ");
+            for (int i = 0, len = address.length; i < len; i++) {
+                switch (i) {
+                    case 0:
+                        resultApply.setProvince(address[0]);
+                    case 1:
+                        resultApply.setCity(address[1]);
+                    case 2:
+                        resultApply.setCountry(address[2]);
+                    default:
+                        break;
+                }
+            }
+            applyRepository.save(resultApply);
+            return "success";
         }
     }
 
@@ -89,6 +164,7 @@ public class ApplyService {
     public Apply salerInitApply(Apply apply){
         apply.setApplyId(DateUtil.toString(new Date(),"yyyyMMddHHmmss") + TxnSequence.getSellCardID());
         apply.setApplyType("1");
+        apply.setMemberId(999999);
         apply.setApplyDate(DateUtil.toString(new Date(),"yyyyMMdd"));
         apply.setApplyTime(DateUtil.toString(new Date(),"HHmmss"));
         apply.setBirth(apply.getIdNum().substring(6,14));

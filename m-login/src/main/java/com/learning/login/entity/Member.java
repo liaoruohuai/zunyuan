@@ -18,24 +18,21 @@ public class Member {
     private String memberPoint;//会员积分,
     private String isInitPwd;//是否初始密码修改标志，0-未修改，1-已修改
     private String lastLoginTime;//最后登录时间,
-    private String isActive;//是否开户 1-开户 0-没开
-    private String isCouponed;//是否已经发券 1-已发，0-没发
 
-    public String getIsActive() {
-        return isActive;
-    }
+    private String memberCertDate; //会员证件到期日
+    private String memberVocation; //会员职业
+    private String memberFamilyAddress;//会员家庭地址
+    private String memberProvince;//会员省份
+    private String memberCity;//会员城市
+    private String memberDistrict;//会员县区
+    private String memberGender;// 会员性别
+    private String memberBirth;//会员生日
+    private String registTime;//会员注册时间
 
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
-    }
+    private String memberWxOpenid;//会员微信openid
+    private String memberHeadImgUrl;//会员微信头像地址
 
-    public String getIsCouponed() {
-        return isCouponed;
-    }
-
-    public void setIsCouponed(String isCouponed) {
-        this.isCouponed = isCouponed;
-    }
+    private String isCouponed;//是否已送券，送券则填已送券码，NULL表示未送券
 
     public Integer getMemberId() {
         return memberId;
@@ -117,10 +114,106 @@ public class Member {
         this.lastLoginTime = lastLoginTime;
     }
 
+    public String getMemberCertDate() {
+        return memberCertDate;
+    }
+
+    public void setMemberCertDate(String memberCertDate) {
+        this.memberCertDate = memberCertDate;
+    }
+
+    public String getMemberVocation() {
+        return memberVocation;
+    }
+
+    public void setMemberVocation(String memberVocation) {
+        this.memberVocation = memberVocation;
+    }
+
+    public String getMemberFamilyAddress() {
+        return memberFamilyAddress;
+    }
+
+    public void setMemberFamilyAddress(String memberFamilyAddress) {
+        this.memberFamilyAddress = memberFamilyAddress;
+    }
+
+    public String getMemberProvince() {
+        return memberProvince;
+    }
+
+    public void setMemberProvince(String memberProvince) {
+        this.memberProvince = memberProvince;
+    }
+
+    public String getMemberCity() {
+        return memberCity;
+    }
+
+    public void setMemberCity(String memberCity) {
+        this.memberCity = memberCity;
+    }
+
+    public String getMemberDistrict() {
+        return memberDistrict;
+    }
+
+    public void setMemberDistrict(String memberDistrict) {
+        this.memberDistrict = memberDistrict;
+    }
+
+    public String getMemberGender() {
+        return memberGender;
+    }
+
+    public void setMemberGender(String memberGender) {
+        this.memberGender = memberGender;
+    }
+
+    public String getMemberBirth() {
+        return memberBirth;
+    }
+
+    public void setMemberBirth(String memberBirth) {
+        this.memberBirth = memberBirth;
+    }
+
+    public String getRegistTime() {
+        return registTime;
+    }
+
+    public void setRegistTime(String registTime) {
+        this.registTime = registTime;
+    }
+
+    public String getMemberWxOpenid() {
+        return memberWxOpenid;
+    }
+
+    public void setMemberWxOpenid(String memberWxOpenid) {
+        this.memberWxOpenid = memberWxOpenid;
+    }
+
+    public String getMemberHeadImgUrl() {
+        return memberHeadImgUrl;
+    }
+
+    public void setMemberHeadImgUrl(String memberHeadImgUrl) {
+        this.memberHeadImgUrl = memberHeadImgUrl;
+    }
+
+    public String getIsCouponed() {
+        return isCouponed;
+    }
+
+    public void setIsCouponed(String isCouponed) {
+        this.isCouponed = isCouponed;
+    }
+
     @Override
     public String toString() {
         return "Member{" +
-                "memberId='" + memberId + '\'' +
+                "memberId=" + memberId +
                 ", memberName='" + memberName + '\'' +
                 ", memberPhone='" + memberPhone + '\'' +
                 ", memberPwd='" + memberPwd + '\'' +
@@ -130,6 +223,17 @@ public class Member {
                 ", memberPoint='" + memberPoint + '\'' +
                 ", isInitPwd='" + isInitPwd + '\'' +
                 ", lastLoginTime='" + lastLoginTime + '\'' +
+                ", memberCertDate='" + memberCertDate + '\'' +
+                ", memberVocation='" + memberVocation + '\'' +
+                ", memberFamilyAddress='" + memberFamilyAddress + '\'' +
+                ", memberProvince='" + memberProvince + '\'' +
+                ", memberCity='" + memberCity + '\'' +
+                ", memberDistrict='" + memberDistrict + '\'' +
+                ", memberGender='" + memberGender + '\'' +
+                ", memberBirth='" + memberBirth + '\'' +
+                ", registTime='" + registTime + '\'' +
+                ", memberWxOpenid='" + memberWxOpenid + '\'' +
+                ", memberHeadImgUrl='" + memberHeadImgUrl + '\'' +
                 '}';
     }
 }

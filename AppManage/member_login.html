@@ -7,7 +7,7 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
-    <title>尊远</title>
+    <title>联名卡推广--会员登录</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="artDialog/css/ui-dialog.css">
@@ -16,8 +16,11 @@
     </style>
 </head>
 <body>
+<header class="header">
+    <h3>尊远会员 <a href="javaScript:void(0);"></a></h3>
+</header>
 <div class="container">
-    <div class="logo"><img src="img/zunyuan_logo.jpg" alt=""></div>
+    <div class="logo"><img src="img/zunyuan-cover.png" alt=""></div>
     <div class="form" id="login">
         <section>
             <form action="" target="_self" id="member-login-form" method="post">
@@ -33,11 +36,12 @@
                     <button class="user_name" style="padding-right: 20px;" id="submit">登录</button>
                     <button class="user_name" style="padding-right: 20px;" id="memberRegister">注册</button>
                 </div>
-
                 <a class="reset_pass" href="member_resetPwd.html">忘记密码？</a>
             </form>
         </section>
     </div>
+    <br/>
+    <footer class="footer">Powered By Zunyuan Technology Co,.Ltd </footer>
 </div>
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="js/ajaxJson.js"></script>
@@ -45,10 +49,43 @@
 <script src="js/index.js"></script>
 <script src="js/md5.js"></script>
 <script>
+    var openid = "NULL";
+    var headUrl = "NULL";
    $(function(){
+       wxmemberlogin();
        memberlogin();
        memberRegister();
     });
+   function wxmemberlogin() {
+       var state = getQueryString("state");
+       var code = getQueryString("code");
+       if (state == 'wxMemberLogin'){
+           var strbody= "memberFamilyAddress=" + code;
+           postJSON(
+               url+"/login/wxMemberLogin",
+               strbody,
+               function(data){
+                   if (data.code == 'success') {
+                       if (data.data.status == 'MemberNotFound') {
+                           openid = data.data.openid;
+                           headUrl = data.data.headUrl;
+                           dialogFn("您的微信账号还未关联会员，请先登录或注册");
+                       } else if (data.data.status == 'MemberMoreFound'){
+                           openid = data.data.openid;
+                           headUrl = data.data.headUrl;
+                           dialogFn("您的微信账号关联了多个会员，请使用账号密码登录");
+                       }else{
+                           var pageAddress='member_afterlogin.html';
+                           linkPage(pageAddress);
+                       }
+                   }
+               },
+               function(){
+                   dialogFn("网络错误，请稍后再试");
+               }
+           );
+       }
+   }
    function memberRegister() {
        $('#memberRegister').on('click',function() {
            var pageAddress = 'member_register.html';
@@ -66,7 +103,7 @@
                 //dialogFn($('#member-login-form').serialize());
                 postJSON(
                     url+"/login/memberLogin",
-                    $('#member-login-form').serialize(),
+                    $('#member-login-form').serialize() + "&memberWxOpenid=" + openid + "&memberHeadImgUrl=" + headUrl,
                     function(data){
                         if (data.data.status == 'success') {
                             var pageAddress='member_afterlogin.html';

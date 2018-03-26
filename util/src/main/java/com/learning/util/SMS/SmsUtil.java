@@ -29,7 +29,8 @@ public class SmsUtil {
     public static void main(String[] args) {
         String str = null;
         try {
-            str = SmsUtil.send("13611819694","测试短信沿着码123123");
+            //str = SmsUtil.send("13611819694","测试短信沿着码123123");
+            str = SmsUtil.send("13611819694","验证码: 123123（请提供给发卡员完成确认），提供该验证码即视为同意提供您的相关信息以供办理中石油上汽联名卡，如非本人操作请忽略此短信");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -45,8 +46,10 @@ public class SmsUtil {
         Map<String, String> info = new HashMap<>();
         String timestamp = DateUtil.toString(new Date(),"yyyyMMddHHmmss");
 
-        String smsname =  "020790";// DataConfig.SMS_NAME;
-        String smspwd  = "wb94mh36";//DataConfig.SMS_PWD;
+        //String smsname =  "020790";// DataConfig.SMS_NAME;
+        //String smspwd  = "wb94mh36";//DataConfig.SMS_PWD;
+        String smsname =  "020984";// DataConfig.SMS_NAME;
+        String smspwd  = "sk59me34";//DataConfig.SMS_PWD;
         String smsurl  = "http://101.227.68.68:7891/mt";//DataConfig.SMS_URL;
         String fnlpw = EncryptionKit.md5EncryptBase64(smspwd,smsname,timestamp,message);
 

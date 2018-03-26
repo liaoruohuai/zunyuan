@@ -7,18 +7,22 @@ body{
     background-color: #fff;
     font-family: SourceHanSansSC-Regular;
     position: relative;
+    touch-action: none;
 }
 .container{
     text-align: center;
-   padding: 30px 10px 30px 10px;
+   padding: 60px 10px 30px 10px;
 }
 .logo{
-    margin: 40px auto 40px;
+    margin: 20px auto 10px;
     width: 80%;
 }
 .logo img{
     max-width: 100%;
-    height: auto;
+    height: auto;    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    margin: 0 auto;
 }
 .form{
     width: 100%;
@@ -146,6 +150,11 @@ i.user_password_icon{
     color: #fff;
     margin-top: 10px;
 }
+#memberUpdateInfo{
+    background-color: #2979FF;
+    color: #fff;
+    margin-top: 10px;
+}
 #memberRegister{
     background-color: #2979FF;
     color: #fff;
@@ -162,6 +171,22 @@ i.user_password_icon{
     margin-top: 10px;
 }
 
+.myApply{
+    width: 90%;
+    box-sizing: border-box;
+    padding: 13px 13px 15px 20px;
+    color: #A1A1A1;
+    font-size:17px;
+    border-radius: 5px;
+    background-color: #2979FF!important;
+    color: #fff!important;
+}
+.applyProcess{
+    border: 2px solid #2979FF;
+    color: #2979FF!important;
+    margin-top: 0px;
+    background-color: #fff!important;
+}
 /*登陆成功*/
 .header{
     width: 100%;
@@ -198,8 +223,33 @@ i.user_password_icon{
     margin: 40px 15px 0px 15px;
     margin-bottom: 60px;
     overflow: hidden;
-
 }
+.member_information{
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 50px 0px 0px 0px;
+    margin-bottom: 60px;
+    overflow: hidden;
+}
+.member_information li{
+    background-color: #fff;
+    position: relative;
+    list-style-type:none
+}
+.member_information li a{
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px 0;
+    margin-left: 0px;
+    border-bottom: 2px solid #F8F8F8;
+    text-decoration: none;
+    color: #000;
+    font-size:17px;
+    position: relative;
+}
+
 .left_icon{
     float: left;
     width: 20%;
@@ -274,8 +324,8 @@ h3.head_left{
     background-color: #FBFBFB!important;
     width: 100%;
     padding-top: 40px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 .product_list_select{
     width: 100%;
@@ -347,6 +397,14 @@ i.select{
     margin-left: 0px;
     vertical-align: middle;
 }
+.member_name_input{
+    width: 70%;
+    padding: 10px;
+    box-sizing: border-box;
+    float: left;
+    margin-left: 0px;
+    vertical-align: middle;
+}
 .special_a{
     width:100%;
     padding: 5px 0!important;
@@ -357,9 +415,71 @@ i.select{
     text-align: left;
     padding-left: 20px;
 }
+.member_a{
+    width:100%;
+    padding: 5px 0!important;
+}
+.member_a span{
+    width: 30%;
+    float: left;
+    text-align: inherit;
+    padding-left: 0px;
+}
+
+.member_apply{
+    width:100%;
+    padding: 5px 0!important;
+}
+.member_apply span{
+    width: 40%;
+    float: left;
+    text-align: inherit;
+    padding-left: 0px;
+}
+
+
 .client_info{
     width:60%;
     float: right;
+}
+.member_info{
+    width:70%;
+    float: right;
+    text-align: inherit;
+    font-size: 15px;
+}
+.member_apply_info{
+    width:60%;
+    float: right;
+    text-align: inherit;
+    font-size: 15px;
+}
+.member_sexpicker{
+    width:70%;
+    float: right;
+    line-height: 33px;
+    background-color: #fff!important;
+}
+.member_getcardpicker{
+    width:60%;
+    float: right;
+    line-height: 33px;
+    background-color: #fff!important;
+}
+.member_vocationPicker{
+    width:70%;
+    float: right;
+    line-height: 33px;
+    background-color: #fff!important;
+}
+.member_provincePicker{
+    width:70%;
+    line-height: 33px;
+    background-color: #fff!important;
+}
+.member_cityPicker{
+    width:30%;
+    line-height: 33px;
 }
 .form_bottom{
     margin-top: 20px;
@@ -367,6 +487,18 @@ i.select{
 .client_infor{
     float: right;
     line-height: 33px;
+}
+.member_infor{
+    width: 30%;
+    float: left;
+    line-height: 33px;
+    color: #0a9ec7;
+}
+.member_apply_infor{
+    width: 40%;
+    float: left;
+    line-height: 33px;
+    color: #0a9ec7;
 }
 .return_apply_icon{
     width: 40%;
@@ -431,4 +563,7 @@ i.select{
 {
     background-color: #999;
     color: #fff;
+}
+footer{
+    font-size:12px;
 }

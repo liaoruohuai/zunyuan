@@ -7,20 +7,21 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
-    <title>尊远</title>
+    <title>联名卡推广--会员HOME页面</title>
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="artDialog/css/ui-dialog.css"/>
     <style>
 
     </style>
 </head>
 <body>
 <header class="header">
-    <h3>尊远 <a href="javaScript:void(0);" class="get_out">退出</a></h3>
+    <h3>尊远会员 <a href="javaScript:void(0);" class="get_out">退出</a></h3>
 </header>
 <div class="container">
     <div class="person_information">
-        <div class="left_icon"><img src="img/c-guy@3x.png" alt=""></div>
+        <div class="left_icon"><img src="img/c-guy@3x.png" alt="" id="headUrl"></div>
         <div class="right_text">
             <ul class="right_ul">
                 <div>
@@ -34,20 +35,24 @@
     </div>
     <div class="form">
         <div class="each_content">
-            <button class="user_name product sail" id="sail">我的加油卡</button>
+            <button class="user_name product myApply" id="ApplyCard">我的加油卡</button>
         </div>
         <div class="each_content">
-            <button class="user_name product back" id="return" >申请进度</button>
+            <button class="user_name product applyProcess" id="ApplyProcess" >申请进度</button>
         </div>
     </div>
 </div>
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="artDialog/dist/dialog-min.js"></script>
 <script src="js/index.js"></script>
 <script src="js/ajaxJson.js"></script>
 <script>
+    var members;
+    var applys;
     $(function(){
         submit();
         getUserInformation();
+        getApplyInformation();
         getOutOf();
     });
     function getOutOf(){
@@ -65,32 +70,77 @@
         })
     }
     function getUserInformation(){
+	var imgSrc = $("#headUrl");
         getJSON(url+"/login/find_member",
                 function(data){
                     var code=data.code;
                     if(code!="success"){
                         return false;
                     }
-                    var members=data.data.members;
+                    members=data.data.members;
                     var memberName=members.memberName;
                     var memberPhone=members.memberPhone;
-                    alert(memberName);
-                    if (typeof(memberName) == "undefined"){
-                        memberName == "NULL";
-                    }
+                    var memberInfoFull = members.memberInfoFull;
                     $('.name').text(memberName);
                     $('.phone').text(memberPhone);
+		    if (members.memberHeadImgUrl !== "NULL"){
+		       imgSrc.attr("src", members.memberHeadImgUrl);
+		    } 
+                    if (memberInfoFull == "NotFull"){
+                        dialogFn_SUC("尊敬的会员您好，您的资料不齐全，将影响申领卡片，请补填完整","member_FillInfo.html")
+                    }
                 },
                 function(){
 
                 })
     }
+    function getApplyInformation(){
+        getJSON(url+"/apply/findMemberApply",
+            function(data){
+                var code=data.code;
+                if(code!="success"){
+                    return false;
+                }
+                applys=data.data.applys;
+                var isApply = applys.IsApply;
+                var applyLabel = $('.myApply').text();
+                var processLabel = $('.applyProcess').text();
+
+                if (isApply == "YES"){
+                    if (applys.applyStatus == "1"){
+                        $('.myApply').text(applyLabel + "：" + applys.applyCard);
+                        $('.applyProcess').text(processLabel + "：已完成待领卡");
+                    }else {
+                        $('.myApply').text(applyLabel + "：努力制卡中");
+                        if (applys.applyStatus == "0"){
+                            $('.applyProcess').text(processLabel + "：待审批");
+                        }else if (applys.applyStatus == "3"){
+                            $('.applyProcess').text(processLabel + "：制卡中");
+                        }else if (applys.applyStatus == "2"){
+                            $('.applyProcess').text(processLabel + "：审批未通过");
+                        }
+                    }
+                } else {
+                    $('.myApply').text(applyLabel + "：立即申请");
+                    $('.applyProcess').text(processLabel + "：未申请");
+                }
+
+            },
+            function(){
+
+            })
+    }
     function submit(){
-        $('#sail').on('click',function(){
-            var pageAddress='car_product_sail.html';
-            linkPage(pageAddress);
+        $('#ApplyCard').on('click',function(){
+            if (applys.IsApply == "YES"){
+                var pageAddress='#';
+                linkPage(pageAddress);
+            }else {
+                var pageAddress='member_applyCard.html';
+                linkPage(pageAddress);
+            }
         })
-        $('#return').on('click',function(){
+        $('#ApplyProcess').on('click',function(){
             var pageAddress='#';
             linkPage(pageAddress);
         })

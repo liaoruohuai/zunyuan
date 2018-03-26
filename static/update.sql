@@ -99,4 +99,21 @@ CREATE TABLE `zunyuandb`.`coupon` (
 COMMENT = '卡券表';
 
 ALTER TABLE `zunyuandb`.`coupon`
-ADD COLUMN `couponStatus` VARCHAR(16) NULL AFTER `grantTime`;
+ADD COLUMN `couponStatus` VARCHAR(16) NULL COMMENT '卡券状态' AFTER `grantTime`;
+
+ALTER TABLE `zunyuandb`.`member`
+ADD COLUMN `memberCertDate` VARCHAR(16) NULL COMMENT '会员证件到期日' AFTER `memberCertNo`,
+ADD COLUMN `memberVocation` VARCHAR(32) NULL COMMENT '会员职业' AFTER `memberPoint`,
+ADD COLUMN `memberFamilyAddress` VARCHAR(256) NULL COMMENT '会员家庭地址' AFTER `isInitPwd`,
+ADD COLUMN `memberProvince` VARCHAR(16) NULL COMMENT '会员省份' AFTER `isInitPwd`,
+ADD COLUMN `memberCity` VARCHAR(16) NULL COMMENT '会员城市' AFTER `isInitPwd`,
+ADD COLUMN `memberGender` VARCHAR(16) NULL COMMENT '会员性别' AFTER `memberName`,
+ADD COLUMN `memberBirth` VARCHAR(16) NULL COMMENT '会员生日' AFTER `isInitPwd`,
+ADD COLUMN `registTime` VARCHAR(32) NULL COMMENT '会员注册时间' AFTER `isInitPwd`;
+
+
+ALTER TABLE `zunyuandb`.`member`
+ADD COLUMN `memberDistrict` VARCHAR(16) NULL COMMENT '会员区县' AFTER `memberBirth`;
+
+ALTER TABLE `zunyuandb`.`apply`
+ADD COLUMN `memberId` int(11) NULL COMMENT '会员ID' AFTER `salesId`;
