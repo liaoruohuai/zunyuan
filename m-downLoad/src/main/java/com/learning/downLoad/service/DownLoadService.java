@@ -70,7 +70,7 @@ public class DownLoadService {
 
     public HSSFWorkbook applyDownLoad(Map<String, String> param){
         try {
-            List<Apply> applys = applyRepository.findAll(applyService.getWhereClause(param.get("mobile"),param.get("applyDate"),param.get("applyType"),param.get("salesId")));
+            List<Apply> applys = applyRepository.findAll(applyService.getWhereClause(param.get("mobile"),param.get("applyDate"),param.get("salesId"),param.get("applyType")));
             HSSFWorkbook workbook=new HSSFWorkbook();
             HSSFCellStyle cellStyle = getCellStyle(workbook);
             HSSFSheet sheet = workbook.createSheet();
